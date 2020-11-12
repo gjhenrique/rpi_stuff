@@ -23,7 +23,7 @@
   set_fact:
     syncthing_apikey: "{{ syncthing_apikey_raw.stdout }}"
 
-- name: set https gui
+- name: set gui access through https
   lineinfile:
     dest: /home/syncthing/.config/syncthing/config.xml
     state: present
@@ -42,11 +42,11 @@
   register: syncthing_config_raw
   check_mode: no
 
-- name: set syncthing_(config,config_old,myID)
+- name: set syncthing_config
   set_fact:
     syncthing_config: "{{ syncthing_config_raw.content | from_json }}"
 
-- name: merge sycnthing values
+- name: merge syncthing values
   set_fact:
     syncthing_new_config: "{{ syncthing_config | combine(config_values, recursive=true) }}"
   vars:
@@ -58,15 +58,22 @@
         useTLS: true
         address: '0.0.0.0:8384'
 
+- name: debug1
+  debug:
+    msg: '{{syncthing_config}}'
+
+- name: debug2
+  debug:
+    msg: '{{syncthing_new_config}}'
+
 - name: post config
   uri:
     url: "https://localhost:8384/rest/system/config"
     method: POST
     validate_certs: no
-    return_content: yes
     headers:
-      X-API-Key: "{{ syncthing_apikey }}"
-    body: "{{ syncthing_new_config | to_json }}"
+      X-API-Key: "{{ syncthing_config.gui.apiKey }}"
+    body: "{{ syncthing_new_config }}"
     body_format: "json"
-  when: syncthing_new_config != syncthing_config
-  # notify: restart syncthing
+  # the server restarts itself during the transfer and don't respond with a proper http response
+  ignore_errors: yes
