@@ -1,2 +1,9 @@
+[rpis]
+rpi1
+
 [syncthing]
-192.168.178.29 ansible_user=alarm
+rpi1
+
+[all:vars]
+ansible_user=deploy
+ansible_ssh_pass=vixi

@@ -1,0 +1,4 @@
+- name: restart syncthing
+  systemd:
+    name: syncthing@syncthing
+    state: restarted

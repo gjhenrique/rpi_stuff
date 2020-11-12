@@ -1,0 +1,20 @@
+---
+- hosts: rpis
+  remote_user: alarm
+  become: True
+  become_method: su
+  roles:
+  - boilerplate
+  tags: boilerplate
+
+- hosts: syncthing
+  become: True
+  roles:
+  - syncthing
+  tags: syncthing
+
+
+# - hosts: syncthing
+#   remote_user: guilherme
+#   roles:
+#   - syncthing

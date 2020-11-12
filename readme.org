@@ -11,20 +11,17 @@ pacman -S python
 
 * create an user
 
-
 * rpi
 ** boilerplate
-*** user password is on encrypted file
-*** add user guilherme
-*** remove user alarm
-***
-
+[ ] - add user guilherme
+[ ] - best way to do integration tests with ansible
+[ ] - remove user alarm
 
 ** syncthing
 *** install syncthing
 *** syncthing enable
 *** playbook to display credentials
-***
+
 ** transmission
 
 ** nordvpn
