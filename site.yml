@@ -13,8 +13,8 @@
   - syncthing
   tags: syncthing
 
-
-# - hosts: syncthing
-#   remote_user: guilherme
-#   roles:
-#   - syncthing
+- hosts: duckdns
+  become: True
+  roles:
+  - duckdns
+  tags: duckdns

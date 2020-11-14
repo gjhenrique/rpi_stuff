@@ -1,0 +1,32 @@
+# Copied scripts from https://github.com/T00mm/duckdns
+- name: Copy service file
+  copy:
+    src: duckdns.service
+    dest: /usr/lib/systemd/system/duckdns.service
+
+- name: Copy timer file
+  copy:
+    src: duckdns.timer
+    dest: /usr/lib/systemd/system/duckdns.timer
+
+- name: Copy binary file
+  copy:
+    src: duckdns.sh
+    dest: /usr/bin/duckdns
+    mode: '0755'
+
+- name: Ensures /etc/duckdns.d dir exists
+  file:
+    path: /etc/duckdns.d
+    state: directory
+
+- name: Copy configuration file
+  template:
+    src: default.cfg.j2
+    dest: /etc/duckdns.d/default.cfg
+
+- name: restart duckdns timer
+  systemd:
+    name: duckdns.timer
+    enabled: yes
+    state: restarted
