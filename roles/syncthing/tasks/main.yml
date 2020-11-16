@@ -16,8 +16,14 @@
 # based on https://github.com/le9i0nx/ansible-syncthing/blob/master/tasks/config.yml
 # folder and devices management needs to be done manually via the browser
 - name: get api key
-  shell: grep apikey /home/syncthing/.config/syncthing/config.xml | sed -n 's:.*<apikey>\(.*\)</apikey>.*:\1:p'
+  shell: |
+    set -o pipefail
+    grep apikey /home/syncthing/.config/syncthing/config.xml | sed -n 's:.*<apikey>\(.*\)</apikey>.*:\1:p'
   register: syncthing_apikey_raw
+  changed_when: false
+  args:
+    executable: /bin/bash
+
 
 - name: set syncthing_apikey
   set_fact:
@@ -60,11 +66,11 @@
 
 - name: debug1
   debug:
-    msg: '{{syncthing_config}}'
+    msg: '{{ syncthing_config }}'
 
 - name: debug2
   debug:
-    msg: '{{syncthing_new_config}}'
+    msg: '{{ syncthing_new_config }}'
 
 - name: post config
   uri:

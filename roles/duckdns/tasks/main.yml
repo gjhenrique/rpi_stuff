@@ -3,11 +3,13 @@
   copy:
     src: duckdns.service
     dest: /usr/lib/systemd/system/duckdns.service
+    mode: '0644'
 
 - name: Copy timer file
   copy:
     src: duckdns.timer
     dest: /usr/lib/systemd/system/duckdns.timer
+    mode: '0644'
 
 - name: Copy binary file
   copy:
@@ -19,11 +21,13 @@
   file:
     path: /etc/duckdns.d
     state: directory
+    mode: '0755'
 
 - name: Copy configuration file
   template:
     src: default.cfg.j2
     dest: /etc/duckdns.d/default.cfg
+    mode: '0644'
 
 - name: restart duckdns timer
   systemd:

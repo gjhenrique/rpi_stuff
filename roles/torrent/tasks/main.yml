@@ -39,6 +39,7 @@
   copy:
     src: transmission-user.conf
     dest: /etc/systemd/system/transmission.service.d/username.conf
+    mode: '0644'
   notify: reload transmission
 
 - name: Enable/Start transmission service
