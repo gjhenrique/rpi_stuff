@@ -12,4 +12,11 @@
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
 
+- name: Install python
+  pacman:
+    update_cache: yes
+    name:
+      - python
+      - python-pip
+
 # TODO: delete alarm user

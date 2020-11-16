@@ -18,3 +18,9 @@
   roles:
   - duckdns
   tags: duckdns
+
+- hosts: torrent
+  become: True
+  roles:
+  - torrent
+  tags: torrent

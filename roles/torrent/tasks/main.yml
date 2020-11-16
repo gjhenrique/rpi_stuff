@@ -1,0 +1,53 @@
+- name: Add vpn group
+  group:
+    name: vpn
+    state: present
+    # TODO: Add this value as a variable
+    gid: 1500
+
+- name: Create torrent user
+  user:
+    name: torrent
+
+- name: Create TV directory
+  file:
+    path: /home/torrent/media/TV
+    state: directory
+    mode: '0755'
+
+- name: Create Movie directory
+  file:
+    path: /home/torrent/media/Movies
+    state: directory
+    mode: '0755'
+
+- name: Install transmission
+  pacman:
+    update_cache: yes
+    name: transmission-cli
+
+- name: Create transmission directory
+  file:
+    path: /etc/systemd/system/transmission.service.d
+    state: directory
+    mode: '0755'
+
+# iptables rules
+# install ngix with ssl and proxy to localhost 9091
+
+- name: Change transmission user
+  copy:
+    src: transmission-user.conf
+    dest: /etc/systemd/system/transmission.service.d/username.conf
+  notify: reload transmission
+
+- name: Enable/Start transmission service
+  systemd:
+    name: transmission
+    enabled: yes
+    state: started
+
+# listen to correct file
+
+# install open-pyn
+# install open-pyn
