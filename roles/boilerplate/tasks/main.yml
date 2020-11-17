@@ -2,7 +2,18 @@
   user:
     name: deploy
     password: "{{ 'vixi' | password_hash('sha512') }}"
+    update_password: on_create
+    state: present
     groups: wheel
+
+- name: Install packages
+  pacman:
+    update_cache: yes
+    name:
+      - python
+      - python-pip
+      - sudo
+      - htop
 
 - name: Allow 'wheel' group to have passwordless sudo
   lineinfile:
@@ -11,12 +22,4 @@
     regexp: '^%wheel'
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
-
-- name: Install python
-  pacman:
-    update_cache: yes
-    name:
-      - python
-      - python-pip
-
 # TODO: delete alarm user

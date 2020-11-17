@@ -32,8 +32,11 @@
     state: directory
     mode: '0755'
 
-# iptables rules
-# install ngix with ssl and proxy to localhost 9091
+- name: Enable/Start transmission service
+  systemd:
+    name: transmission
+    enabled: yes
+    state: started
 
 - name: Change transmission user
   copy:
@@ -42,13 +45,157 @@
     mode: '0644'
   notify: reload transmission
 
+- name: Install nginx
+  pacman:
+    update_cache: yes
+    name: nginx
+
+- name: Insert sites-enabled conf
+  lineinfile:
+    dest: /etc/nginx/nginx.conf
+    regexp: "^include /etc/nginx/sites-enabled/*.conf;"
+    insertbefore: "server {"
+    line: "include /etc/nginx/sites-enabled/*.conf;"
+
+- name: Create nginx directories
+  file:
+    path: /etc/nginx/sites-enabled
+    state: directory
+    mode: '0755'
+
+- name: Create default nginx directories
+  file:
+    path: '{{ item }}'
+    state: 'directory'
+    mode: '0755'
+  with_items:
+    - '/etc/nginx/sites-available'
+    - '/etc/nginx/sites-enabled'
+    - '/etc/nginx/ssl'
+
+- name: Install nginx
+  pacman:
+    update_cache: yes
+    name: nginx
+  with_items:
+    - nginx
+    - openssl
+
+- name: Generate self signed SSL certificates
+  command: >
+    openssl req
+      -new
+      -newkey rsa:4096
+      -days 365
+      -nodes
+      -x509
+      -subj "/C=DE/ST=HH/L=HH/O=rpi/CN=rpi"
+      -keyout /etc/nginx/ssl/transmission.key
+      -out /etc/nginx/ssl/transmission.pem
+  args:
+    creates: '/etc/nginx/ssl/transmission.pem'
+  notify: test nginx and restart
+
+- name: Generate X bit dhparam.pem file
+  command: openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+  args:
+    creates: '/etc/nginx/ssl/dhparam.pem'
+  notify: test nginx and restart
+
+- name: Install python package to use htpasswd
+  pip:
+    name: passlib
+
+- name: Create auth
+  htpasswd:
+    path: '/etc/nginx/.transmission.htpasswd'
+    # TODO: Add this into variables
+    name: 'guigui'
+    password: 'vixi'
+    crypt_scheme: 'sha512_crypt'
+  notify: test nginx and restart
+
+- name: Copy configuration file
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/torrent.conf
+    mode: '0644'
+  notify: test nginx and restart
+
+- name: Symlink sites-available to sites-enabled
+  file:
+    src: '/etc/nginx/sites-available/torrent.conf'
+    dest: '/etc/nginx/sites-enabled/torrent.conf'
+    state: 'link'
+  notify: test nginx and restart
+
 - name: Enable/Start transmission service
   systemd:
-    name: transmission
+    name: nginx
     enabled: yes
     state: started
 
-# listen to correct file
+- name: Install required packages
+  pacman:
+    update_cache: yes
+    name: ['unzip', 'wget', 'which', 'openvpn']
 
-# install open-pyn
-# install open-pyn
+- name: Install required pip libraries
+  pip:
+    name: ['pexpect', 'openpyn==2.7.5']
+
+- name: create openpyn service files
+  expect:
+    command: openpyn --init
+    responses:
+      # TODO: Secret variable
+      username: guigui
+      password: vixi
+      systemd: de
+    creates: /etc/systemd/system/openpyn.service
+  no_log: true
+  notify: restart openpyn
+
+- name: Install required pip libraries
+  systemd:
+    name: openpyn
+    enabled: yes
+    state: started
+
+- name: Allow torrent traffic from tun0
+  iptables:
+    out_interface: tun0
+    chain: OUTPUT
+    # TODO Add this as variable
+    gid_owner: "1500"
+    jump: ACCEPT
+  notify: save iptables
+
+- name: Allow torrent traffic from localhost
+  iptables:
+    out_interface: lo
+    chain: OUTPUT
+    # TODO Add this as variable
+    gid_owner: "1500"
+    jump: ACCEPT
+  notify: save iptables
+
+- name: Allow torrent traffic from localhost
+  iptables:
+    chain: OUTPUT
+    # TODO Add this as variable
+    gid_owner: "1500"
+    jump: REJECT
+    reject_with: icmp-port-unreachable
+  notify: save iptables
+
+- name: Enable iptables oneshot service
+  systemd:
+    name: iptables
+    enabled: yes
+    state: started
+
+# missing flexget
+# install flexget
+# enable service
+# flexget variables

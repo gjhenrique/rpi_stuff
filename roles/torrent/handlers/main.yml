@@ -3,3 +3,20 @@
     name: transmission
     daemon_reload: yes
     state: restarted
+
+- name: test nginx and restart
+  command: nginx -t
+  notify: Restart nginx
+
+- name: Restart nginx
+  systemd:
+    name: nginx
+    state: restarted
+
+- name: save iptables
+  shell: "iptables-save > /etc/iptables/iptables.rules"
+
+- name: restart openpyn
+  systemd:
+    name: openpyn
+    state: restarted

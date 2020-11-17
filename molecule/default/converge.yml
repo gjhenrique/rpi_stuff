@@ -1,0 +1,8 @@
+---
+- name: prepare
+  hosts: all
+  roles:
+    # - ../../roles/boilerplate
+    # - ../../roles/duckdns
+    # - ../../roles/syncthing
+    - ../../roles/torrent

@@ -1,15 +1,22 @@
 # Copied scripts from https://github.com/T00mm/duckdns
-- name: Copy service file
-  copy:
-    src: duckdns.service
-    dest: /usr/lib/systemd/system/duckdns.service
-    mode: '0644'
 
 - name: Copy timer file
   copy:
     src: duckdns.timer
     dest: /usr/lib/systemd/system/duckdns.timer
     mode: '0644'
+  notify:
+    - reload services
+    - restart duckdns
+
+- name: Copy service file
+  copy:
+    src: duckdns.service
+    dest: /usr/lib/systemd/system/duckdns.service
+    mode: '0644'
+  notify:
+    - reload services
+    - restart duckdns
 
 - name: Copy binary file
   copy:
@@ -28,9 +35,3 @@
     src: default.cfg.j2
     dest: /etc/duckdns.d/default.cfg
     mode: '0644'
-
-- name: restart duckdns timer
-  systemd:
-    name: duckdns.timer
-    enabled: yes
-    state: restarted

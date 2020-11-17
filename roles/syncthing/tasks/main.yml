@@ -2,7 +2,7 @@
   user:
     name: syncthing
 
-- name: Install syncthing binary
+- name: Install syncthing
   pacman:
     update_cache: yes
     name: syncthing
@@ -63,14 +63,6 @@
         password: "{{ 'vixi' | password_hash('bcrypt') }}"
         useTLS: true
         address: '0.0.0.0:8384'
-
-- name: debug1
-  debug:
-    msg: '{{ syncthing_config }}'
-
-- name: debug2
-  debug:
-    msg: '{{ syncthing_new_config }}'
 
 - name: post config
   uri:
