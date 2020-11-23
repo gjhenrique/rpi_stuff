@@ -153,7 +153,7 @@
       password: vixi
       systemd: de
     creates: /etc/systemd/system/openpyn.service
-  no_log: true
+  # no_log: true
   notify: restart openpyn
 
 - name: Install required pip libraries
@@ -195,7 +195,6 @@
     enabled: yes
     state: started
 
-# missing flexget
 # install flexget
-# enable service
-# flexget variables
+# enable flexget service
+# flexget variables with secrets
