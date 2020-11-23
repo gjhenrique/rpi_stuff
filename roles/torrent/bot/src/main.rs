@@ -10,11 +10,18 @@ fn flexget_command(flexget_path: &str, flexget_command: &str) {
         .arg("-c")
         .arg(format!("flexget execute {}", flexget_command))
         .current_dir(flexget_path)
-        .output()
-        .unwrap();
+        .output();
 
-    println!("Stderr: {}", String::from_utf8_lossy(&command.stderr));
-    println!("Stdout: {}", String::from_utf8_lossy(&command.stdout));
+    match command {
+        Ok(c) => {
+            println!("Stderr: {}", String::from_utf8_lossy(&c.stderr));
+            println!("Stdout: {}", String::from_utf8_lossy(&c.stdout));
+        }
+        Err(err) => {
+            println!("{}", err);
+            return;
+        }
+    }
 }
 
 async fn dispatch_sync(api: Api, message: Message, flexget_path: &str) -> Result<(), Error> {
@@ -25,26 +32,32 @@ async fn dispatch_sync(api: Api, message: Message, flexget_path: &str) -> Result
     Ok(())
 }
 
-async fn dispatch_movie(api: Api, message: Message, text: Vec<&str>, flexget_path: &str) -> Result<(), Error> {
+async fn dispatch_movie(text: Vec<&str>, flexget_path: &str) -> Result<(), Error> {
     if text.len() <= 1 {
         return Ok(());
     }
 
     let magnet_url = text[1];
-    let argument = format!("--task download-movie-manual --cli-config \"magnet={}\"", magnet_url);
+    let argument = format!(
+        "--task download-movie-manual --cli-config \"magnet={}\"",
+        magnet_url
+    );
     println!("{}", argument);
     flexget_command(flexget_path, &argument);
 
     Ok(())
 }
 
-async fn dispatch_tv(api: Api, message: Message, text: Vec<&str>, flexget_path: &str) -> Result<(), Error> {
+async fn dispatch_tv(text: Vec<&str>, flexget_path: &str) -> Result<(), Error> {
     if text.len() <= 1 {
         return Ok(());
     }
 
     let magnet_url = text[1];
-    let argument = format!("--task download-tv-manual --cli-config 'magnet={}'", magnet_url);
+    let argument = format!(
+        "--task download-tv-manual --cli-config 'magnet={}'",
+        magnet_url
+    );
     flexget_command(flexget_path, &argument);
 
     Ok(())
@@ -93,9 +106,11 @@ async fn main() -> Result<(), Error> {
 
                     if allowed_groups.is_empty() || allowed_groups.contains(&chat_id) {
                         match prefix {
-                            "/tv" => dispatch_tv(api.clone(), message.clone(), text, &flexget_path).await?,
-                            "/movie" => dispatch_movie(api.clone(), message.clone(), text, &flexget_path).await?,
-                            "/sync" => dispatch_sync(api.clone(), message.clone(), &flexget_path).await?,
+                            "/tv" => dispatch_tv(text, &flexget_path).await?,
+                            "/movie" => dispatch_movie(text, &flexget_path).await?,
+                            "/sync" => {
+                                dispatch_sync(api.clone(), message.clone(), &flexget_path).await?
+                            }
                             _ => (),
                         }
                     }
