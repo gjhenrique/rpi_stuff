@@ -1,0 +1,29 @@
+- name: Add vpn group
+  group:
+    name: vpn
+    state: present
+    # TODO: Add this value as a variable
+    gid: 1500
+
+- name: Create torrent user
+  user:
+    name: torrent
+
+- name: Create TV directory
+  file:
+    path: /home/torrent/media/TV
+    state: directory
+    mode: '0755'
+
+- name: Create Movie directory
+  file:
+    path: /home/torrent/media/Movies
+    state: directory
+    mode: '0755'
+
+# Add a comment here explaining why temp is needed
+- name: Create temp directory
+  file:
+    path: /home/torrent/media/temp
+    state: directory
+    mode: '0755'

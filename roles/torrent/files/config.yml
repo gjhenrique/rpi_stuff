@@ -1,0 +1,173 @@
+variables: vars.yml
+
+templates:
+  torrent:
+    transmission:
+      host: localhost
+      port: 9091
+      ratio: 0
+      path: "{{ torrent_path }}"
+  notification:
+    notify:
+      entries:
+        message:  "{{ notification_message }}"
+        via:
+          - telegram:
+              bot_token: "{? telegram.token ?}"
+              parse_mode: html
+              disable_previews: no
+              recipients:
+                - group: "{? telegram.group_name ?}"
+  download-manual:
+    mock:
+      - { title: "Manual torrent",  url: "$magnet_link" }
+    accept_all: yes
+    seen: local
+    disable: [seen, seen_info_hash, retry_failed]
+    manual: yes
+    set:
+      notification_message: "🧲: {{title}}"
+      torrent_path: "{{ path }}"
+    template:
+      - torrent
+      - notification
+
+tasks:
+  download-rss:
+    priority: 1
+    rss: "{? rss.tv_url ?}"
+    all_series: yes
+    thetvdb_lookup: yes
+    set:
+      torrent_path: "{? torrent.tv_path ?}"
+      notification_message: "🧲: {{ tvdb_series_name }} - s{{tvdb_season | pad(2)}}e{{ tvdb_episode | pad(2) }}"
+    template:
+      - torrent
+      - notification
+
+  move-series:
+    priority: 2
+    disable: [seen, seen_info_hash, retry_failed]
+    filesystem:
+      path: "{? torrent.tv_path ?}"
+      recursive: yes
+      regexp: '.*\.(avi|mkv|mp4)$'
+      retrieve: files
+    accept_all: yes
+    thetvdb_lookup: yes
+    all_series:
+      parse_only: yes
+    if:
+      - tvdb_name == None: reject
+      - tvdb_season == None: reject
+    move:
+      to: "{? torrent.temp_path ?}"
+      rename: '{{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}'
+
+  move-to-server:
+    filesystem:
+      path: "{? torrent.temp_path ?}"
+      retrieve: files
+    disable: [seen, seen_info_hash, retry_failed]
+    accept_all: yes
+    thetvdb_lookup: yes
+    all_series:
+      parse_only: yes
+    sftp_upload:
+      host: "{? sftp.host ?}"
+      username: "{? sftp.username ?}"
+      to: "{? sftp.tv_path ?}/{{ tvdb_series_name }}/S{{ tvdb_season | pad(2) }}"
+      delete_origin: yes
+
+  delete-transmission:
+    priority: 3
+    from_transmission:
+      only_complete: yes
+    disable: [seen, seen_info_hash]
+    if:
+      - transmission_progress == 100: accept
+      - not transmission_seed_ratio_ok: reject
+      - not transmission_idle_limit_ok: reject
+    transmission:
+      action: remove
+
+  move-movies:
+    priority: 4
+    disable: [seen, seen_info_hash, retry_failed]
+    regexp:
+      from: title
+      reject:
+        - (s|d)ub(s|bed)
+        - trailer
+        - screener
+        - (s|S)ample
+        - Featurettes
+    filesystem:
+      path: "{? torrent.movie_path ?}"
+      recursive: yes
+      regexp: '.*\.(avi|mkv|mp4)$'
+      retrieve: files
+    accept_all: yes
+    imdb_lookup: yes
+    set:
+      notification_message: "✅: {{ imdb_name }} ({{ imdb_year }})"
+    template:
+      - notification
+    if:
+      - imdb_name == None: reject
+    move:
+      to: ~/Videos/Movies/{{ imdb_name }} ({{ imdb_year }})
+      rename: '{{ imdb_name }} ({{ imdb_year }}) '
+
+  trakt-to-movie-list:
+    trakt_list:
+      account: gjhenrique
+      list: movies
+      type: movies
+    accept_all: yes
+    list_add:
+      - movie_list: movies_to_download
+    set:
+      notification_message: "📋: {{title}}"
+    template:
+      - notification
+
+  download-movies:
+    discover:
+      what:
+        - movie_list:
+            list_name: movies_to_download
+      from:
+        - torznab:
+            website: "http://{? torrent.jackett_url ?}/api/v2.0/indexers/all/results/torznab/"
+            apikey:  "{? torrent.jacket_key ?}"
+            searcher: movie
+    quality:
+      - 1080p+
+      - bluray
+    sort_by:
+      - torrent_seeds
+      - torrent_availability
+      - quality
+    # remove from movie_list
+    list_match:
+      from:
+        - movie_list: movies_to_download
+    set:
+      notification_message: "🧲: {{title}}"
+      torrent_path: "{? torrent.tv_path ?}"
+    template:
+      - torrent
+      - notification
+
+  download-movie-manual:
+    set:
+      path: "{? torrent.movie_path ?}"
+    template:
+      - download-manual
+
+  download-tv-manual:
+    set:
+      path: "{? torrent.tv_path ?}"
+    template:
+      - download-manual

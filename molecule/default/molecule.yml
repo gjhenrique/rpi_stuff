@@ -10,6 +10,12 @@ platforms:
       - /tmp
       - /run
     privileged: True
+    port_bindings:
+      - 9092: 9092
+      - 9118: 9118
+    published_ports:
+      - 0.0.0.0:9092:9092/TCP
+      - 0.0.0.0:9118:9118/TCP
     tmpfs:
       - /tmp
       - /run

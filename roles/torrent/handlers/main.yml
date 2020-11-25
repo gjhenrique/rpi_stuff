@@ -20,3 +20,9 @@
   systemd:
     name: openpyn
     state: restarted
+
+- name: reload jackett
+  systemd:
+    name: jackett
+    daemon_reload: yes
+    state: restarted

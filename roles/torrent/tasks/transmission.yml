@@ -1,0 +1,47 @@
+- name: Install transmission
+  pacman:
+    update_cache: yes
+    name: transmission-cli
+
+- name: Create transmission directory
+  file:
+    path: /etc/systemd/system/transmission.service.d
+    state: directory
+    mode: '0755'
+
+- name: Change transmission user
+  copy:
+    src: transmission-user.conf
+    dest: /etc/systemd/system/transmission.service.d/username.conf
+    mode: '0644'
+  notify: reload transmission
+
+- name: Create transmission auth
+  htpasswd:
+    path: '/etc/nginx/.transmission.htpasswd'
+    # TODO: Add this into variables
+    name: 'guigui'
+    password: 'vixi'
+    crypt_scheme: 'sha512_crypt'
+  notify: test nginx and restart
+
+- name: Copy configuration file
+  template:
+    src: transmission.conf.j2
+    dest: /etc/nginx/sites-available/torrent.conf
+    mode: '0644'
+  notify: test nginx and restart
+
+- name: Symlink sites-available to sites-enabled
+  file:
+    src: '/etc/nginx/sites-available/torrent.conf'
+    dest: '/etc/nginx/sites-enabled/torrent.conf'
+    state: 'link'
+  notify: test nginx and restart
+
+
+- name: Enable/Start transmission service
+  systemd:
+    name: transmission
+    enabled: yes
+    state: started

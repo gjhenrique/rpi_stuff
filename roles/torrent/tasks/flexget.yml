@@ -1,0 +1,25 @@
+- name: Install required pip libraries
+  pip:
+    name: ['flexget', 'python-telegram-bot', 'transmissionrpc',  'pysftp']
+
+- name: Create flexget directory
+  file:
+    path: /home/torrent/flexget
+    state: directory
+    mode: '0755'
+
+- name: Copy flexget config file
+  copy:
+    src: config.yml
+    dest: /home/torrent/flexget/config.yml
+    mode: '0644'
+
+- name: Copy flexget vars file
+  template:
+    src: vars.yml.j2
+    dest: /home/torrent/flexget/vars.yml
+    mode: '0644'
+
+# Copy systemd service file
+# Copy systemd timer file
+# Enable and start timer

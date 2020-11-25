@@ -1,0 +1,85 @@
+- name: set arm variable
+  set_fact:
+    jacket_arch: "ARM32"
+  when: "'arm' in ansible_architecture"
+
+- name: set x86 variable
+  set_fact:
+    jacket_arch: "AMDx64"
+  when: "'x86_64' in ansible_architecture"
+
+- name:
+  shell: "/usr/lib/jackett/jackett --version"
+  register: jackett_version
+  changed_when: false
+  ignore_errors: yes
+
+- name: Download jackett bin
+  get_url:
+    # TODO: Add correct jackett variable
+    url: "https://github.com/Jackett/Jackett/releases/download/v0.16.2229/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
+    dest: /tmp/jacket-v0.16.2229.tar.gz
+  when: not jackett_version.stdout | regex_search("v0.16.2229")
+
+- name: Extract jackett bin
+  shell: |
+    rm -rf Jackett
+    tar -xzvf jacket-v0.16.2229.tar.gz
+    mkdir -p /usr/lib/jackett/
+    cp -dpr Jackett/* /usr/lib/jackett/
+  args:
+    chdir: "/tmp"
+  when: not jackett_version.stdout | regex_search("v0.16.2229")
+
+- name: Deploy jackett service file
+  copy:
+    src: jackett.service
+    dest: /usr/lib/systemd/system/jackett.service
+    mode: '0644'
+  notify:
+    - reload jackett
+
+- name: Create jackett auth
+  htpasswd:
+    path: '/etc/nginx/.jackett.htpasswd'
+    # TODO: Add this into variables
+    name: 'guigui'
+    password: 'vixi'
+    crypt_scheme: 'sha512_crypt'
+  notify: test nginx and restart
+
+- name: Copy nginx config file
+  template:
+    src: jackett.conf.j2
+    dest: /etc/nginx/sites-available/jackett.conf
+    mode: '0644'
+  notify: test nginx and restart
+
+- name: Symlink available nginx conf
+  file:
+    src: '/etc/nginx/sites-available/jackett.conf'
+    dest: '/etc/nginx/sites-enabled/jackett.conf'
+    state: 'link'
+  notify: test nginx and restart
+
+- name: Enable jackett service
+  systemd:
+    name: jackett
+    enabled: yes
+    state: started
+
+- name: get api key
+  shell: |
+    set -o pipefail
+    grep APIKey /home/torrent/.config/jackett/ServerConfig.json | cut -d':' -f2 | sed 's/[\s\",]//g'
+  register: jackett_apikey_raw
+  changed_when: false
+  args:
+    executable: /bin/bash
+
+- name: set jackett_apikey
+  set_fact:
+    jackett_apikey: "{{ jackett_apikey_raw.stdout }}"
+
+# TODO: copy rargb and kickass Indexers somehow
+# TODO: Don't allow external access. Maybe vpn firewall already helps. Check when it's in prod

@@ -1,0 +1,16 @@
+[Unit]
+Description=Jackett Service
+After=network.target
+
+[Service]
+User=torrent
+Group=vpn
+Restart=always
+RestartSec=5
+Type=simple
+Environment=XDG_CONFIG_HOME=/home/torrent/.config/jackett
+ExecStart=/usr/lib/jackett/jackett --NoRestart --NoUpdates --DataFolder /home/torrent/.config/jackett
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target
