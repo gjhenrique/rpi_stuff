@@ -1,0 +1,9 @@
+[Unit]
+Description=Run flexget tasks
+After=network.target
+
+[Service]
+User=torrent
+Type=oneshot
+WorkingDirectory=/home/torrent/flexget
+ExecStart=/usr/bin/flexget execute

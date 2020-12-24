@@ -1,8 +1,5 @@
 ---
 - hosts: rpis
-  # remote_user: alarm
-  # become: True
-  # become_method: su
   become: True
   roles:
   - boilerplate

@@ -61,12 +61,12 @@ tasks:
       - tvdb_name == None: reject
       - tvdb_season == None: reject
     move:
-      to: "{? torrent.temp_path ?}"
+      to: '{{ torrent.temp_tv_path }}'
       rename: '{{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}'
 
   move-to-server:
     filesystem:
-      path: "{? torrent.temp_path ?}"
+      path: ~/Videos/temp/
       retrieve: files
     disable: [seen, seen_info_hash, retry_failed]
     accept_all: yes

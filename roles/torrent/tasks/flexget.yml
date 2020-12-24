@@ -1,25 +1,105 @@
+- name: Create TV directory
+  become: yes
+  become_user: torrent
+  file:
+    path: /home/torrent/media/TV
+    state: directory
+    mode: '0755'
+
+- name: Create Movie directory
+  become: yes
+  become_user: torrent
+  file:
+    path: /home/torrent/media/Movies
+    state: directory
+    mode: '0755'
+
+# TODO: Add a comment here explaining why temp is needed
+- name: Create temp TV directory
+  become: yes
+  become_user: torrent
+  file:
+    path: /home/torrent/media/temp/TV
+    state: directory
+    mode: '0755'
+
+- name: Create temp Movies directory
+  become: yes
+  become_user: torrent
+  file:
+    path: /home/torrent/media/temp/Movies
+    state: directory
+    mode: '0755'
+
 - name: Install required pip libraries
+  become: yes
   pip:
-    name: ['flexget', 'python-telegram-bot', 'transmissionrpc',  'pysftp']
+    name: ['flexget==3.1.91', 'python-telegram-bot', 'transmissionrpc',  'pysftp']
+
+- name: Upgrade pytz
+  become: yes
+  pip:
+    name: ['pytz']
+    extra_args: --upgrade
 
 - name: Create flexget directory
+  become: yes
+  become_user: torrent
   file:
     path: /home/torrent/flexget
     state: directory
     mode: '0755'
 
 - name: Copy flexget config file
+  become: yes
+  become_user: torrent
   copy:
-    src: config.yml
+    src: flexget-config.yml
     dest: /home/torrent/flexget/config.yml
     mode: '0644'
 
 - name: Copy flexget vars file
+  become: yes
+  become_user: torrent
   template:
-    src: vars.yml.j2
+    src: flexget-vars.yml.j2
     dest: /home/torrent/flexget/vars.yml
     mode: '0644'
 
-# Copy systemd service file
-# Copy systemd timer file
-# Enable and start timer
+- name: Copy flexget timer file
+  become: yes
+  copy:
+    src: flexget.timer
+    dest: /usr/lib/systemd/system/flexget.timer
+    mode: '0644'
+  notify:
+    - reload flexget
+
+- name: Copy service file
+  become: yes
+  copy:
+    src: flexget.service
+    dest: /usr/lib/systemd/system/flexget.service
+    mode: '0644'
+  notify:
+    - reload flexget
+
+- name: Start flexget timer service
+  become: yes
+  systemd:
+    name: flexget.timer
+    enabled: yes
+    state: started
+
+- name: Install openssh
+  become: yes
+  pacman:
+    update_cache: yes
+    name: openssh
+
+- name: Generate SSH keys
+  shell: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
+  args:
+    creates: /home/torrent/.ssh/id_rsa
+
+# Outputs public key

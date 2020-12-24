@@ -3,15 +3,20 @@
 
 - name: Include nginx server
   include: nginx.yml
+  tags: nginx
 
 - name: Include transmission
   include: transmission.yml
+  tags: transmission
 
 - name: Include openpyn
   include: openpyn.yml
+  tags: vpn
 
 - name: Include jackett
   include: jackett.yml
+  tags: jackett
 
 - name: Include flexget
   include: flexget.yml
+  tags: flexget

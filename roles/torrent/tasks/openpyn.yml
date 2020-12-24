@@ -19,7 +19,7 @@
   # no_log: true
   notify: restart openpyn
 
-- name: Install required pip libraries
+- name: Start openpyn service
   systemd:
     name: openpyn
     enabled: yes

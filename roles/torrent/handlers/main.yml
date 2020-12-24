@@ -26,3 +26,11 @@
     name: jackett
     daemon_reload: yes
     state: restarted
+
+- name: reload flexget
+  systemd:
+    name: flexget.timer
+    daemon_reload: yes
+    state: restarted
+
+# generate ssh key
