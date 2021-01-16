@@ -132,34 +132,6 @@ tasks:
     template:
       - notification
 
-  download-movies:
-    discover:
-      what:
-        - movie_list:
-            list_name: movies_to_download
-      from:
-        - torznab:
-            website: "http://{? torrent.jackett_url ?}/api/v2.0/indexers/all/results/torznab/"
-            apikey:  "{? torrent.jacket_key ?}"
-            searcher: movie
-    quality:
-      - 1080p+
-      - bluray
-    sort_by:
-      - torrent_seeds
-      - torrent_availability
-      - quality
-    # remove from movie_list
-    list_match:
-      from:
-        - movie_list: movies_to_download
-    set:
-      notification_message: "🧲: {{title}}"
-      torrent_path: "{? torrent.tv_path ?}"
-    template:
-      - torrent
-      - notification
-
   download-movie-manual:
     set:
       path: "{? torrent.movie_path ?}"

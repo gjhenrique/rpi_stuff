@@ -18,6 +18,7 @@
     creates: /etc/systemd/system/openpyn.service
   # no_log: true
   notify: restart openpyn
+  timeout: 300
 
 - name: Start openpyn service
   systemd:

@@ -34,13 +34,13 @@
 - name: Install required pip libraries
   become: yes
   pip:
-    name: ['flexget==3.1.91', 'python-telegram-bot', 'transmissionrpc',  'pysftp']
-
-- name: Upgrade pytz
-  become: yes
-  pip:
-    name: ['pytz']
-    extra_args: --upgrade
+    name:
+      - flexget==3.1.91
+      - python-telegram-bot
+      - transmissionrpc
+      - pysftp
+      # https://github.com/Flexget/Flexget/issues/2749
+      - pytz==2020.5
 
 - name: Create flexget directory
   become: yes

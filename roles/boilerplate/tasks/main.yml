@@ -14,5 +14,6 @@
       - python3-pip
       - sudo
       - htop
+      - acl
 
-# TODO: delete alarm user
+# TODO: delete pi user

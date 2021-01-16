@@ -67,19 +67,3 @@
     name: jackett
     enabled: yes
     state: started
-
-- name: get api key
-  shell: |
-    set -o pipefail
-    grep APIKey /home/torrent/.config/jackett/ServerConfig.json | cut -d':' -f2 | sed 's/[\s\",]//g'
-  register: jackett_apikey_raw
-  changed_when: false
-  args:
-    executable: /bin/bash
-
-- name: set jackett_apikey
-  set_fact:
-    jackett_apikey: "{{ jackett_apikey_raw.stdout }}"
-
-# TODO: copy rargb and kickass Indexers somehow
-# TODO: Don't allow external access. Maybe vpn firewall already helps. Check when it's in prod
