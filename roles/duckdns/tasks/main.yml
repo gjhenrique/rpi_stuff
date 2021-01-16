@@ -3,7 +3,7 @@
 - name: Copy timer file
   copy:
     src: duckdns.timer
-    dest: /usr/lib/systemd/system/duckdns.timer
+    dest: /lib/systemd/system/duckdns.timer
     mode: '0644'
   notify:
     - reload services
@@ -12,7 +12,7 @@
 - name: Copy service file
   copy:
     src: duckdns.service
-    dest: /usr/lib/systemd/system/duckdns.service
+    dest: /lib/systemd/system/duckdns.service
     mode: '0644'
   notify:
     - reload services

@@ -3,15 +3,19 @@
     name: syncthing
 
 - name: Install syncthing
-  pacman:
+  apt:
     update_cache: yes
     name: syncthing
 
 - name: Enable syncthing service
   systemd:
-    name: syncthing@syncthing
+    name: "syncthing@syncthing"
     enabled: yes
     state: started
+
+- name: 'Wait for config file to be created'
+  wait_for:
+    path: /home/syncthing/.config/syncthing/config.xml
 
 # based on https://github.com/le9i0nx/ansible-syncthing/blob/master/tasks/config.yml
 # folder and devices management needs to be done manually via the browser
@@ -23,7 +27,6 @@
   changed_when: false
   args:
     executable: /bin/bash
-
 
 - name: set syncthing_apikey
   set_fact:

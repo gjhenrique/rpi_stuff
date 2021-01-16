@@ -1,13 +1,12 @@
-FROM archlinux:latest
+FROM debian:buster
 
-RUN pacman -Sy --noconfirm python
-RUN pacman -Sy --noconfirm systemd systemd-sysvcompat
+RUN apt-get update && apt-get install -y python3 systemd
 
 ENV container docker
 ENV LC_ALL C
 
-# RUN cd /lib/systemd/system/sysinit.target.wants/ \
-#     && ls | grep -v systemd-tmpfiles-setup | xargs rm -f $1
+RUN cd /lib/systemd/system/sysinit.target.wants/ \
+     && ls | grep -v systemd-tmpfiles-setup | xargs rm -f $1
 
 RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
     /etc/systemd/system/*.wants/* \
@@ -19,6 +18,4 @@ RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
     /lib/systemd/system/plymouth* \
     /lib/systemd/system/systemd-update-utmp*
 
-# VOLUME [ "/sys/fs/cgroup", "run" ]
-
-ENTRYPOINT ["/usr/lib/systemd/systemd"]
+ENTRYPOINT ["/lib/systemd/systemd"]

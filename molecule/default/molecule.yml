@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: local
-    image: archlinux:latest
+    image: debian:buster
     tmpfs:
       - /tmp
       - /run

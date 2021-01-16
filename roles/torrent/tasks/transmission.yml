@@ -1,18 +1,18 @@
 - name: Install transmission
-  pacman:
+  apt:
     update_cache: yes
-    name: transmission-cli
+    name: transmission-daemon
 
 - name: Create transmission directory
   file:
-    path: /etc/systemd/system/transmission.service.d
+    path: /etc/systemd/system/transmission-daemon.service.d
     state: directory
     mode: '0755'
 
 - name: Change transmission user
   copy:
     src: transmission-user.conf
-    dest: /etc/systemd/system/transmission.service.d/username.conf
+    dest: /etc/systemd/system/transmission-daemon.service.d/username.conf
     mode: '0644'
   notify: reload transmission
 
@@ -39,9 +39,8 @@
     state: 'link'
   notify: test nginx and restart
 
-
 - name: Enable/Start transmission service
   systemd:
-    name: transmission
+    name: transmission-daemon
     enabled: yes
     state: started

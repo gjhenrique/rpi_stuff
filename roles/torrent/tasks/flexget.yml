@@ -70,7 +70,7 @@
   become: yes
   copy:
     src: flexget.timer
-    dest: /usr/lib/systemd/system/flexget.timer
+    dest: /lib/systemd/system/flexget.timer
     mode: '0644'
   notify:
     - reload flexget
@@ -79,7 +79,7 @@
   become: yes
   copy:
     src: flexget.service
-    dest: /usr/lib/systemd/system/flexget.service
+    dest: /lib/systemd/system/flexget.service
     mode: '0644'
   notify:
     - reload flexget
@@ -93,13 +93,19 @@
 
 - name: Install openssh
   become: yes
-  pacman:
+  apt:
     update_cache: yes
-    name: openssh
+    name: ssh
+
+- name: Create default nginx directories
+  become_user: torrent
+  file:
+    path: '/home/torrent/.ssh'
+    state: 'directory'
+    mode: '0755'
 
 - name: Generate SSH keys
   shell: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
+  become_user: torrent
   args:
     creates: /home/torrent/.ssh/id_rsa
-
-# Outputs public key

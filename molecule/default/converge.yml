@@ -3,6 +3,6 @@
   hosts: all
   roles:
     - ../../roles/boilerplate
-    # - ../../roles/duckdns
-    # - ../../roles/syncthing
+    - ../../roles/duckdns
+    - ../../roles/syncthing
     - ../../roles/torrent

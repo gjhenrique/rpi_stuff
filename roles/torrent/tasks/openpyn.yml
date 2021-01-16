@@ -1,7 +1,7 @@
 - name: Install required packages
-  pacman:
+  apt:
     update_cache: yes
-    name: ['unzip', 'which', 'wget', 'openvpn']
+    name: ['unzip', 'wget', 'openvpn', 'iptables', 'iptables-persistent']
 
 - name: Install required pip libraries
   pip:
@@ -51,9 +51,3 @@
     jump: REJECT
     reject_with: icmp-port-unreachable
   notify: save iptables
-
-- name: Enable iptables-restore service
-  systemd:
-    name: iptables
-    enabled: yes
-    state: started

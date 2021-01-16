@@ -34,7 +34,7 @@
 - name: Deploy jackett service file
   copy:
     src: jackett.service
-    dest: /usr/lib/systemd/system/jackett.service
+    dest: /lib/systemd/system/jackett.service
     mode: '0644'
   notify:
     - reload jackett

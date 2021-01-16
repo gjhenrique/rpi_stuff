@@ -4,22 +4,15 @@
     password: "{{ 'vixi' | password_hash('sha512') }}"
     update_password: on_create
     state: present
-    groups: wheel
+    groups: sudo
 
 - name: Install packages
-  pacman:
+  apt:
     update_cache: yes
     name:
-      - python
-      - python-pip
+      - python3
+      - python3-pip
       - sudo
       - htop
 
-- name: Allow 'wheel' group to have passwordless sudo
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    regexp: '^%wheel'
-    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-    validate: 'visudo -cf %s'
 # TODO: delete alarm user
