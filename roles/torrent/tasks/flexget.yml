@@ -2,7 +2,7 @@
   become: yes
   become_user: torrent
   file:
-    path: /home/torrent/media/TV
+    path: /home/torrent/media/torrent/TV
     state: directory
     mode: '0755'
 
@@ -10,7 +10,7 @@
   become: yes
   become_user: torrent
   file:
-    path: /home/torrent/media/Movies
+    path: /home/torrent/media/torrent/Movies
     state: directory
     mode: '0755'
 

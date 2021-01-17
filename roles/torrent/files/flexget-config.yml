@@ -31,6 +31,9 @@ templates:
     template:
       - torrent
       - notification
+  rename-serie-name:
+    set:
+      tvdb_series_name: "{{ tvdb_series_name | replace('&', 'and') | replace(':', '')}}"
 
 tasks:
   download-rss:
@@ -45,7 +48,7 @@ tasks:
       - torrent
       - notification
 
-  move-series:
+  move-series-local:
     priority: 2
     disable: [seen, seen_info_hash, retry_failed]
     filesystem:
@@ -60,36 +63,32 @@ tasks:
     if:
       - tvdb_name == None: reject
       - tvdb_season == None: reject
+    template:
+      - rename-serie-name
     move:
-      to: '{{ torrent.temp_tv_path }}'
-      rename: '{{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}'
+      to: "{? torrent.temp_tv_path ?}"
+      rename: "{{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}"
 
-  move-to-server:
+  move-series-server:
+    priority: 3
     filesystem:
-      path: ~/Videos/temp/
+      path: "{? torrent.temp_tv_path ?}"
       retrieve: files
     disable: [seen, seen_info_hash, retry_failed]
     accept_all: yes
     thetvdb_lookup: yes
     all_series:
       parse_only: yes
+    set:
+      notification_message: "✅: {{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}"
+    template:
+      - notification
+      - rename-serie-name
     sftp_upload:
       host: "{? sftp.host ?}"
       username: "{? sftp.username ?}"
       to: "{? sftp.tv_path ?}/{{ tvdb_series_name }}/S{{ tvdb_season | pad(2) }}"
       delete_origin: yes
-
-  delete-transmission:
-    priority: 3
-    from_transmission:
-      only_complete: yes
-    disable: [seen, seen_info_hash]
-    if:
-      - transmission_progress == 100: accept
-      - not transmission_seed_ratio_ok: reject
-      - not transmission_idle_limit_ok: reject
-    transmission:
-      action: remove
 
   move-movies:
     priority: 4
@@ -109,28 +108,43 @@ tasks:
       retrieve: files
     accept_all: yes
     imdb_lookup: yes
+    if:
+      - imdb_name == None: reject
+    move:
+      to: "{? torrent.temp_movie_path ?}"
+      rename: '{{ imdb_name }} ({{ imdb_year }})'
+
+  move-movies-server:
+    priority: 5
+    filesystem:
+      path: "{? torrent.temp_movie_path ?}"
+      retrieve: files
+    disable: [seen, seen_info_hash, retry_failed]
+    accept_all: yes
+    imdb_lookup: yes
+    all_series:
+      parse_only: yes
     set:
       notification_message: "✅: {{ imdb_name }} ({{ imdb_year }})"
     template:
       - notification
-    if:
-      - imdb_name == None: reject
-    move:
-      to: ~/Videos/Movies/{{ imdb_name }} ({{ imdb_year }})
-      rename: '{{ imdb_name }} ({{ imdb_year }}) '
+    sftp_upload:
+      host: "{? sftp.host ?}"
+      username: "{? sftp.username ?}"
+      to: "{? sftp.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})/{{ imdb_name }} ({{ imdb_year }})"
+      delete_origin: yes
 
-  trakt-to-movie-list:
-    trakt_list:
-      account: gjhenrique
-      list: movies
-      type: movies
-    accept_all: yes
-    list_add:
-      - movie_list: movies_to_download
-    set:
-      notification_message: "📋: {{title}}"
-    template:
-      - notification
+  delete-transmission:
+    priority: 6
+    from_transmission:
+      only_complete: yes
+    disable: [seen, seen_info_hash]
+    if:
+      - transmission_progress == 100: accept
+      - not transmission_seed_ratio_ok: reject
+      - not transmission_idle_limit_ok: reject
+    transmission:
+      action: remove
 
   download-movie-manual:
     set:

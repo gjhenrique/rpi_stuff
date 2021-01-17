@@ -1,3 +1,15 @@
+# https://github.com/dotnet/runtime/issues/7764
+# Alternative would be to use mono for these cases, but it's very bloated
+- name: Skip jackett for armv6
+  set_fact:
+    skip_jackett: true
+  when: "'armv6l' in ansible_machine"
+
+- name: Don't skip jackett for armv6
+  set_fact:
+    skip_jackett: false
+  when: "'armv6l' not in ansible_machine"
+
 - name: set arm variable
   set_fact:
     jacket_arch: "ARM32"
@@ -13,13 +25,14 @@
   register: jackett_version
   changed_when: false
   ignore_errors: yes
+  when: not skip_jackett
 
 - name: Download jackett bin
   get_url:
-    # TODO: Add correct jackett variable
+    # TODO: Add correct jackett version
     url: "https://github.com/Jackett/Jackett/releases/download/v0.16.2229/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
     dest: /tmp/jacket-v0.16.2229.tar.gz
-  when: not jackett_version.stdout | regex_search("v0.16.2229")
+  when: not skip_jackett and (not jackett_version.stdout | regex_search("v0.16.2229"))
 
 - name: Extract jackett bin
   shell: |
@@ -29,7 +42,7 @@
     cp -dpr Jackett/* /usr/lib/jackett/
   args:
     chdir: "/tmp"
-  when: not jackett_version.stdout | regex_search("v0.16.2229")
+  when: not skip_jackett and (not jackett_version.stdout | regex_search("v0.16.2229"))
 
 - name: Deploy jackett service file
   copy:
@@ -38,6 +51,7 @@
     mode: '0644'
   notify:
     - reload jackett
+  when: not skip_jackett
 
 - name: Create jackett auth
   htpasswd:
@@ -47,6 +61,7 @@
     password: 'vixi'
     crypt_scheme: 'sha512_crypt'
   notify: test nginx and restart
+  when: not skip_jackett
 
 - name: Copy nginx config file
   template:
@@ -54,6 +69,7 @@
     dest: /etc/nginx/sites-available/jackett.conf
     mode: '0644'
   notify: test nginx and restart
+  when: not skip_jackett
 
 - name: Symlink available nginx conf
   file:
@@ -61,9 +77,11 @@
     dest: '/etc/nginx/sites-enabled/jackett.conf'
     state: 'link'
   notify: test nginx and restart
+  when: not skip_jackett
 
 - name: Enable jackett service
   systemd:
     name: jackett
     enabled: yes
     state: started
+  when: not skip_jackett

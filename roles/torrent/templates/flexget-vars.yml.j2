@@ -1,4 +1,4 @@
-# TODO: Variables from ansible
+# TODO: Add variables
 telegram:
   token: <token>
   group_name: <group_name>
@@ -7,12 +7,19 @@ rss:
   tv_url: <rss>
 
 torrent:
-  tv_path: "/home/torrent/media/TV"
-  movie_path: "/home/torrent/media/Movies"
-  tv_path: "/home/torrent/media/temp/TV"
-  tv_path: "/home/torrent/media/temp/Movies"
+  tv_path: "/home/torrent/media/torrent/TV"
+  temp_tv_path: "/home/torrent/media/temp/TV"
+  movie_path: "/home/torrent/media/torrent/Movies"
+  temp_movie_path: "/home/torrent/media/temp/Movies"
 
 sftp:
   host: "localhost"
   username: "guilherme"
-  tv_path: "/home/guilherme/Videos/TV Shows"
+  tv_path: "./Videos/TV Shows"
+  movie_path: "./Videos/Movies"
+
+sftp:
+  host: "localhost"
+  username: "torrent"
+  tv_path: "./Videos/TV Shows"
+  movie_path: "./Videos/Movies"
