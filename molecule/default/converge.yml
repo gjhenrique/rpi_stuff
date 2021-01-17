@@ -10,3 +10,6 @@
   vars:
    duckdns_hostname: "DuckdnsHost"
    duckdns_token: "DuckdnsToken"
+
+   syncthing_http_user: 'SyncthingUser'
+   syncthing_http_password: 'SyncthingPassword'

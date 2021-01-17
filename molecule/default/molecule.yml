@@ -14,8 +14,12 @@ platforms:
       - 9092: 9092
       - 9118: 9118
     published_ports:
+      # nginx Transmission
       - 0.0.0.0:9092:9092/TCP
+      # nginx Jackett
       - 0.0.0.0:9118:9118/TCP
+      # syncthing
+      - 0.0.0.0:8384:8384/TCP
     tmpfs:
       - /tmp
       - /run

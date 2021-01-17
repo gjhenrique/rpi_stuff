@@ -61,9 +61,8 @@
   vars:
     config_values:
       gui:
-        # TODO: Appropriate pass and user from ansible-vault
-        user: 'guigui'
-        password: "{{ 'vixi' | password_hash('bcrypt') }}"
+        user: '{{ syncthing_http_user | mandatory }}'
+        password: "{{ syncthing_http_password | mandatory | password_hash('bcrypt') }}"
         useTLS: true
         address: '0.0.0.0:8384'
 
