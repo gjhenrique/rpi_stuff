@@ -8,8 +8,10 @@
     - ../../roles/torrent
 
   vars:
-   duckdns_hostname: "DuckdnsHost"
-   duckdns_token: "DuckdnsToken"
+    deploy_user_password: 'DeployPassword'
 
-   syncthing_http_user: 'SyncthingUser'
-   syncthing_http_password: 'SyncthingPassword'
+    duckdns_hostname: "DuckdnsHost"
+    duckdns_token: "DuckdnsToken"
+
+    syncthing_http_user: 'SyncthingUser'
+    syncthing_http_password: 'SyncthingPassword'
