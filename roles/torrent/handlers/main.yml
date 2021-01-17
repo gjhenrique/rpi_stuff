@@ -14,7 +14,7 @@
     state: restarted
 
 - name: save iptables
-  shell: "iptables-save > /etc/iptables/iptables.rules"
+  shell: "iptables-save > /etc/iptables/rules.v4"
 
 - name: restart openpyn
   systemd:
