@@ -1,2 +1,7 @@
 torrent_user_gid_owner: "1500"
 torrent_jackett_version: "v0.16.2229"
+
+torrent_flexget_server_host: 'localhost'
+torrent_flexget_server_username: 'torrent'
+torrent_flexget_server_tv_path: './TV'
+torrent_flexget_server_movie_path: './Movies'

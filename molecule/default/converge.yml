@@ -29,8 +29,3 @@
     torrent_jackett_password: 'JackettPassword'
 
     torrent_flexget_rss: 'https://rss.com'
-
-    torrent_flexget_server_host: 'ServerHost'
-    torrent_flexget_server_username: 'ServerUsername'
-    torrent_flexget_server_tv_path: 'ServerHostTvPath'
-    torrent_flexget_server_movie_path: 'ServerHostMoviePath'
