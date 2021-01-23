@@ -36,3 +36,10 @@
     dest: /etc/duckdns.d/default.cfg
     mode: '0644'
   no_log: true
+
+- name: Ensure duckdns.timer is started/enabled
+  become: yes
+  systemd:
+    name: duckdns.timer
+    enabled: yes
+    state: started

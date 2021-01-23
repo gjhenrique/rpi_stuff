@@ -84,7 +84,7 @@
   notify:
     - reload flexget
 
-- name: Start flexget timer service
+- name: Ensure flexget timer is started/enabled
   become: yes
   systemd:
     name: flexget.timer
@@ -135,7 +135,7 @@
   no_log: true
   when: 'torrent_telegram_token is defined'
 
-- name: Ensure telegram-bot is started
+- name: Ensure telegram-bot is started/enabled
   become: yes
   systemd:
     name: telegram-bot
