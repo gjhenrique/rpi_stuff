@@ -1,0 +1,12 @@
+[Unit]
+Description=Run telegram-bot service
+After=network.target
+
+[Service]
+User=torrent
+ExecStart=/usr/bin/telegram-bot
+Environment="TELEGRAM_BOT_TOKEN={{ torrent_telegram_token }}"
+{% if torrent_telegram_groups | default('') %}
+Environment="TELEGRAM_ALLOWED_GROUPS={{ torrent_telegram_groups }}"
+{% endif %}
+Environment="FLEXGET_PATH=/home/torrent/flexget"

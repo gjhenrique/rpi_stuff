@@ -13,5 +13,8 @@
     duckdns_hostname: "DuckdnsHost"
     duckdns_token: "DuckdnsToken"
 
-    syncthing_http_user: 'SyncthingUser'
-    syncthing_http_password: 'SyncthingPassword'
+    syncthing_http_user: "SyncthingUser"
+    syncthing_http_password: "SyncthingPassword"
+
+    torrent_telegram_token: "TelegramToken"
+    torrent_telegram_groups: "1,2"

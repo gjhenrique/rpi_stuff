@@ -11,3 +11,6 @@ telegram-bot = "0.8"
 
 futures = "0.3"
 tokio = { version = "0.2", features = ["macros"] }
+# Not secure, but not so much risk having an outdated ssl library
+# https://github.com/rust-embedded/cross/issues/229
+openssl = { version = "0.10", features = ["vendored"] }

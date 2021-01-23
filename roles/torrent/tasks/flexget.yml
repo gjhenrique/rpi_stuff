@@ -75,7 +75,7 @@
   notify:
     - reload flexget
 
-- name: Copy service file
+- name: Copy flexget service file
   become: yes
   copy:
     src: flexget.service
@@ -109,3 +109,35 @@
   become_user: torrent
   args:
     creates: /home/torrent/.ssh/id_rsa
+
+- name: Copy telegram-bot binary (x86)
+  copy:
+    src: ../bot/target/x86_64-unknown-linux-gnu/release/torrent-bot
+    dest: /usr/bin/telegram-bot
+    mode: '0755'
+  when: "'x86_64' in ansible_architecture and torrent_telegram_token is defined"
+  notify: 'reload telegram-bot'
+
+- name: Copy telegram-bot binary (arm)
+  copy:
+    src: ../bot/target/arm-unknown-linux-gnueabihf/release/torrent-bot
+    dest: /usr/bin/telegram-bot
+    mode: '0755'
+  when: "'arm' in ansible_architecture and torrent_telegram_token is defined"
+  notify: 'reload telegram-bot'
+
+- name: Copy telegram-bot service file
+  template:
+    src: telegram-bot.service.j2
+    dest: /lib/systemd/system/telegram-bot.service
+    mode: '0644'
+  notify: 'reload telegram-bot'
+  when: 'torrent_telegram_token is defined'
+
+- name: Ensure telegram-bot is started
+  become: yes
+  systemd:
+    name: telegram-bot
+    enabled: yes
+    state: started
+  when: 'torrent_telegram_token is defined'

@@ -33,4 +33,8 @@
     daemon_reload: yes
     state: restarted
 
-# generate ssh key
+- name: reload telegram-bot
+  systemd:
+    name: telegram-bot
+    daemon_reload: yes
+    state: restarted
