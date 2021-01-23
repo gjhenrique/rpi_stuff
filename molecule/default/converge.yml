@@ -18,3 +18,19 @@
 
     torrent_telegram_token: "TelegramToken"
     torrent_telegram_groups: "1,2"
+
+    torrent_nordvpn_user: 'NordvpnUser'
+    torrent_nordvpn_password: 'NorvpnPassword'
+
+    torrent_transmission_user: 'TransmissionUser'
+    torrent_transmission_password: 'TransmissionPassword'
+
+    torrent_jackett_user: 'JackettUser'
+    torrent_jackett_password: 'JackettPassword'
+
+    torrent_flexget_rss: 'https://rss.com'
+
+    torrent_flexget_server_host: 'ServerHost'
+    torrent_flexget_server_username: 'ServerUsername'
+    torrent_flexget_server_tv_path: 'ServerHostTvPath'
+    torrent_flexget_server_movie_path: 'ServerHostMoviePath'

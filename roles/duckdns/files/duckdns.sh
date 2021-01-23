@@ -6,7 +6,6 @@ for file in /etc/duckdns.d/*.cfg
 do
 	source "${file}"
 	logger -t DuckDNS "Executing config file '${file}'"
-	# TODO: Put eth0 into variable
 	OUTPUT=$(curl -k -s --interface eth0 "https://www.duckdns.org/update?domains=${duckdns_hostname}&token=${duckdns_token}&ip=")
 	logger -t DuckDNS ${OUTPUT}
 	if [ "${OUTPUT}" == "KO" ]; then

@@ -1,10 +1,9 @@
-# TODO: Add variables
 telegram:
-  token: <token>
-  group_name: <group_name>
+  token: {{ torrent_telegram_token }}
+  group_name: {{ torrent_telegram_groups }}
 
 rss:
-  tv_url: <rss>
+  tv_url: {{ torrent_flexget_rss }}
 
 torrent:
   tv_path: "/home/torrent/media/torrent/TV"
@@ -19,7 +18,7 @@ sftp:
   movie_path: "./Videos/Movies"
 
 sftp:
-  host: "localhost"
-  username: "torrent"
-  tv_path: "./Videos/TV Shows"
-  movie_path: "./Videos/Movies"
+  host: {{ torrent_flexget_server_host }}
+  username: {{ torrent_flexget_server_username }}
+  tv_path: {{ torrent_flexget_server_tv_path }}
+  movie_path: {{ torrent_flexget_server_movie_path }}

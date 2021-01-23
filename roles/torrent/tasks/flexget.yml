@@ -14,7 +14,6 @@
     state: directory
     mode: '0755'
 
-# TODO: Add a comment here explaining why temp is needed
 - name: Create temp TV directory
   become: yes
   become_user: torrent

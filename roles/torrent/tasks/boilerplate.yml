@@ -2,8 +2,7 @@
   group:
     name: vpn
     state: present
-    # TODO: Add this value as a variable
-    gid: 1500
+    gid: "{{ torrent_user_gid_owner }}"
 
 - name: Create torrent user
   user:

@@ -15,5 +15,3 @@
       - sudo
       - htop
       - acl
-
-# TODO: delete pi user if variable set

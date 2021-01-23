@@ -11,10 +11,9 @@
   expect:
     command: openpyn --init
     responses:
-      # TODO: Secret variable
-      username: guigui
-      password: vixi
-      systemd: de
+      username: "{{ torrent_nordvpn_user }}"
+      password: "{{ torrent_nordvpn_password }}"
+      systemd: "{{ torrent_nordvpn_country | default('de') }}"
     creates: /etc/systemd/system/openpyn.service
   # no_log: true
   notify: restart openpyn
@@ -30,8 +29,7 @@
   iptables:
     out_interface: tun0
     chain: OUTPUT
-    # TODO Add this as variable
-    gid_owner: "1500"
+    gid_owner: "{{ torrent_user_gid_owner }}"
     jump: ACCEPT
   notify: save iptables
 
@@ -39,16 +37,14 @@
   iptables:
     out_interface: lo
     chain: OUTPUT
-    # TODO Add this as variable
-    gid_owner: "1500"
+    gid_owner: "{{ torrent_user_gid_owner }}"
     jump: ACCEPT
   notify: save iptables
 
 - name: Allow torrent traffic from localhost
   iptables:
     chain: OUTPUT
-    # TODO Add this as variable
-    gid_owner: "1500"
+    gid_owner: "{{ torrent_user_gid_owner }}"
     jump: REJECT
     reject_with: icmp-port-unreachable
   notify: save iptables
