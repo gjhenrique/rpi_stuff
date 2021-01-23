@@ -112,7 +112,7 @@
 
 - name: Copy telegram-bot binary (x86)
   copy:
-    src: ../bot/target/x86_64-unknown-linux-gnu/release/torrent-bot
+    src: ../bot/torrent-bot_x86
     dest: /usr/bin/telegram-bot
     mode: '0755'
   when: "'x86_64' in ansible_architecture and torrent_telegram_token is defined"
@@ -120,7 +120,7 @@
 
 - name: Copy telegram-bot binary (arm)
   copy:
-    src: ../bot/target/arm-unknown-linux-gnueabihf/release/torrent-bot
+    src: ../bot/torrent-bot_arm
     dest: /usr/bin/telegram-bot
     mode: '0755'
   when: "'arm' in ansible_architecture and torrent_telegram_token is defined"
