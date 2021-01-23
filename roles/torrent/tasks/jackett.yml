@@ -27,25 +27,26 @@
   ignore_errors: yes
   when: not skip_jackett
 
+- name: New Jackett
+  set_fact:
+    install_jackett: true
+  when: not skip_jackett and (jackett_version.stdout is not defined or (not jackett_version.stdout | regex_search(torrent_jackett_version)))
+
 - name: Download jackett bin
   get_url:
-    url: "https://github.com/Jackett/Jackett/releases/download/{{ torrent_jacket_version }}/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
+    url: "https://github.com/Jackett/Jackett/releases/download/{{ torrent_jackett_version }}/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
     dest: /tmp/jacket-{{ torrent_jackett_version }}.tar.gz
-  when: not skip_jackett and (not jackett_version.stdout | regex_search(torrent_jackett_version))
-
-- name: Remove previously Jackett extracted folder
-  file:
-    path: /tmp/Jackett
-    state: absent
+  when: not skip_jackett and install_jackett is defined
 
 - name: Extract jackett bin
   shell: |
     tar -xzvf jacket-{{ torrent_jackett_version }}.tar.gz
     mkdir -p /usr/lib/jackett/
     cp -dpr Jackett/* /usr/lib/jackett/
+    rm -rf /tmp/Jackett
   args:
     chdir: "/tmp"
-  when: not skip_jackett and (not jackett_version.stdout | regex_search(torrent_jackett_version))
+  when: not skip_jackett and install_jackett is defined
 
 - name: Deploy jackett service file
   copy:
