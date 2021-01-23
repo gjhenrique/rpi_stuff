@@ -6,4 +6,4 @@ After=network.target
 User=torrent
 Type=oneshot
 WorkingDirectory=/home/torrent/flexget
-ExecStart=/usr/bin/flexget execute
+ExecStart=/usr/local/bin/flexget execute

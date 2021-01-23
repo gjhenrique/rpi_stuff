@@ -22,13 +22,13 @@
       -out /etc/nginx/ssl/transmission.pem
   args:
     creates: '/etc/nginx/ssl/transmission.pem'
-  notify: test nginx and restart
+  notify: Restart nginx
 
 - name: Generate X bit dhparam.pem file
   command: openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
   args:
     creates: '/etc/nginx/ssl/dhparam.pem'
-  notify: test nginx and restart
+  notify: Restart nginx
 
 - name: Install python package to use htpasswd
   pip:

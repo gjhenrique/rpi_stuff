@@ -8,8 +8,6 @@
     - ../../roles/torrent
 
   vars:
-    deploy_user_password: 'DeployPassword'
-
     duckdns_hostname: "DuckdnsHost"
     duckdns_token: "DuckdnsToken"
 
@@ -17,7 +15,7 @@
     syncthing_http_password: "SyncthingPassword"
 
     torrent_telegram_token: "TelegramToken"
-    torrent_telegram_groups: "1,2"
+    torrent_telegram_groups: "Group"
 
     torrent_nordvpn_user: 'NordvpnUser'
     torrent_nordvpn_password: 'NorvpnPassword'

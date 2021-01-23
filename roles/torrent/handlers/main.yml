@@ -1,12 +1,8 @@
 - name: reload transmission
   systemd:
-    name: transmission-daemon
+    name: transmission-daemon-custom
     daemon_reload: yes
     state: restarted
-
-- name: test nginx and restart
-  command: nginx -t
-  notify: Restart nginx
 
 - name: Restart nginx
   systemd:

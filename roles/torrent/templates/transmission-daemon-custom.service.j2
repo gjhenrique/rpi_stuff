@@ -1,0 +1,13 @@
+[Service]
+User=torrent
+Type=notify
+ExecStart=/usr/bin/transmission-daemon -f --log-error --username {{ torrent_transmission_user }} --password {{ torrent_transmission_password }} --auth --bind-address-ipv4=127.0.0.1
+ExecStop=/bin/kill -s STOP $MAINPID
+ExecReload=/bin/kill -s HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=torrent
+Group=vpn

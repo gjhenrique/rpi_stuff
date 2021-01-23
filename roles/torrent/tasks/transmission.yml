@@ -3,44 +3,29 @@
     update_cache: yes
     name: transmission-daemon
 
-- name: Create transmission directory
-  file:
-    path: /etc/systemd/system/transmission-daemon.service.d
-    state: directory
-    mode: '0755'
-
-- name: Change transmission user
-  copy:
-    src: transmission-user.conf
-    dest: /etc/systemd/system/transmission-daemon.service.d/username.conf
+- name: Copy transmission custom systemd service
+  template:
+    src: transmission-daemon-custom.service.j2
+    dest: /lib/systemd/system/transmission-daemon-custom.service
     mode: '0644'
   notify: reload transmission
 
-- name: Create transmission auth
-  htpasswd:
-    path: '/etc/nginx/.transmission.htpasswd'
-    name: '{{ torrent_transmission_user }}'
-    password: '{{ torrent_transmission_password }}'
-    crypt_scheme: 'sha512_crypt'
-    mode: '0640'
-  notify: test nginx and restart
-
-- name: Copy configuration file
+- name: Copy transmission nginx config file
   template:
     src: transmission.conf.j2
     dest: /etc/nginx/sites-available/torrent.conf
     mode: '0644'
-  notify: test nginx and restart
+  notify: Restart nginx
 
 - name: Symlink sites-available to sites-enabled
   file:
     src: '/etc/nginx/sites-available/torrent.conf'
     dest: '/etc/nginx/sites-enabled/torrent.conf'
     state: 'link'
-  notify: test nginx and restart
+  notify: Restart nginx
 
 - name: Enable/Start transmission service
   systemd:
-    name: transmission-daemon
+    name: transmission-daemon-custom
     enabled: yes
     state: started

@@ -60,11 +60,13 @@
 - name: Create jackett auth
   htpasswd:
     path: '/etc/nginx/.jackett.htpasswd'
-    name: "{{ torrent_jackett_user }}"
-    password: "{{ torrent_jackett_password }}"
+    name: '{{ torrent_jackett_user }}'
+    password: '{{ torrent_jackett_password }}'
     crypt_scheme: 'sha512_crypt'
+    owner: root
+    group: www-data
     mode: '0644'
-  notify: test nginx and restart
+  notify: Restart nginx
   when: not skip_jackett
 
 - name: Copy nginx config file
@@ -72,7 +74,7 @@
     src: jackett.conf.j2
     dest: /etc/nginx/sites-available/jackett.conf
     mode: '0644'
-  notify: test nginx and restart
+  notify: Restart nginx
   when: not skip_jackett
 
 - name: Symlink available nginx conf
@@ -80,7 +82,7 @@
     src: '/etc/nginx/sites-available/jackett.conf'
     dest: '/etc/nginx/sites-enabled/jackett.conf'
     state: 'link'
-  notify: test nginx and restart
+  notify: Restart nginx
   when: not skip_jackett
 
 - name: Enable jackett service
