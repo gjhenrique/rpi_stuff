@@ -1,12 +1,3 @@
-- name: Create deployer user
-  user:
-    name: deploy
-    password: "{{ deploy_user_password | mandatory | password_hash('sha512') }}"
-    update_password: on_create
-    state: present
-    groups: sudo
-  when: deploy_user_password is defined
-
 - name: Install packages
   apt:
     update_cache: yes
