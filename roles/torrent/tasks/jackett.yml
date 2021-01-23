@@ -20,8 +20,8 @@
     jacket_arch: "AMDx64"
   when: "'x86_64' in ansible_architecture"
 
-- name:
-  shell: "/usr/lib/jackett/jackett --version"
+- name: Register current installed jacket version
+  command: "/usr/lib/jackett/jackett --version"
   register: jackett_version
   changed_when: false
   ignore_errors: yes
@@ -29,19 +29,23 @@
 
 - name: Download jackett bin
   get_url:
-    url: "https://github.com/Jackett/Jackett/releases/download/v0.16.2229/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
+    url: "https://github.com/Jackett/Jackett/releases/download/{{ torrent_jacket_version }}/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
     dest: /tmp/jacket-{{ torrent_jackett_version }}.tar.gz
-  when: not skip_jackett and (not jackett_version.stdout | regex_search("{{ torrent_jackett_version }}"))
+  when: not skip_jackett and (not jackett_version.stdout | regex_search(torrent_jackett_version))
+
+- name: Remove previously Jackett extracted folder
+  file:
+    path: /tmp/Jackett
+    state: absent
 
 - name: Extract jackett bin
   shell: |
-    rm -rf Jackett
     tar -xzvf jacket-{{ torrent_jackett_version }}.tar.gz
     mkdir -p /usr/lib/jackett/
     cp -dpr Jackett/* /usr/lib/jackett/
   args:
     chdir: "/tmp"
-  when: not skip_jackett and (not jackett_version.stdout | regex_search("{{ torrent_jackett_version }}"))
+  when: not skip_jackett and (not jackett_version.stdout | regex_search(torrent_jackett_version))
 
 - name: Deploy jackett service file
   copy:
@@ -58,6 +62,7 @@
     name: "{{ torrent_jackett_user }}"
     password: "{{ torrent_jackett_password }}"
     crypt_scheme: 'sha512_crypt'
+    mode: '0644'
   notify: test nginx and restart
   when: not skip_jackett
 

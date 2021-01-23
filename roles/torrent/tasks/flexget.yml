@@ -104,7 +104,7 @@
     mode: '0755'
 
 - name: Generate SSH keys
-  shell: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
+  command: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
   become_user: torrent
   args:
     creates: /home/torrent/.ssh/id_rsa

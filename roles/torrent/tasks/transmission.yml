@@ -19,9 +19,10 @@
 - name: Create transmission auth
   htpasswd:
     path: '/etc/nginx/.transmission.htpasswd'
-    name: "{{ torrent_transmission_username }}"
-    password: "{{ torrent-transmission_password }}"
+    name: '{{ torrent_transmission_user }}'
+    password: '{{ torrent_transmission_password }}'
     crypt_scheme: 'sha512_crypt'
+    mode: '0640'
   notify: test nginx and restart
 
 - name: Copy configuration file
