@@ -64,6 +64,7 @@
     src: flexget-vars.yml.j2
     dest: /home/torrent/flexget/vars.yml
     mode: '0644'
+  no_log: true
 
 - name: Copy flexget timer file
   become: yes
@@ -131,6 +132,7 @@
     dest: /lib/systemd/system/telegram-bot.service
     mode: '0644'
   notify: 'reload telegram-bot'
+  no_log: true
   when: 'torrent_telegram_token is defined'
 
 - name: Ensure telegram-bot is started

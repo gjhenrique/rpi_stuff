@@ -15,8 +15,8 @@
       password: "{{ torrent_nordvpn_password }}"
       systemd: "{{ torrent_nordvpn_country | default('de') }}"
     creates: /etc/systemd/system/openpyn.service
-  # no_log: true
   notify: restart openpyn
+  no_log: true
   timeout: 300
 
 - name: Start openpyn service
