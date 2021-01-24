@@ -34,7 +34,7 @@
   become: yes
   pip:
     name:
-      - flexget==3.1.91
+      - flexget==v3.1.102
       - python-telegram-bot
       - transmissionrpc
       - pysftp
