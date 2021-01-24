@@ -5,7 +5,7 @@ templates:
     transmission:
       host: localhost
       port: 9091
-      ratio: 0
+      ratio: 1
       path: "{{ torrent_path }}"
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
@@ -147,6 +147,10 @@ tasks:
       - not transmission_idle_limit_ok: reject
     transmission:
       action: remove
+      host: localhost
+      port: 9091
+      username: "{? transmission.username ?}"
+      password: "{? transmission.password ?}"
 
   download-movie-manual:
     set:
