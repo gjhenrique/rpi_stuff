@@ -1,6 +1,6 @@
 telegram:
   token: {{ torrent_telegram_token }}
-  group_name: {{ torrent_telegram_groups }}
+  group_name: {{ torrent_flexget_telegram_receiver | default('') }}
 
 rss:
   tv_url: {{ torrent_flexget_rss }}

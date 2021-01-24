@@ -27,3 +27,4 @@
     torrent_jackett_password: 'JackettPassword'
 
     torrent_flexget_rss: 'https://rss.com'
+    torrent_flexget_telegram_receiver: 'Torrents'
