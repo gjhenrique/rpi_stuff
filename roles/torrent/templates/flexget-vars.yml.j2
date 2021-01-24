@@ -12,13 +12,11 @@ torrent:
   temp_movie_path: "/home/torrent/media/temp/Movies"
 
 sftp:
-  host: "localhost"
-  username: "guilherme"
-  tv_path: "./Videos/TV Shows"
-  movie_path: "./Videos/Movies"
-
-sftp:
   host: {{ torrent_flexget_server_host }}
   username: {{ torrent_flexget_server_username }}
   tv_path: {{ torrent_flexget_server_tv_path }}
   movie_path: {{ torrent_flexget_server_movie_path }}
+
+transmission:
+  username: {{ torrent_transmission_user }}
+  password: {{ torrent_transmission_password }}
