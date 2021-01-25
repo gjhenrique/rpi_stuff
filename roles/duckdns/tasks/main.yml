@@ -9,6 +9,11 @@
     - reload services
     - restart duckdns
 
+- name: Install packages
+  apt:
+    update_cache: yes
+    name: ['net-tools', 'curl']
+
 - name: Copy service file
   copy:
     src: duckdns.service
@@ -19,8 +24,8 @@
     - restart duckdns
 
 - name: Copy binary file
-  copy:
-    src: duckdns.sh
+  template:
+    src: duckdns.sh.j2
     dest: /usr/bin/duckdns
     mode: '0755'
 

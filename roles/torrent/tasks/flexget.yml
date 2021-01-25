@@ -36,7 +36,7 @@
     name:
       - flexget==v3.1.102
       - python-telegram-bot
-      - transmissionrpc
+      - transmission-rpc
       - pysftp
       # https://github.com/Flexget/Flexget/issues/2749
       - pytz==2020.5
@@ -92,7 +92,6 @@
     state: started
 
 - name: Install openssh
-  become: yes
   apt:
     update_cache: yes
     name: ssh

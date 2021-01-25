@@ -1,0 +1,25 @@
+#!/bin/bash
+
+logger -t DuckDNS "Updating DuckDNS entries"
+EXITCODE=0
+
+GATEWAY=$(route -n | grep 'UG[ \t]' | grep {{ duckdns_interface }} | awk '{print $2}')
+DUCKDNS_IP=$(getent hosts www.duckdns.org | awk '{ print $1 }' | head -n 1)
+
+ip route add $DUCKDNS_IP via $GATEWAY dev eth0
+
+for file in /etc/duckdns.d/*.cfg
+do
+	source "${file}"
+	logger -t DuckDNS "Executing config file '${file}'"
+	OUTPUT=$(curl -k -s --interface {{ duckdns_interface }} "https://www.duckdns.org/update?domains=${duckdns_hostname}&token=${duckdns_token}&ip=" --resolve https://www.duckdns.org:443:$DUCKDNS_IP)
+	logger -t DuckDNS ${OUTPUT}
+	if [ "${OUTPUT}" == "KO" ]; then
+		logger -t DuckDNS "You should check if your domain/token is correct because the server responded negatively!"
+		$EXITCODE=1
+	fi
+done
+
+ip route del $DUCKDNS_IP via $GATEWAY dev eth0
+
+exit $EXITCODE
