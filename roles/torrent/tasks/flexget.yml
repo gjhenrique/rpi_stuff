@@ -105,9 +105,19 @@
 
 - name: Generate SSH keys
   command: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
+  become: yes
   become_user: torrent
   args:
     creates: /home/torrent/.ssh/id_rsa
+
+- name: Display resolv.conf contents
+  command: cat /home/torrent/.ssh/id_rsa.pub
+  register: command_output
+  tags: ['never', 'print_ssh']
+
+- name: Print to console
+  debug: msg="SSH Public key is:\n{{command_output.stdout}}"
+  tags: ['never', 'print_ssh']
 
 - name: Copy telegram-bot binary (x86)
   copy:
