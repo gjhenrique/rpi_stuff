@@ -31,7 +31,6 @@
     mode: '0755'
 
 - name: Install required pip libraries
-  become: yes
   pip:
     name:
       - flexget==v3.1.102
@@ -67,7 +66,6 @@
   no_log: true
 
 - name: Copy flexget timer file
-  become: yes
   copy:
     src: flexget.timer
     dest: /lib/systemd/system/flexget.timer
@@ -76,7 +74,6 @@
     - reload flexget
 
 - name: Copy flexget service file
-  become: yes
   copy:
     src: flexget.service
     dest: /lib/systemd/system/flexget.service
@@ -97,6 +94,7 @@
     name: ssh
 
 - name: Create default nginx directories
+  become: yes
   become_user: torrent
   file:
     path: '/home/torrent/.ssh'
@@ -104,9 +102,9 @@
     mode: '0755'
 
 - name: Generate SSH keys
-  command: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
   become: yes
   become_user: torrent
+  command: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
   args:
     creates: /home/torrent/.ssh/id_rsa
 
