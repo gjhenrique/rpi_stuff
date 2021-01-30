@@ -3,13 +3,17 @@ dependency:
   name: galaxy
 driver:
   name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
 platforms:
   - name: local
     image: debian:buster
     tmpfs:
       - /tmp
       - /run
-    privileged: True
+    privileged: true
     port_bindings:
       - 9092: 9092
       - 9118: 9118
@@ -20,9 +24,6 @@ platforms:
       - 0.0.0.0:9118:9118/TCP
       # syncthing
       - 0.0.0.0:8384:8384/TCP
-    tmpfs:
-      - /tmp
-      - /run
     volumes:
       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
 provisioner:
@@ -30,6 +31,6 @@ provisioner:
   config_options:
     defaults:
       stdout_callback: yaml
-      bin_ansible_callbacks: yes
+      bin_ansible_callbacks: true
 verifier:
   name: ansible

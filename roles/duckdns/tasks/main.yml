@@ -1,5 +1,5 @@
+---
 # Copied scripts from https://github.com/T00mm/duckdns
-
 - name: Copy timer file
   copy:
     src: duckdns.timer
@@ -11,7 +11,7 @@
 
 - name: Install packages
   apt:
-    update_cache: yes
+    update_cache: true
     name: ['net-tools', 'curl']
 
 - name: Copy service file
@@ -43,8 +43,8 @@
   no_log: true
 
 - name: Ensure duckdns.timer is started/enabled
-  become: yes
+  become: true
   systemd:
     name: duckdns.timer
-    enabled: yes
+    enabled: true
     state: started

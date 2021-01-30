@@ -1,3 +1,4 @@
+---
 - name: Add vpn group
   group:
     name: vpn

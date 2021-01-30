@@ -1,7 +1,8 @@
+---
 - name: reload transmission
   systemd:
     name: transmission-daemon-custom
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
 
 - name: restart nginx
@@ -20,17 +21,17 @@
 - name: reload jackett
   systemd:
     name: jackett
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
 
 - name: reload flexget
   systemd:
     name: flexget.timer
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
 
 - name: reload telegram-bot
   systemd:
     name: telegram-bot
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted

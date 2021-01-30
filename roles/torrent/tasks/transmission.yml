@@ -1,6 +1,7 @@
+---
 - name: Install transmission
   apt:
-    update_cache: yes
+    update_cache: true
     name: transmission-daemon
 
 - name: Copy transmission custom systemd service
@@ -27,5 +28,5 @@
 - name: Enable/Start transmission service
   systemd:
     name: transmission-daemon-custom
-    enabled: yes
+    enabled: true
     state: started

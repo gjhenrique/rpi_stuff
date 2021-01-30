@@ -1,5 +1,6 @@
+---
 - name: Create TV directory
-  become: yes
+  become: true
   become_user: torrent
   file:
     path: /home/torrent/media/torrent/TV
@@ -7,7 +8,7 @@
     mode: '0755'
 
 - name: Create Movie directory
-  become: yes
+  become: true
   become_user: torrent
   file:
     path: /home/torrent/media/torrent/Movies
@@ -15,7 +16,7 @@
     mode: '0755'
 
 - name: Create temp TV directory
-  become: yes
+  become: true
   become_user: torrent
   file:
     path: /home/torrent/media/temp/TV
@@ -23,7 +24,7 @@
     mode: '0755'
 
 - name: Create temp Movies directory
-  become: yes
+  become: true
   become_user: torrent
   file:
     path: /home/torrent/media/temp/Movies
@@ -41,7 +42,7 @@
       - pytz==2020.5
 
 - name: Create flexget directory
-  become: yes
+  become: true
   become_user: torrent
   file:
     path: /home/torrent/flexget
@@ -49,7 +50,7 @@
     mode: '0755'
 
 - name: Copy flexget config file
-  become: yes
+  become: true
   become_user: torrent
   copy:
     src: flexget-config.yml
@@ -57,7 +58,7 @@
     mode: '0644'
 
 - name: Copy flexget vars file
-  become: yes
+  become: true
   become_user: torrent
   template:
     src: flexget-vars.yml.j2
@@ -82,19 +83,19 @@
     - reload flexget
 
 - name: Ensure flexget timer is started/enabled
-  become: yes
+  become: true
   systemd:
     name: flexget.timer
-    enabled: yes
+    enabled: true
     state: started
 
 - name: Install openssh
   apt:
-    update_cache: yes
+    update_cache: true
     name: ssh
 
 - name: Create default ssh directories
-  become: yes
+  become: true
   become_user: torrent
   file:
     path: '/home/torrent/.ssh'
@@ -102,19 +103,19 @@
     mode: '0755'
 
 - name: Generate SSH keys
-  become: yes
+  become: true
   become_user: torrent
   command: ssh-keygen -b 2048 -t rsa -f /home/torrent/.ssh/id_rsa -q -N ""
   args:
     creates: /home/torrent/.ssh/id_rsa
 
-- name: Display resolv.conf contents
+- name: Display resolv.conf contents  # noqa 301
   command: cat /home/torrent/.ssh/id_rsa.pub
   register: command_output
   tags: ['never', 'print_ssh']
 
 - name: Print to console
-  debug: msg="SSH Public key is:\n{{command_output.stdout}}"
+  debug: msg="SSH Public key is:\n{{ command_output.stdout }}"
   tags: ['never', 'print_ssh']
 
 - name: Copy telegram-bot binary (x86)
@@ -143,9 +144,9 @@
   when: 'torrent_telegram_token is defined'
 
 - name: Ensure telegram-bot is started/enabled
-  become: yes
+  become: true
   systemd:
     name: telegram-bot
-    enabled: yes
+    enabled: true
     state: started
   when: 'torrent_telegram_token is defined'

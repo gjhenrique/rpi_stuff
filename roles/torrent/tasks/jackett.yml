@@ -1,3 +1,4 @@
+---
 # https://github.com/dotnet/runtime/issues/7764
 # Alternative would be to use mono for these cases, but it's very bloated
 - name: Skip jackett for armv6
@@ -24,7 +25,7 @@
   command: "/usr/lib/jackett/jackett --version"
   register: jackett_version
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
   when: not skip_jackett
 
 - name: New Jackett
@@ -38,7 +39,7 @@
     dest: /tmp/jacket-{{ torrent_jackett_version }}.tar.gz
   when: not skip_jackett and install_jackett is defined
 
-- name: Extract jackett bin
+- name: Extract jackett bin  # noqa 303
   shell: |
     tar -xzvf jacket-{{ torrent_jackett_version }}.tar.gz
     mkdir -p /usr/lib/jackett/
@@ -88,6 +89,6 @@
 - name: Enable jackett service
   systemd:
     name: jackett
-    enabled: yes
+    enabled: true
     state: started
   when: not skip_jackett

@@ -1,6 +1,7 @@
+---
 - name: Install required packages
   apt:
-    update_cache: yes
+    update_cache: true
     name: ['unzip', 'wget', 'openvpn', 'iptables', 'iptables-persistent']
 
 - name: Install required pip libraries
@@ -22,7 +23,7 @@
 - name: Start openpyn service
   systemd:
     name: openpyn
-    enabled: yes
+    enabled: true
     state: started
 
 - name: Allow torrent traffic from tun0

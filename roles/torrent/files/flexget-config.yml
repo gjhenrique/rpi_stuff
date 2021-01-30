@@ -1,3 +1,4 @@
+---
 variables: vars.yml
 
 templates:
@@ -12,21 +13,21 @@ templates:
   notification:
     notify:
       entries:
-        message:  "{{ notification_message }}"
+        message: "{{ notification_message }}"
         via:
           - telegram:
               bot_token: "{? telegram.token ?}"
               parse_mode: html
-              disable_previews: no
+              disable_previews: false
               recipients:
                 - group: "{? telegram.group_name ?}"
   download-manual:
     mock:
-      - { title: "Manual torrent",  url: "$magnet_link" }
-    accept_all: yes
+      - {title: "Manual torrent", url: "$magnet_link"}
+    accept_all: true
     seen: local
     disable: [seen, seen_info_hash, retry_failed]
-    manual: yes
+    manual: true
     set:
       notification_message: "🧲: {{title}}"
       torrent_path: "{{ path }}"
@@ -41,8 +42,8 @@ tasks:
   download-rss:
     priority: 1
     rss: "{? rss.tv_url ?}"
-    all_series: yes
-    thetvdb_lookup: yes
+    all_series: true
+    thetvdb_lookup: true
     set:
       torrent_path: "{? torrent.tv_path ?}"
       notification_message: "🧲: {{ tvdb_series_name }} - s{{tvdb_season | pad(2)}}e{{ tvdb_episode | pad(2) }}"
@@ -55,13 +56,13 @@ tasks:
     disable: [seen, seen_info_hash, retry_failed]
     filesystem:
       path: "{? torrent.tv_path ?}"
-      recursive: yes
+      recursive: true
       regexp: '.*\.(avi|mkv|mp4)$'
       retrieve: files
-    accept_all: yes
-    thetvdb_lookup: yes
+    accept_all: true
+    thetvdb_lookup: true
     all_series:
-      parse_only: yes
+      parse_only: true
     if:
       - tvdb_name == None: reject
       - tvdb_season == None: reject
@@ -77,10 +78,10 @@ tasks:
       path: "{? torrent.temp_tv_path ?}"
       retrieve: files
     disable: [seen, seen_info_hash, retry_failed]
-    accept_all: yes
-    thetvdb_lookup: yes
+    accept_all: true
+    thetvdb_lookup: true
     all_series:
-      parse_only: yes
+      parse_only: true
     set:
       notification_message: "✅: {{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}"
     template:
@@ -90,7 +91,7 @@ tasks:
       host: "{? sftp.host ?}"
       username: "{? sftp.username ?}"
       to: "{? sftp.tv_path ?}/{{ tvdb_series_name }}/S{{ tvdb_season | pad(2) }}"
-      delete_origin: yes
+      delete_origin: true
 
   move-movies:
     priority: 4
@@ -105,11 +106,11 @@ tasks:
         - Featurettes
     filesystem:
       path: "{? torrent.movie_path ?}"
-      recursive: yes
+      recursive: true
       regexp: '.*\.(avi|mkv|mp4)$'
       retrieve: files
-    accept_all: yes
-    imdb_lookup: yes
+    accept_all: true
+    imdb_lookup: true
     if:
       - imdb_name == None: reject
     move:
@@ -122,10 +123,10 @@ tasks:
       path: "{? torrent.temp_movie_path ?}"
       retrieve: files
     disable: [seen, seen_info_hash, retry_failed]
-    accept_all: yes
-    imdb_lookup: yes
+    accept_all: true
+    imdb_lookup: true
     all_series:
-      parse_only: yes
+      parse_only: true
     set:
       notification_message: "✅: {{ imdb_name }} ({{ imdb_year }})"
     template:
@@ -134,12 +135,12 @@ tasks:
       host: "{? sftp.host ?}"
       username: "{? sftp.username ?}"
       to: "{? sftp.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})/{{ imdb_name }} ({{ imdb_year }})"
-      delete_origin: yes
+      delete_origin: true
 
   delete-transmission:
     priority: 6
     from_transmission:
-      only_complete: yes
+      only_complete: true
     disable: [seen, seen_info_hash]
     if:
       - transmission_progress == 100: accept

@@ -1,3 +1,4 @@
+---
 - name: Include boilerplate
   include: boilerplate.yml
 

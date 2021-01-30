@@ -1,3 +1,4 @@
+---
 - name: Create default nginx directories
   file:
     path: '/etc/nginx/ssl'
@@ -6,7 +7,7 @@
 
 - name: Install nginx
   apt:
-    update_cache: yes
+    update_cache: true
     name: ['nginx', 'openssl']
 
 - name: Generate self signed SSL certificates
@@ -37,5 +38,5 @@
 - name: Enable/Start nginx service
   systemd:
     name: nginx
-    enabled: yes
+    enabled: true
     state: started

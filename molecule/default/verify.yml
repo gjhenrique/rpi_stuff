@@ -1,3 +1,4 @@
+---
 - name: Duckdns
   hosts: all
   tasks:
@@ -23,13 +24,13 @@
     - name: "Syncthing GUI with authentication"
       uri:
         url: "https://localhost:8384"
-        validate_certs: no
+        validate_certs: false
         status_code: 401
 
     - name: "Syncthing GUI with credentials"
       uri:
         url: "https://localhost:8384"
-        validate_certs: no
+        validate_certs: false
         user: SyncthingUser
         password: SyncthingPassword
         status_code: 200
@@ -68,21 +69,21 @@
     - name: Port is closed for http
       uri:
         url: "http://localhost:9092"
-        validate_certs: no
+        validate_certs: false
         status_code: 400
       changed_when: false
 
     - name: Auth is required for transmission
       uri:
         url: "https://localhost:9092"
-        validate_certs: no
+        validate_certs: false
         status_code: 401
       changed_when: false
 
     - name: Authentication is open with credentials
       uri:
         url: "https://localhost:9092"
-        validate_certs: no
+        validate_certs: false
         user: TransmissionUser
         password: TransmissionPassword
         status_code: 200
@@ -106,28 +107,28 @@
     - name: Port is closed for http
       uri:
         url: "http://localhost:9118"
-        validate_certs: no
+        validate_certs: false
         status_code: 400
       changed_when: false
 
     - name: Auth is required for transmission
       uri:
         url: "https://localhost:9118"
-        validate_certs: no
+        validate_certs: false
         status_code: 401
       changed_when: false
 
     - name: Authentication is open with credentials
       uri:
         url: "https://localhost:9118"
-        validate_certs: no
+        validate_certs: false
         user: 'JackettUser'
         password: 'JackettPassword'
         status_code: 200
       changed_when: false
 
     - name: Check if task is listed
-      become: yes
+      become: true
       become_user: 'torrent'
       shell: 'flexget status | grep download-rss'
       register: transmission_pid
@@ -136,7 +137,7 @@
         chdir: '/home/torrent/flexget'
 
     - name: Check if flexget configuration is valid
-      become: yes
+      become: true
       become_user: 'torrent'
       shell: 'flexget check'
       register: transmission_pid
@@ -145,7 +146,7 @@
         chdir: '/home/torrent/flexget'
 
     - name: Check if flexget configuration is valid
-      become: yes
+      become: true
       become_user: 'torrent'
       shell: 'flexget check'
       register: transmission_pid

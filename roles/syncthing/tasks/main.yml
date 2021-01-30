@@ -1,16 +1,17 @@
+---
 - name: Create syncthing user
   user:
     name: syncthing
 
 - name: Install syncthing
   apt:
-    update_cache: yes
+    update_cache: true
     name: syncthing
 
 - name: Enable syncthing service
   systemd:
     name: "syncthing@syncthing"
-    enabled: yes
+    enabled: true
     state: started
 
 - name: 'Wait for config file to be created'
@@ -38,18 +39,18 @@
     state: present
     regexp: 'tls="false"'
     line: '<gui enabled="true" tls="true" debugging="false">'
-    backrefs: yes
+    backrefs: true
   notify: restart syncthing
 
 - name: get system config
   uri:
     url: "https://localhost:8384/rest/system/config"
-    return_content: yes
-    validate_certs: no
+    return_content: true
+    validate_certs: false
     headers:
       X-API-Key: "{{ syncthing_apikey }}"
   register: syncthing_config_raw
-  check_mode: no
+  check_mode: false
 
 - name: set syncthing_config
   set_fact:
@@ -70,10 +71,10 @@
   uri:
     url: "https://localhost:8384/rest/system/config"
     method: POST
-    validate_certs: no
+    validate_certs: false
     headers:
       X-API-Key: "{{ syncthing_config.gui.apiKey }}"
     body: "{{ syncthing_new_config }}"
     body_format: "json"
   # the server restarts itself during the transfer and don't respond with a proper http response
-  ignore_errors: yes
+  ignore_errors: true
