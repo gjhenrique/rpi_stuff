@@ -14,8 +14,9 @@
     syncthing_http_user: "SyncthingUser"
     syncthing_http_password: "SyncthingPassword"
 
-    torrent_telegram_token: "TelegramToken"
-    torrent_telegram_groups: "Group"
+    # Send a test token
+    torrent_telegram_token: lookup('env', 'TELEGRAM_TOKEN') | default('TelegramToken')
+    torrent_telegram_groups: "123456"
 
     torrent_nordvpn_user: 'NordvpnUser'
     torrent_nordvpn_password: 'NorvpnPassword'

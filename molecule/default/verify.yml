@@ -102,3 +102,74 @@
     - name: Verify gid
       assert:
         that: transmission_stat.stat.gid == 1500
+
+    - name: Port is closed for http
+      uri:
+        url: "http://localhost:9118"
+        validate_certs: no
+        status_code: 400
+      changed_when: false
+
+    - name: Auth is required for transmission
+      uri:
+        url: "https://localhost:9118"
+        validate_certs: no
+        status_code: 401
+      changed_when: false
+
+    - name: Authentication is open with credentials
+      uri:
+        url: "https://localhost:9118"
+        validate_certs: no
+        user: 'JackettUser'
+        password: 'JackettPassword'
+        status_code: 200
+      changed_when: false
+
+    - name: Check if task is listed
+      become: yes
+      become_user: 'torrent'
+      shell: 'flexget status | grep download-rss'
+      register: transmission_pid
+      changed_when: false
+      args:
+        chdir: '/home/torrent/flexget'
+
+    - name: Check if flexget configuration is valid
+      become: yes
+      become_user: 'torrent'
+      shell: 'flexget check'
+      register: transmission_pid
+      changed_when: false
+      args:
+        chdir: '/home/torrent/flexget'
+
+    - name: Check if flexget configuration is valid
+      become: yes
+      become_user: 'torrent'
+      shell: 'flexget check'
+      register: transmission_pid
+      changed_when: false
+      args:
+        chdir: '/home/torrent/flexget'
+
+    - name: Register flexget db stat
+      stat:
+        path: /home/torrent/flexget/db-config.sqlite
+      register: flexget_db_result
+
+    - name: Check if file exists
+      assert:
+        that: flexget_db_result.stat.exists
+
+    - name: Check that flexget is enabled
+      command: systemctl is-enabled flexget.timer
+      changed_when: false
+
+    - name: Check that telegram-bot is enabled
+      command: systemctl is-enabled telegram-bot
+      changed_when: false
+
+    - name: Check that telegram-bot process exists
+      command: systemctl
+      changed_when: false
