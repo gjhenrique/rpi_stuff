@@ -5,6 +5,8 @@ After=network.target
 [Service]
 User=torrent
 ExecStart=/usr/bin/telegram-bot
+Restart=on-failure
+RestartSec=30
 Environment="TELEGRAM_BOT_TOKEN={{ torrent_telegram_token }}"
 {% if torrent_telegram_groups | default('') %}
 Environment="TELEGRAM_ALLOWED_GROUPS={{ torrent_telegram_groups }}"
