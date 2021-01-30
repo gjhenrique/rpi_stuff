@@ -1,4 +1,4 @@
-- name: Duckdns verification
+- name: Duckdns
   hosts: all
   tasks:
     - name: Check that duckns.timer is running
@@ -17,7 +17,7 @@
       command: grep "duckdns_token=DuckdnsToken" /etc/duckdns.d/default.cfg
       changed_when: false
 
-- name: Syncthing verification
+- name: Syncthing
   hosts: all
   tasks:
     - name: "Syncthing GUI with authentication"
@@ -38,7 +38,7 @@
       command: systemctl is-enabled syncthing@syncthing.service
       changed_when: false
 
-- name: vpn configuration
+- name: Torrent
   hosts: all
   tasks:
     - name: It is open for tun0
@@ -53,13 +53,18 @@
       shell: "iptables-save | grep REJECT | grep 1500"
       changed_when: false
 
+    - name: save iptables tun0
+      shell: "grep tun0 /etc/iptables/rules.v4"
+      changed_when: false
+
+    - name: save iptables with gid 1500
+      shell: "grep 1500 /etc/iptables/rules.v4"
+      changed_when: false
+
     - name: Check that openpyn is enabled
       command: systemctl is-enabled openpyn
       changed_when: false
 
-- name: transmission configuration
-  hosts: all
-  tasks:
     - name: Port is closed for http
       uri:
         url: "http://localhost:9092"
