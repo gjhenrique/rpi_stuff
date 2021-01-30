@@ -93,7 +93,7 @@
     update_cache: yes
     name: ssh
 
-- name: Create default nginx directories
+- name: Create default ssh directories
   become: yes
   become_user: torrent
   file:

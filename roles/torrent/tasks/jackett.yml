@@ -66,7 +66,7 @@
     owner: root
     group: www-data
     mode: '0644'
-  notify: Restart nginx
+  notify: restart nginx
   when: not skip_jackett
 
 - name: Copy nginx config file
@@ -74,7 +74,7 @@
     src: jackett.conf.j2
     dest: /etc/nginx/sites-available/jackett.conf
     mode: '0644'
-  notify: Restart nginx
+  notify: restart nginx
   when: not skip_jackett
 
 - name: Symlink available nginx conf
@@ -82,7 +82,7 @@
     src: '/etc/nginx/sites-available/jackett.conf'
     dest: '/etc/nginx/sites-enabled/jackett.conf'
     state: 'link'
-  notify: Restart nginx
+  notify: restart nginx
   when: not skip_jackett
 
 - name: Enable jackett service

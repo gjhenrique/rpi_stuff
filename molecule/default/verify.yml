@@ -1,0 +1,99 @@
+- name: Duckdns verification
+  hosts: all
+  tasks:
+    - name: Check that duckns.timer is running
+      command: systemctl list-timers duckdns.timer
+      changed_when: false
+
+    - name: Check that duckns.timer is enabled
+      command: systemctl is-enabled duckdns.timer
+      changed_when: false
+
+    - name: Check that duckns.service is attached
+      command: systemctl list-timers duckdns.timer | grep duckdns.service
+      changed_when: false
+
+    - name: Check that duckns.service is attached
+      command: grep "duckdns_token=DuckdnsToken" /etc/duckdns.d/default.cfg
+      changed_when: false
+
+- name: Syncthing verification
+  hosts: all
+  tasks:
+    - name: "Syncthing GUI with authentication"
+      uri:
+        url: "https://localhost:8384"
+        validate_certs: no
+        status_code: 401
+
+    - name: "Syncthing GUI with credentials"
+      uri:
+        url: "https://localhost:8384"
+        validate_certs: no
+        user: SyncthingUser
+        password: SyncthingPassword
+        status_code: 200
+
+    - name: Check that syncthing is enabled
+      command: systemctl is-enabled syncthing@syncthing.service
+      changed_when: false
+
+- name: vpn configuration
+  hosts: all
+  tasks:
+    - name: It is open for tun0
+      shell: "iptables-save | grep tun0 | grep 1500"
+      changed_when: false
+
+    - name: It is open for lo
+      shell: "iptables-save | grep lo | grep 1500"
+      changed_when: false
+
+    - name: It is open for lo
+      shell: "iptables-save | grep REJECT | grep 1500"
+      changed_when: false
+
+    - name: Check that openpyn is enabled
+      command: systemctl is-enabled openpyn
+      changed_when: false
+
+- name: transmission configuration
+  hosts: all
+  tasks:
+    - name: Port is closed for http
+      uri:
+        url: "http://localhost:9092"
+        validate_certs: no
+        status_code: 400
+      changed_when: false
+
+    - name: Auth is required for transmission
+      uri:
+        url: "https://localhost:9092"
+        validate_certs: no
+        status_code: 401
+      changed_when: false
+
+    - name: Authentication is open with credentials
+      uri:
+        url: "https://localhost:9092"
+        validate_certs: no
+        user: TransmissionUser
+        password: TransmissionPassword
+        status_code: 200
+      changed_when: false
+
+    - name: Register pid
+      shell: ps aux | grep "transmission-daemon" | grep -v grep |  awk '{print $2}'
+      register: transmission_pid
+      changed_when: false
+
+    - name: Get gid
+      stat:
+        path: "/proc/{{ transmission_pid.stdout }}"
+      register: transmission_stat
+      changed_when: false
+
+    - name: Verify gid
+      assert:
+        that: transmission_stat.stat.gid == 1500

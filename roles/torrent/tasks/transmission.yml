@@ -15,14 +15,14 @@
     src: transmission.conf.j2
     dest: /etc/nginx/sites-available/torrent.conf
     mode: '0644'
-  notify: Restart nginx
+  notify: restart nginx
 
 - name: Symlink sites-available to sites-enabled
   file:
     src: '/etc/nginx/sites-available/torrent.conf'
     dest: '/etc/nginx/sites-enabled/torrent.conf'
     state: 'link'
-  notify: Restart nginx
+  notify: restart nginx
 
 - name: Enable/Start transmission service
   systemd:
