@@ -13,7 +13,6 @@
   register: jackett_version
   changed_when: false
   ignore_errors: true
-  when: not use_mono
 
 - name: New Jackett
   set_fact:
@@ -23,15 +22,14 @@
 - name: Download jackett bin
   get_url:
     url: "https://github.com/Jackett/Jackett/releases/download/{{ torrent_jackett_version }}/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
-    dest: /tmp/jacket-dotnet-{{ torrent_jackett_version }}.tar.gz
+    dest: /tmp/jackett-dotnet-{{ torrent_jackett_version }}.tar.gz
   when: install_jackett is defined
 
 - name: Extract jackett bin  # noqa 303
   shell: |
-    tar -xzvf jacket-dotnet-{{ torrent_jackett_version }}.tar.gz
+    tar -xzvf jackett-dotnet-{{ torrent_jackett_version }}.tar.gz
     rm -rf /usr/lib/jackett
     mv Jackett /usr/lib/jackett
-    rm jackett*
   args:
     chdir: "/tmp"
   when: install_jackett is defined

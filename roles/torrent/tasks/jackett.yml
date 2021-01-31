@@ -1,12 +1,12 @@
 ---
 # https://github.com/dotnet/runtime/issues/7764
 # Alternative would be to use mono for these cases, but it's very bloated
-- name: Skip jackett for armv6
+- name: Use mono form armv6
   set_fact:
     use_mono: true
   when: "'armv6l' in ansible_machine or torrent_jackett_use_mono"
 
-- name: Don't skip jackett for armv6
+- name: Use .net for the rest
   set_fact:
     use_mono: false
   when: "'armv6l' not in ansible_machine and not torrent_jackett_use_mono"

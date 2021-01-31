@@ -25,7 +25,7 @@
 
 - name: Extract jackett bin  # noqa 303
   shell: |
-    tar -xzvf jacket-mono-{{ torrent_jackett_version }}.tar.gz
+    tar -xzvf jackett-mono-{{ torrent_jackett_version }}.tar.gz
     rm -rf /usr/lib/jackett
     mv Jackett /usr/lib/jackett
   args:
