@@ -58,14 +58,14 @@
 
 - name: merge syncthing values
   set_fact:
-    syncthing_new_config: "{{ syncthing_config | combine(config_values, recursive=true) }}"
+    syncthing_new_config: "{{ syncthing_config | combine(config_values, recursive=True) }}"
   vars:
     config_values:
       gui:
-        user: '{{ syncthing_http_user | mandatory }}'
+        user: "{{ syncthing_http_user | mandatory }}"
         password: "{{ syncthing_http_password | mandatory | password_hash('bcrypt') }}"
         useTLS: true
-        address: '0.0.0.0:8384'
+        address: "0.0.0.0:8384"
 
 - name: post config
   uri:

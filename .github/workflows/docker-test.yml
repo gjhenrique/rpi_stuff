@@ -1,0 +1,21 @@
+---
+name: Molecule Test
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          pip3 install -r requirements.txt
+          ansible --version
+          molecule --version
+      - name: Test with molecule
+        run: |
+          molecule test
