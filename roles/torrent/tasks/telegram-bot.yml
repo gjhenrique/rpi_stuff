@@ -1,0 +1,46 @@
+---
+- name: Register current installed telegra-bot version
+  command: "/usr/bin/telegram-bot --version"
+  register: installed_bot_version
+  changed_when: false
+  ignore_errors: true
+  when: "torrent_telegram_token is defined"
+
+- name: Install bot variable
+  set_fact:
+    install_bot: true
+  when: "torrent_telegram_token is defined and (installed_bot_version.stdout is not defined or (not installed_bot_version.stdout | regex_search(torrent_bot_version)))"
+
+- name: Download x86 bot binary
+  get_url:
+    url: "https://github.com/gjhenrique/telegram-bot-torrents/releases/download/{{ torrent_bot_version }}/telegram-bot-torrents.linux.x86"
+    dest: /usr/bin/telegram-bot
+    force: true
+    mode: '0755'
+  when: "'x86_64' in ansible_architecture and torrent_telegram_token is defined and install_bot == true"
+  notify: 'reload telegram-bot'
+
+- name: Download armv6 bot binary
+  get_url:
+    url: "https://github.com/gjhenrique/telegram-bot-torrents/releases/download/{{ torrent_bot_version }}/telegram-bot-torrents.linux.armv6"
+    dest: /usr/bin/telegram-bot
+    mode: '0755'
+  when: "'arm' in ansible_architecture and torrent_telegram_token is defined"
+  notify: 'reload telegram-bot'
+
+- name: Copy telegram-bot service file
+  template:
+    src: telegram-bot.service.j2
+    dest: /lib/systemd/system/telegram-bot.service
+    mode: '0644'
+  notify: 'reload telegram-bot'
+  no_log: true
+  when: 'torrent_telegram_token is defined'
+
+- name: Ensure telegram-bot is started/enabled
+  become: true
+  systemd:
+    name: telegram-bot
+    enabled: true
+    state: started
+  when: 'torrent_telegram_token is defined'

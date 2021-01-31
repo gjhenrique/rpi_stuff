@@ -21,3 +21,7 @@
 - name: Include flexget
   include: flexget.yml
   tags: flexget
+
+- name: Include telegram-bot
+  include: telegram-bot.yml
+  tags: telegram-bot

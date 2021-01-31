@@ -1,6 +1,7 @@
 ---
 torrent_user_gid_owner: "1500"
 torrent_jackett_version: "v0.16.2229"
+torrent_bot_version: "v0.2.0"
 
 torrent_flexget_server_host: 'localhost'
 torrent_flexget_server_username: 'torrent'
