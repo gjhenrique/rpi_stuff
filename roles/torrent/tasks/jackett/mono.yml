@@ -15,7 +15,7 @@
 - name: New Jackett
   set_fact:
     install_jackett: true
-  when: (jackett_version.rc != 0 or (not jackett_version.stdout | regex_search(torrent_jackett_version)))
+  when: (jackett_version.rc != 1 or (not jackett_version.stdout | regex_search(torrent_jackett_version)))
 
 - name: Download jackett bin
   get_url:
