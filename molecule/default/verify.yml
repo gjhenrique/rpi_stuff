@@ -127,15 +127,6 @@
         status_code: 200
       changed_when: false
 
-    - name: Check if task is listed
-      become: true
-      become_user: 'torrent'
-      shell: 'flexget status | grep download-rss'
-      register: transmission_pid
-      changed_when: false
-      args:
-        chdir: '/home/torrent/flexget'
-
     - name: Check if flexget configuration is valid
       become: true
       become_user: 'torrent'

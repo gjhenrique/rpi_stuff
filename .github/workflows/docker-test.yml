@@ -18,4 +18,4 @@ jobs:
           molecule --version
       - name: Test with molecule
         run: |
-          molecule test
+          molecule converge -- -vvv && molecule verify
