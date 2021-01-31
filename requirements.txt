@@ -1,4 +1,4 @@
 ansible
 ansible-lint
-passlib
 molecule[docker,ansible,lint]
+passlib
