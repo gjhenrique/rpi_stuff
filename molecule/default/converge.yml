@@ -24,8 +24,5 @@
     torrent_transmission_user: 'TransmissionUser'
     torrent_transmission_password: 'TransmissionPassword'
 
-    torrent_jackett_user: 'JackettUser'
-    torrent_jackett_password: 'JackettPassword'
-
     torrent_flexget_rss: 'https://rss.com'
     torrent_flexget_telegram_receiver: 'Torrents'

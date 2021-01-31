@@ -1,6 +1,7 @@
 ---
 - name: Include boilerplate
   include: boilerplate.yml
+  tags: torrent-boilerplate
 
 - name: Include nginx server
   include: nginx.yml

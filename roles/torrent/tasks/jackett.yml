@@ -3,72 +3,21 @@
 # Alternative would be to use mono for these cases, but it's very bloated
 - name: Skip jackett for armv6
   set_fact:
-    skip_jackett: true
-  when: "'armv6l' in ansible_machine"
+    use_mono: true
+  when: "'armv6l' in ansible_machine or torrent_jackett_use_mono"
 
 - name: Don't skip jackett for armv6
   set_fact:
-    skip_jackett: false
-  when: "'armv6l' not in ansible_machine"
+    use_mono: false
+  when: "'armv6l' not in ansible_machine and not torrent_jackett_use_mono"
 
-- name: set arm variable
-  set_fact:
-    jacket_arch: "ARM32"
-  when: "'arm' in ansible_architecture"
+- name: Include mono
+  include: jackett/dotnet.yml
+  when: not use_mono
 
-- name: set x86 variable
-  set_fact:
-    jacket_arch: "AMDx64"
-  when: "'x86_64' in ansible_architecture"
-
-- name: Register current installed jacket version
-  command: "/usr/lib/jackett/jackett --version"
-  register: jackett_version
-  changed_when: false
-  ignore_errors: true
-  when: not skip_jackett
-
-- name: New Jackett
-  set_fact:
-    install_jackett: true
-  when: not skip_jackett and (jackett_version.stdout is not defined or (not jackett_version.stdout | regex_search(torrent_jackett_version)))
-
-- name: Download jackett bin
-  get_url:
-    url: "https://github.com/Jackett/Jackett/releases/download/{{ torrent_jackett_version }}/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
-    dest: /tmp/jacket-{{ torrent_jackett_version }}.tar.gz
-  when: not skip_jackett and install_jackett is defined
-
-- name: Extract jackett bin  # noqa 303
-  shell: |
-    tar -xzvf jacket-{{ torrent_jackett_version }}.tar.gz
-    mkdir -p /usr/lib/jackett/
-    cp -dpr Jackett/* /usr/lib/jackett/
-    rm -rf /tmp/Jackett
-  args:
-    chdir: "/tmp"
-  when: not skip_jackett and install_jackett is defined
-
-- name: Deploy jackett service file
-  copy:
-    src: jackett.service
-    dest: /lib/systemd/system/jackett.service
-    mode: '0644'
-  notify:
-    - reload jackett
-  when: not skip_jackett
-
-- name: Create jackett auth
-  htpasswd:
-    path: '/etc/nginx/.jackett.htpasswd'
-    name: '{{ torrent_jackett_user }}'
-    password: '{{ torrent_jackett_password }}'
-    crypt_scheme: 'sha512_crypt'
-    owner: root
-    group: www-data
-    mode: '0644'
-  notify: restart nginx
-  when: not skip_jackett
+- name: Include dotnet jackett
+  include: jackett/mono.yml
+  when: use_mono
 
 - name: Copy nginx config file
   template:
@@ -76,7 +25,6 @@
     dest: /etc/nginx/sites-available/jackett.conf
     mode: '0644'
   notify: restart nginx
-  when: not skip_jackett
 
 - name: Symlink available nginx conf
   file:
@@ -84,11 +32,9 @@
     dest: '/etc/nginx/sites-enabled/jackett.conf'
     state: 'link'
   notify: restart nginx
-  when: not skip_jackett
 
 - name: Enable jackett service
   systemd:
     name: jackett
     enabled: true
     state: started
-  when: not skip_jackett

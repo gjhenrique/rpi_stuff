@@ -41,7 +41,6 @@
   when: 'torrent_telegram_token is defined'
 
 - name: Ensure telegram-bot is started/enabled
-  become: true
   systemd:
     name: telegram-bot
     enabled: true
