@@ -9,7 +9,10 @@
 - name: Install bot variable
   set_fact:
     install_bot: true
-  when: "torrent_telegram_token is defined and (installed_bot_version.stdout is not defined or (not installed_bot_version.stdout | regex_search(torrent_bot_version)))"
+  when: "torrent_telegram_token is defined and
+         (installed_bot_version.stdout is not defined or
+            (not installed_bot_version.stdout | regex_search(torrent_bot_version))
+          )"
 
 - name: Download x86 bot binary
   get_url:
@@ -17,7 +20,7 @@
     dest: /usr/bin/telegram-bot
     force: true
     mode: '0755'
-  when: "'x86_64' in ansible_architecture and torrent_telegram_token is defined and install_bot == true"
+  when: "'x86_64' in ansible_architecture and torrent_telegram_token is defined and install_bot"
   notify: 'reload telegram-bot'
 
 - name: Download armv6 bot binary
