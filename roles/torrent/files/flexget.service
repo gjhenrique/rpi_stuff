@@ -1,9 +1,11 @@
 [Unit]
-Description=Run flexget tasks
-After=network.target
+Description=Flexget Daemon
 
 [Service]
+Type=simple
 User=torrent
-Type=oneshot
+Group=torrent
 WorkingDirectory=/home/torrent/flexget
-ExecStart=/usr/local/bin/flexget execute
+ExecStart=/usr/local/bin/flexget daemon start
+ExecStop=/usr/local/bin/flexget daemon stop
+ExecReload=/usr/local/bin/flexget daemon reload

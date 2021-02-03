@@ -146,7 +146,7 @@
         that: flexget_db_result.stat.exists
 
     - name: Check that flexget is enabled
-      command: systemctl is-enabled flexget.timer
+      command: systemctl is-enabled flexget
       changed_when: false
 
     - name: Check that telegram-bot is enabled

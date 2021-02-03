@@ -4,7 +4,7 @@
     name: mono-complete
 
 - name: Register current installed jacket version
-  command: "mono /usr/lib/jackett/JackettConsole.exe --version"
+  command: "mono --debug /usr/lib/jackett/JackettConsole.exe --version"
   register: jackett_version
   changed_when: false
   ignore_errors: true

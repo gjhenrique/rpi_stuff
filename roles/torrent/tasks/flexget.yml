@@ -66,14 +66,6 @@
     mode: '0644'
   no_log: true
 
-- name: Copy flexget timer file
-  copy:
-    src: flexget.timer
-    dest: /lib/systemd/system/flexget.timer
-    mode: '0644'
-  notify:
-    - reload flexget
-
 - name: Copy flexget service file
   copy:
     src: flexget.service
@@ -82,10 +74,10 @@
   notify:
     - reload flexget
 
-- name: Ensure flexget timer is started/enabled
+- name: Ensure flexget is started/enabled
   become: true
   systemd:
-    name: flexget.timer
+    name: flexget
     enabled: true
     state: started
 
