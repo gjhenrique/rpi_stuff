@@ -17,6 +17,7 @@
     # Send a test token
     torrent_telegram_token: "{{ lookup('env', 'TELEGRAM_TOKEN') | default('TelegramToken') }}"
     torrent_telegram_groups: "123456"
+    torrent_telegram_omdb_token: "OmdbToken"
 
     torrent_nordvpn_user: 'NordvpnUser'
     torrent_nordvpn_password: 'NorvpnPassword'

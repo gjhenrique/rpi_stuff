@@ -8,7 +8,11 @@ ExecStart=/usr/bin/telegram-bot
 Restart=on-failure
 RestartSec=30
 Environment="TELEGRAM_BOT_TOKEN={{ torrent_telegram_token }}"
+Environment="FLEXGET_PATH=/home/torrent/flexget"
+Environment="JACKETT_DATA_DIR=/home/torrent/.config/jackett"
 {% if torrent_telegram_groups | default('') %}
 Environment="TELEGRAM_ALLOWED_GROUPS={{ torrent_telegram_groups }}"
 {% endif %}
-Environment="FLEXGET_PATH=/home/torrent/flexget"
+{% if torrent_telegram_omdb_token | default('') %}
+Environment="OMDB_TOKEN={{ torrent_telegram_omdb_token }}"
+{% endif %}
