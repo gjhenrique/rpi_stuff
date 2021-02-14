@@ -2,10 +2,12 @@
 - name: prepare
   hosts: all
   roles:
-    - ../../roles/boilerplate
-    - ../../roles/duckdns
-    - ../../roles/syncthing
-    - ../../roles/torrent
+    - role: ../../roles/duckdns
+      tags: duckdns
+    - role: ../../roles/syncthing
+      tags: syncthing
+    - role: ../../roles/torrent
+      tags: torrent
 
   vars:
     duckdns_hostname: "DuckdnsHost"
