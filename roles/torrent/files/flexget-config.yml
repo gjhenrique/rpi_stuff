@@ -162,3 +162,8 @@ tasks:
       path: "{? torrent.tv_path ?}"
     template:
       - download-manual
+
+schedules:
+  - tasks: '*'
+    interval:
+      hours: 1
