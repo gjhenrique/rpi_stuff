@@ -29,11 +29,9 @@ templates:
     disable: [seen, seen_info_hash, retry_failed]
     manual: true
     set:
-      notification_message: "🧲: {{title}}"
       torrent_path: "{{ path }}"
     template:
       - torrent
-      - notification
   rename-serie-name:
     set:
       tvdb_series_name: "{{ tvdb_series_name | replace('&', 'and') | replace(':', '')}}"
