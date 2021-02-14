@@ -1,3 +1,4 @@
+---
 - name: Install mono
   apt:
     update_cache: true

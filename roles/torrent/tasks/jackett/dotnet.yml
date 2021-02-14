@@ -1,3 +1,4 @@
+---
 - name: set arm variable
   set_fact:
     jacket_arch: "ARM32"

@@ -106,6 +106,6 @@
   register: command_output
   tags: ['never', 'print_ssh']
 
-- name: Print to console
+- name: Print SSH key to console
   debug: msg="SSH Public key is:\n{{ command_output.stdout }}"
   tags: ['never', 'print_ssh']
