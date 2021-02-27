@@ -10,6 +10,7 @@ templates:
       path: "{{ torrent_path }}"
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
+      main_file_only: true
   notification:
     notify:
       entries:
@@ -132,7 +133,7 @@ tasks:
     sftp_upload:
       host: "{? sftp.host ?}"
       username: "{? sftp.username ?}"
-      to: "{? sftp.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})/{{ imdb_name }} ({{ imdb_year }})"
+      to: "{? sftp.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})"
       delete_origin: true
 
   delete-transmission:

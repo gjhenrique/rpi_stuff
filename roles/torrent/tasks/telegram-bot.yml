@@ -1,5 +1,5 @@
 ---
-- name: Register current installed telegra-bot version
+- name: Register current installed telegram-bot version
   command: "/usr/bin/telegram-bot --version"
   register: installed_bot_version
   changed_when: false

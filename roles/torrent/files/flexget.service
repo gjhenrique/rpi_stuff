@@ -9,3 +9,6 @@ WorkingDirectory=/home/torrent/flexget
 ExecStart=/usr/local/bin/flexget daemon start
 ExecStop=/usr/local/bin/flexget daemon stop
 ExecReload=/usr/local/bin/flexget daemon reload
+
+[Install]
+WantedBy=multi-user.target

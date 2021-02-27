@@ -16,3 +16,6 @@ Environment="TELEGRAM_ALLOWED_GROUPS={{ torrent_telegram_groups }}"
 {% if torrent_telegram_omdb_token | default('') %}
 Environment="OMDB_TOKEN={{ torrent_telegram_omdb_token }}"
 {% endif %}
+Environment="TRANSMISSION_TV_PATH=/home/torrent/media/torrent/TV"
+Environment="TRANSMISSION_MOVIE_PATH=/home/torrent/media/torrent/Movies"
+Environment="TRANSMISSION_CREDENTIALS={{ torrent_transmission_user }}:{{ torrent_transmission_password }}"
