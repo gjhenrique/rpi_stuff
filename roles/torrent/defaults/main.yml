@@ -1,6 +1,6 @@
 ---
 torrent_user_gid_owner: "1500"
-torrent_jackett_version: "v0.17.405"
+torrent_jackett_version: "v0.18.67"
 torrent_bot_version: "v0.3.1"
 
 torrent_jackett_use_mono: false
