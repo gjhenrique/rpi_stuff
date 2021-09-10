@@ -6,7 +6,7 @@
 
 - name: Install required pip libraries
   pip:
-    name: ['pexpect', 'openpyn==2.7.5']
+    name: ['pexpect', "openpyn=={{torrent_openpyn_version}}"]
 
 - name: create openpyn service files
   expect:
