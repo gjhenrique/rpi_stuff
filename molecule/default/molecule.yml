@@ -11,6 +11,7 @@ platforms:
   - name: local
     image: debian
     pre_build_image: false
+    override_command: false
     systemd: always
     privileged: true
     published_ports:

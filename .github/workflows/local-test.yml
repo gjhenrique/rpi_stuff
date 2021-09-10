@@ -4,35 +4,25 @@ name: Molecule Test
 on:
   push:
     branches:
-      - master
+      - '**'
     pull_request:
       branches:
         - master
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-20.04
-
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Set up Python 3
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
-      - uses: actions/cache@v1
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
       - name: Install dependencies
         run: |
-          sudo apt-get -y update
-          sudo apt-get -y install podman
-          pip3 install -r requirements.txt
-          podman --version
+          sudo pip3 install -r requirements.txt
           ansible --version
           molecule --version
       - name: Test with molecule
         run: |
-          molecule test
+          sudo molecule test
