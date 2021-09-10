@@ -34,7 +34,7 @@
 - name: Install required pip libraries
   pip:
     name:
-      - "flexget=={{torrent_flexget_version}}"
+      - "flexget=={{ torrent_flexget_version }}"
       - python-telegram-bot
       - transmission-rpc
       - pysftp
