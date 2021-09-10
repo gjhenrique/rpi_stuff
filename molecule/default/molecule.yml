@@ -2,21 +2,17 @@
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: podman
 lint: |
   set -e
   yamllint .
   ansible-lint
 platforms:
   - name: local
-    image: debian:buster
-    tmpfs:
-      - /tmp
-      - /run
+    image: debian
+    pre_build_image: false
+    systemd: always
     privileged: true
-    port_bindings:
-      - 9092: 9092
-      - 9118: 9118
     published_ports:
       # nginx Transmission
       - 0.0.0.0:9092:9092/TCP
@@ -25,8 +21,6 @@ platforms:
       # syncthing
       # Different port to not mess up with local syncthing
       - 0.0.0.0:8385:8384/TCP
-    volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
 provisioner:
   name: ansible
   config_options:
