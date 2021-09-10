@@ -39,6 +39,10 @@
       command: systemctl is-enabled syncthing@syncthing.service
       changed_when: false
 
+    - name: Check that old syncthing version from debian is not installed
+      shell: "syncthing --version | grep -v 1.0.0"
+      changed_when: false
+
 - name: Torrent
   hosts: all
   tasks:
