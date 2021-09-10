@@ -11,6 +11,12 @@
     mode: '0644'
   notify: reload transmission
 
+- name: Stop vanilla transmission service
+  systemd:
+    name: transmission-daemon-custom
+    state: stopped
+  notify: reload transmission
+
 - name: Copy transmission nginx config file
   template:
     src: transmission.conf.j2

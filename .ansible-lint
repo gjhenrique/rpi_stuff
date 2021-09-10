@@ -1,5 +1,6 @@
+---
 exclude_paths:
-- molecule/default/verify.yml
+  - molecule/default/verify.yml
 
 skip_list:
-  - '701' # Skip because galaxy_info is already on galaxy.yml
+  - '701'  # Skip because galaxy_info is already on galaxy.yml

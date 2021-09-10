@@ -10,9 +10,6 @@
   changed_when: false
   ignore_errors: true
 
-- debug:
-    var: jackett_version
-
 - name: New Jackett
   set_fact:
     install_jackett: true

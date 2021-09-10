@@ -67,7 +67,7 @@
         useTLS: true
         address: "0.0.0.0:8384"
 
-- name: post config
+- name: update new configuration
   uri:
     url: "https://localhost:8384/rest/system/config"
     method: POST
