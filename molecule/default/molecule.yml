@@ -23,6 +23,7 @@ platforms:
       # nginx Jackett
       - 0.0.0.0:9118:9118/TCP
       # syncthing
+      # Different port to not mess up with local syncthing
       - 0.0.0.0:8385:8384/TCP
     volumes:
       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
