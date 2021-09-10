@@ -4,17 +4,16 @@
     update_cache: true
     name: transmission-daemon
 
+- name: Stop vanilla transmission service
+  systemd:
+    name: transmission-daemon
+    state: stopped
+
 - name: Copy transmission custom systemd service
   template:
     src: transmission-daemon-custom.service.j2
     dest: /lib/systemd/system/transmission-daemon-custom.service
     mode: '0644'
-  notify: reload transmission
-
-- name: Stop vanilla transmission service
-  systemd:
-    name: transmission-daemon-custom
-    state: stopped
   notify: reload transmission
 
 - name: Copy transmission nginx config file
