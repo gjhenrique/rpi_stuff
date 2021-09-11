@@ -22,17 +22,6 @@ templates:
               disable_previews: false
               recipients:
                 - group: "{? telegram.group_name ?}"
-  download-manual:
-    mock:
-      - {title: "Manual torrent", url: "$magnet_link"}
-    accept_all: true
-    seen: local
-    disable: [seen, seen_info_hash, retry_failed]
-    manual: true
-    set:
-      torrent_path: "{{ path }}"
-    template:
-      - torrent
   rename-serie-name:
     set:
       tvdb_series_name: "{{ tvdb_series_name | replace('&', 'and') | replace(':', '')}}"
@@ -140,6 +129,10 @@ tasks:
     priority: 6
     from_transmission:
       only_complete: true
+      host: localhost
+      port: 9091
+      username: "{? transmission.username ?}"
+      password: "{? transmission.password ?}"
     disable: [seen, seen_info_hash]
     if:
       - transmission_progress == 100: accept
@@ -151,18 +144,6 @@ tasks:
       port: 9091
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
-
-  download-movie-manual:
-    set:
-      path: "{? torrent.movie_path ?}"
-    template:
-      - download-manual
-
-  download-tv-manual:
-    set:
-      path: "{? torrent.tv_path ?}"
-    template:
-      - download-manual
 
 schedules:
   - tasks: '*'
