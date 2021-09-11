@@ -29,7 +29,7 @@
 
 - name: get system config
   uri:
-    url: "https://localhost:8384/rest/system/config"
+    url: "https://localhost:8384/rest/config"
     return_content: true
     validate_certs: false
     headers:
@@ -48,18 +48,18 @@
     config_values:
       gui:
         user: "{{ syncthing_http_user | mandatory }}"
-        password: "{{ syncthing_http_password | mandatory | password_hash('bcrypt') }}"
+        password: "{{ syncthing_http_password | mandatory }}"
         useTLS: true
         address: "0.0.0.0:8384"
 
 - name: update new configuration
   uri:
-    url: "https://localhost:8384/rest/system/config"
-    method: POST
+    url: "https://localhost:8384/rest/config"
+    method: PUT
     validate_certs: false
     headers:
       X-API-Key: "{{ syncthing_config.gui.apiKey }}"
     body: "{{ syncthing_new_config }}"
     body_format: "json"
-  # the server restarts itself during the transfer and don't respond with a proper http response
-  ignore_errors: true
+  register: response
+  failed_when: response.status != 200
