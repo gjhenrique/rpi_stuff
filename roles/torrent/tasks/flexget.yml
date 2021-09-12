@@ -40,6 +40,7 @@
       - pysftp
       # https://github.com/Flexget/Flexget/issues/2749
       - pytz==2020.5
+      - subliminal>=2.0
 
 - name: Create flexget directory
   become: true
@@ -56,6 +57,8 @@
     src: flexget-config.yml
     dest: /home/torrent/flexget/config.yml
     mode: '0644'
+  notify:
+    - reload flexget
 
 - name: Copy flexget vars file
   become: true
@@ -65,6 +68,8 @@
     dest: /home/torrent/flexget/vars.yml
     mode: '0644'
   no_log: true
+  notify:
+    - reload flexget
 
 - name: Copy flexget service file
   copy:

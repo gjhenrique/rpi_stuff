@@ -20,3 +20,14 @@ sftp:
 transmission:
   username: {{ torrent_transmission_user }}
   password: {{ torrent_transmission_password }}
+
+subliminal:
+  providers: {{ torrent_flexget_subtitle_providers }}
+  langs: {{ torrent_flexget_subtitle_langs }}
+  authentication:
+    opensubtitles:
+      username: {{ torrent_flexget_subtitle_authentication.opensubtitles.username | default('') }}
+      password: {{ torrent_flexget_subtitle_authentication.opensubtitles.password | default('') }}
+    legendastv:
+      username: {{ torrent_flexget_subtitle_authentication.legendastv.username | default('') }}
+      password: {{ torrent_flexget_subtitle_authentication.legendastv.password | default('' )}}

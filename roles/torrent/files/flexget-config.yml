@@ -22,6 +22,20 @@ templates:
               disable_previews: false
               recipients:
                 - group: "{? telegram.group_name ?}"
+  subtitle:
+    accept_all: true
+    seen: local
+    subliminal:
+      providers: "{? subliminal.providers ?}"
+      languages: "{? subliminal.langs ?}"
+      single: false
+      authentication:
+        opensubtitles:
+          username: "{? subliminal.authentication.opensubtitles.username ?}"
+          password: "{? subliminal.authentication.opensubtitles.password ?}"
+        legendastv:
+          username: "{? subliminal.authentication.legendastv.username ?}"
+          password: "{? subliminal.authentication.legendastv.password ?}"
   rename-serie-name:
     set:
       tvdb_series_name: "{{ tvdb_series_name | replace('&', 'and') | replace(':', '')}}"
@@ -60,8 +74,18 @@ tasks:
       to: "{? torrent.temp_tv_path ?}"
       rename: "{{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}"
 
-  move-series-server:
+  download-subtitle-series:
     priority: 3
+    filesystem:
+      path: "{? torrent.temp_tv_path ?}"
+      recursive: true
+      regexp: '.*\.(avi|mkv|mp4)$'
+      retrieve: files
+    template:
+      - subtitle
+
+  move-series-server:
+    priority: 4
     filesystem:
       path: "{? torrent.temp_tv_path ?}"
       retrieve: files
@@ -82,7 +106,7 @@ tasks:
       delete_origin: true
 
   move-movies:
-    priority: 4
+    priority: 5
     disable: [seen, seen_info_hash, retry_failed]
     regexp:
       from: title
@@ -95,7 +119,7 @@ tasks:
     filesystem:
       path: "{? torrent.movie_path ?}"
       recursive: true
-      regexp: '.*\.(avi|mkv|mp4)$'
+      regexp: '.*\.(avi|mkv|mp4|srt)$'
       retrieve: files
     accept_all: true
     imdb_lookup: true
@@ -105,8 +129,18 @@ tasks:
       to: "{? torrent.temp_movie_path ?}"
       rename: '{{ imdb_name }} ({{ imdb_year }})'
 
+  download-subtitle-movies:
+    priority: 6
+    filesystem:
+      path: "{? torrent.temp_movie_path ?}"
+      recursive: true
+      regexp: '.*\.(avi|mkv|mp4)$'
+      retrieve: files
+    template:
+      - subtitle
+
   move-movies-server:
-    priority: 5
+    priority: 7
     filesystem:
       path: "{? torrent.temp_movie_path ?}"
       retrieve: files

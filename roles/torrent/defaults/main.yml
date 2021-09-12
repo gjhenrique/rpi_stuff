@@ -13,3 +13,14 @@ torrent_flexget_server_host: 'localhost'
 torrent_flexget_server_username: 'torrent'
 torrent_flexget_server_tv_path: './TV'
 torrent_flexget_server_movie_path: './Movies'
+# By default, listing providers that don't need authentication
+# Although opensubtitles is the best one, but ti needs credentials
+torrent_flexget_subtitle_providers: ['podnapisi', 'thesubdb', 'tvsubtitles']
+torrent_flexget_subtitle_langs: [eng]
+torrent_flexget_subtitle_authentication:
+  opensubtitles:
+    username: User
+    password: Password
+  legendastv:
+    username: User
+    password: Password

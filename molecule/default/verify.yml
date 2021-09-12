@@ -131,15 +131,6 @@
       args:
         chdir: '/home/torrent/flexget'
 
-    - name: Check if flexget configuration is valid
-      become: true
-      become_user: 'torrent'
-      shell: 'flexget check'
-      register: transmission_pid
-      changed_when: false
-      args:
-        chdir: '/home/torrent/flexget'
-
     - name: Register flexget db stat
       stat:
         path: /home/torrent/flexget/db-config.sqlite
@@ -155,8 +146,4 @@
 
     - name: Check that telegram-bot is enabled
       command: systemctl is-enabled telegram-bot
-      changed_when: false
-
-    - name: Check that telegram-bot process exists
-      command: systemctl
       changed_when: false
