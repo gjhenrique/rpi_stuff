@@ -106,7 +106,7 @@
   args:
     creates: /home/torrent/.ssh/id_rsa
 
-- name: Display resolv.conf contents  # noqa 301
+- name: Display id_rsa.pub contents  # noqa 301
   command: cat /home/torrent/.ssh/id_rsa.pub
   register: command_output
   tags: ['never', 'print_ssh']
