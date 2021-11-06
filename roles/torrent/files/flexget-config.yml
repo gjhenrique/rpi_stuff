@@ -38,7 +38,7 @@ templates:
           password: "{? subliminal.authentication.legendastv.password ?}"
   rename-serie-name:
     set:
-      tvdb_series_name: "{{ tvdb_series_name | replace('&', 'and') | replace(':', '')}}"
+      trakt_series_name: "{{ trakt_series_name | replace('&', 'and') | replace(':', '')}}"
 
 tasks:
   download-rss:
@@ -48,7 +48,7 @@ tasks:
     thetvdb_lookup: true
     set:
       torrent_path: "{? torrent.tv_path ?}"
-      notification_message: "🧲: {{ tvdb_series_name }} - s{{tvdb_season | pad(2)}}e{{ tvdb_episode | pad(2) }}"
+      notification_message: "🧲: {{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode | pad(2) }}"
     template:
       - torrent
       - notification
@@ -66,13 +66,13 @@ tasks:
     all_series:
       parse_only: true
     if:
-      - tvdb_name == None: reject
-      - tvdb_season == None: reject
+      - trakt_series_name == None: reject
+      - trakt_season == None: reject
     template:
       - rename-serie-name
     move:
       to: "{? torrent.temp_tv_path ?}"
-      rename: "{{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}"
+      rename: "{{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode|pad(2) }}"
 
   download-subtitle-series:
     priority: 3
@@ -95,14 +95,14 @@ tasks:
     all_series:
       parse_only: true
     set:
-      notification_message: "✅: {{ tvdb_series_name }} - s{{ tvdb_season|pad(2) }}e{{ tvdb_episode|pad(2) }}"
+      notification_message: "✅: {{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode|pad(2) }}"
     template:
       - notification
       - rename-serie-name
     sftp_upload:
       host: "{? sftp.host ?}"
       username: "{? sftp.username ?}"
-      to: "{? sftp.tv_path ?}/{{ tvdb_series_name }}/S{{ tvdb_season | pad(2) }}"
+      to: "{? sftp.tv_path ?}/{{ trakt_series_name }}/S{{ trakt_season | pad(2) }}"
       delete_origin: true
 
   move-movies:
