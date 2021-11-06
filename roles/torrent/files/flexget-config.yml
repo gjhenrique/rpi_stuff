@@ -45,7 +45,7 @@ tasks:
     priority: 1
     rss: "{? rss.tv_url ?}"
     all_series: true
-    thetvdb_lookup: true
+    trakt_lookup: true
     set:
       torrent_path: "{? torrent.tv_path ?}"
       notification_message: "🧲: {{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode | pad(2) }}"
@@ -62,7 +62,7 @@ tasks:
       regexp: '.*\.(avi|mkv|mp4)$'
       retrieve: files
     accept_all: true
-    thetvdb_lookup: true
+    trakt_lookup: true
     all_series:
       parse_only: true
     if:
@@ -91,7 +91,7 @@ tasks:
       retrieve: files
     disable: [seen, seen_info_hash, retry_failed]
     accept_all: true
-    thetvdb_lookup: true
+    trakt_lookup: true
     all_series:
       parse_only: true
     set:
@@ -102,6 +102,7 @@ tasks:
     sftp_upload:
       host: "{? sftp.host ?}"
       username: "{? sftp.username ?}"
+      password: "{? sftp.password ?}"
       to: "{? sftp.tv_path ?}/{{ trakt_series_name }}/S{{ trakt_season | pad(2) }}"
       delete_origin: true
 
@@ -156,6 +157,7 @@ tasks:
     sftp_upload:
       host: "{? sftp.host ?}"
       username: "{? sftp.username ?}"
+      password: "{? sftp.password ?}"
       to: "{? sftp.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})"
       delete_origin: true
 
