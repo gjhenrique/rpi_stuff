@@ -1,4 +1,11 @@
 ---
+- name: Install packages
+  apt:
+    update_cache: true
+    name:
+      - ssh
+      - libffi-dev
+
 - name: Create TV directory
   become: true
   become_user: torrent
@@ -85,11 +92,6 @@
     name: flexget
     enabled: true
     state: started
-
-- name: Install openssh
-  apt:
-    update_cache: true
-    name: ssh
 
 - name: Create default ssh directories
   become: true
