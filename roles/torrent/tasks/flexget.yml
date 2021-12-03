@@ -46,7 +46,7 @@
       - transmission-rpc
       - pysftp
       # https://github.com/Flexget/Flexget/issues/2749
-      - pytz==2020.5
+      - pytz==2021.1
       - subliminal>=2.0
 
 - name: Create flexget directory

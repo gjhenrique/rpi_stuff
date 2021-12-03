@@ -2,11 +2,32 @@
 - name: Install required packages
   apt:
     update_cache: true
-    name: ['unzip', 'wget', 'openvpn', 'iptables', 'iptables-persistent']
+    name: ['unzip', 'wget', 'openvpn']
 
 - name: Install required pip libraries
   pip:
     name: ['pexpect', "openpyn=={{ torrent_openpyn_version }}"]
+
+# Debian Bullseye doesn't bring /sbin/init linked to systemd binary anymore
+# But openpyn expects it
+- name: Create symbolic link from
+  file:
+    src: /lib/systemd/systemd
+    dest: /sbin/init
+    state: link
+
+- name: Create openpyn override directory
+  file:
+    path: /etc/systemd/system/openpyn.service.d
+    state: directory
+    mode: '0755'
+
+- name: Override openpyn service
+  copy:
+    src: openpyn-override.conf
+    dest: /etc/systemd/system/openpyn.service.d/openpyn-override.conf
+    mode: '0644'
+  notify: restart openpyn
 
 - name: create openpyn service files
   expect:
@@ -17,7 +38,8 @@
       systemd: "{{ torrent_nordvpn_country | default('de') }}"
     creates: /etc/systemd/system/openpyn.service
   notify: restart openpyn
-  no_log: true
+  tags: vixi
+  # no_log: true
   timeout: 300
 
 - name: Start openpyn service
@@ -25,27 +47,3 @@
     name: openpyn
     enabled: true
     state: started
-
-- name: Allow torrent traffic from tun0
-  iptables:
-    out_interface: tun0
-    chain: OUTPUT
-    gid_owner: "{{ torrent_user_gid_owner }}"
-    jump: ACCEPT
-  notify: save iptables
-
-- name: Allow torrent traffic from localhost
-  iptables:
-    out_interface: lo
-    chain: OUTPUT
-    gid_owner: "{{ torrent_user_gid_owner }}"
-    jump: ACCEPT
-  notify: save iptables
-
-- name: Allow torrent traffic from localhost
-  iptables:
-    chain: OUTPUT
-    gid_owner: "{{ torrent_user_gid_owner }}"
-    jump: REJECT
-    reject_with: icmp-port-unreachable
-  notify: save iptables

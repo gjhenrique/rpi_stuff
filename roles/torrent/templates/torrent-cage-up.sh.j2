@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -xe
+
+ip netns add torrent
+
+ip netns exec torrent iptables -A OUTPUT -d {{ torrent_cage_host_ip }} -j ACCEPT
+ip netns exec torrent iptables -A OUTPUT -o tun0 -m owner --gid-owner {{ torrent_user_gid_owner }} -j ACCEPT
+ip netns exec torrent iptables -A OUTPUT -o lo -m owner --gid-owner {{ torrent_user_gid_owner }} -j ACCEPT
+ip netns exec torrent iptables -A OUTPUT -m owner --gid-owner {{ torrent_user_gid_owner }} -j REJECT --reject-with icmp-port-unreachable
+
+mkdir -p /etc/netns/torrent
+cp /etc/resolv.conf /etc/netns/torrent
+
+ip link add veth_host type veth peer name veth_torrent
+ip link set veth_torrent netns torrent
+
+ip addr add {{ torrent_cage_host_ip }}/24 dev veth_host
+ip link set veth_host up
+
+ip -n torrent addr add {{ torrent_cage_torrent_ip }}/24 dev veth_torrent
+ip -n torrent link set lo up
+ip -n torrent link set veth_torrent up
+ip -n torrent route add default via {{ torrent_cage_host_ip }}

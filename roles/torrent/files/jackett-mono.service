@@ -1,8 +1,9 @@
 [Unit]
 Description=Jackett Service
-After=network.target
+After=network-online.target torrent-cage.service
 
 [Service]
+NetworkNamespacePath=/run/netns/torrent
 User=torrent
 Group=vpn
 Restart=always

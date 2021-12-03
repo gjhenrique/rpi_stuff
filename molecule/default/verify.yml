@@ -1,6 +1,7 @@
 ---
 - name: Duckdns
   hosts: all
+  tags: duckdns
   tasks:
     - name: Check that duckns.timer is running
       command: systemctl list-timers duckdns.timer
@@ -20,6 +21,7 @@
 
 - name: Syncthing
   hosts: all
+  tags: syncthing
   tasks:
     - name: "Syncthing GUI with authentication"
       uri:
@@ -45,30 +47,60 @@
 
 - name: Torrent
   hosts: all
+  tags: torrent
   tasks:
-    - name: It is open for tun0
-      shell: "iptables-save | grep tun0 | grep 1500"
-      changed_when: false
-
-    - name: It is open for lo
-      shell: "iptables-save | grep lo | grep 1500"
-      changed_when: false
-
-    - name: It is open for lo
-      shell: "iptables-save | grep REJECT | grep 1500"
-      changed_when: false
-
-    - name: save iptables tun0
-      shell: "grep tun0 /etc/iptables/rules.v4"
-      changed_when: false
-
     - name: save iptables with gid 1500
       shell: "grep 1500 /etc/iptables/rules.v4"
       changed_when: false
 
-    - name: Check that openpyn is enabled
-      command: systemctl is-enabled openpyn
+    - name: Install ping package
+      apt:
+        name: iputils-ping
+
+    - name: With group vpn - Not accessible in default network namespace
+      command: "sg vpn -c 'ping -c 1 8.8.8.8'"
       changed_when: false
+      register: result
+      failed_when:
+        - result.rc != 1
+
+    - name: With group vpn - Not accessible in torrent network namespace
+      command: "ip netns exec torrent sg vpn -c 'ping -c 1 8.8.8.8'"
+      changed_when: false
+      register: result
+      failed_when:
+        - result.rc != 1
+
+    - name: Without group vpn - Accessible in default network namespace
+      command: "ping -c 1 8.8.8.8"
+      changed_when: false
+
+    - name: Without group vpn - Accessible in torrent network namespace
+      command: "ip netns exec torrent ping -c 1 8.8.8.8"
+      changed_when: false
+
+    # Way of emulating an active tun0 is by rewriting
+    # Other way would be to have a simple vpn: https://github.com/gawen/pytun
+    # But it's good enough
+    - name: Change veth_torrent interface to tun0
+      shell: |
+        ip -n torrent link set veth_torrent down
+        ip -n torrent link set veth_torrent name tun0
+        ip -n torrent link set tun0 up
+        ip -n torrent route add default via 10.44.44.1
+      changed_when: false
+
+    - name: With group vpn - Not accessible in default network namespace
+      command: "sg vpn -c 'ping -c 2 8.8.8.8'"
+      changed_when: false
+      register: result
+      failed_when:
+        - result.rc != 1
+
+    - name: With group vpn - Accessible in torrent network namespace
+      command: "ip netns exec torrent sg vpn -c 'ping -c 2 8.8.8.8'"
+      changed_when: false
+      register: result
 
     - name: Port is closed for http
       uri:
@@ -123,10 +155,7 @@
       changed_when: false
 
     - name: Check if flexget configuration is valid
-      become: true
-      become_user: 'torrent'
-      shell: 'flexget check'
-      register: transmission_pid
+      shell: 'ip netns exec torrent flexget check'
       changed_when: false
       args:
         chdir: '/home/torrent/flexget'
@@ -136,7 +165,7 @@
         path: /home/torrent/flexget/db-config.sqlite
       register: flexget_db_result
 
-    - name: Check if file exists
+    - name: Check if flex database exists
       assert:
         that: flexget_db_result.stat.exists
 

@@ -10,6 +10,6 @@ server {
   error_log /var/log/nginx/jackett.error.log;
 
   location / {
-    proxy_pass http://127.0.0.1:9117;
+    proxy_pass http://{{ torrent_cage_torrent_ip }}:9117;
   }
 }

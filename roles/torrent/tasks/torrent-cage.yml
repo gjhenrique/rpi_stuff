@@ -1,0 +1,110 @@
+---
+- name: Install required packages
+  apt:
+    update_cache: true
+    name: ['iptables', 'iptables-persistent', 'procps', 'iproute2']
+
+# Hack for making network namespaces work inpodman
+# https://github.com/containers/podman/issues/11887
+- name: Check if sys_temp is mounted
+  stat:
+    path: /sys_tmp
+  register: file_details
+  when: molecule_file is defined
+
+- name: Hack for making network namespaces work with Podman - Mounting folder  # noqa deprecated-command-syntax
+  shell: |
+    mkdir -p /sys_tmp
+    mount -t sysfs --make-private /sys_tmp  # noqa command-instead-of-module
+  when: molecule_file is defined and not file_details.stat.exists
+
+- name: Copy torrent-cage-up script file
+  template:
+    src: torrent-cage-up.sh.j2
+    dest: /usr/bin/torrent-cage-up
+    mode: '0755'
+  notify: 'restart torrent-cage'
+
+- name: Copy torrent-cage-down script file
+  template:
+    src: torrent-cage-down.sh.j2
+    dest: /usr/bin/torrent-cage-down
+    mode: '0755'
+  notify: 'restart torrent-cage'
+
+- name: Copy torrent-cage systemd service file
+  copy:
+    src: torrent-cage.service
+    dest: /lib/systemd/system/torrent-cage.service
+    mode: '0644'
+  notify: 'restart torrent-cage'
+
+- name: Enable and start torrent-cage service
+  systemd:
+    name: torrent-cage
+    enabled: true
+    state: started
+
+- name: Allow routing packets
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: true
+
+- name: Drop forward packets by default
+  iptables:
+    chain: FORWARD
+    policy: DROP
+  notify: save iptables
+
+- name: Apply NAT to packets coming from the network namespace
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    source: "{{ torrent_cage_torrent_ip }}/24"
+    jump: MASQUERADE
+    out_interface: "{{ torrent_cage_main_interface }}"
+  notify: save iptables
+
+- name: Accept packets to torrent virtual pair
+  iptables:
+    chain: FORWARD
+    in_interface: "{{ torrent_cage_main_interface }}"
+    out_interface: veth_host
+    jump: ACCEPT
+  notify: save iptables
+
+- name: Accept packets from torrent virtual pair
+  iptables:
+    chain: FORWARD
+    in_interface: veth_host
+    out_interface: "{{ torrent_cage_main_interface }}"
+    jump: ACCEPT
+  notify: save iptables
+
+# Even tough these rules are used on torrent namespace, it's safer to have them in the default namespace also
+# It might happen that a process from group vpn are running on the default namespace
+# The same three rules are duplicated in the cage script
+- name: Allow torrent traffic from tun0
+  iptables:
+    out_interface: tun0
+    chain: OUTPUT
+    gid_owner: "{{ torrent_user_gid_owner }}"
+    jump: ACCEPT
+  notify: save iptables
+
+- name: Allow torrent traffic from localhost
+  iptables:
+    out_interface: lo
+    chain: OUTPUT
+    gid_owner: "{{ torrent_user_gid_owner }}"
+    jump: ACCEPT
+  notify: save iptables
+
+- name: Allow torrent traffic from localhost
+  iptables:
+    chain: OUTPUT
+    gid_owner: "{{ torrent_user_gid_owner }}"
+    jump: REJECT
+    reject_with: icmp-port-unreachable
+  notify: save iptables

@@ -6,7 +6,6 @@
     dest: /lib/systemd/system/duckdns.timer
     mode: '0644'
   notify:
-    - reload services
     - restart duckdns
 
 - name: Install packages
@@ -14,13 +13,12 @@
     update_cache: true
     name: ['net-tools', 'curl']
 
-- name: Copy service file
+- name: Copy duckdsn service file
   copy:
     src: duckdns.service
     dest: /lib/systemd/system/duckdns.service
     mode: '0644'
   notify:
-    - reload services
     - restart duckdns
 
 - name: Copy binary file
@@ -43,7 +41,6 @@
   no_log: true
 
 - name: Ensure duckdns.timer is started/enabled
-  become: true
   systemd:
     name: duckdns.timer
     enabled: true

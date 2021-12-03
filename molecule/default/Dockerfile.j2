@@ -1,5 +1,5 @@
-FROM docker.io/debian:buster
+FROM docker.io/debian:bullseye
 
-RUN apt-get update && apt-get install -y python3 systemd
+RUN apt-get update && apt-get install -y python3 systemd iproute2
 
 ENTRYPOINT ["/lib/systemd/systemd"]

@@ -3,6 +3,10 @@
   include: boilerplate.yml
   tags: torrent-boilerplate
 
+- name: Include iptables and network namespace
+  include: torrent-cage.yml
+  tags: torrent-cage
+
 - name: Include nginx server
   include: nginx.yml
   tags: nginx
@@ -13,7 +17,9 @@
 
 - name: Include openpyn
   include: openpyn.yml
-  tags: vpn
+  tags:
+    - openpyn
+    - notest
 
 - name: Include jackett
   include: jackett.yml
