@@ -3,7 +3,7 @@ torrent_user_gid_owner: "1500"
 
 torrent_jackett_version: "v0.18.385"
 torrent_bot_version: "v0.3.2"
-torrent_openpyn_version: "2.7.5"
+torrent_openpyn_version: "3.0.0"
 torrent_flexget_version: "v3.1.137"
 
 # Force mono instead of jackett for ARMv7+
