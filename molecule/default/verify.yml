@@ -53,30 +53,30 @@
       shell: "grep 1500 /etc/iptables/rules.v4"
       changed_when: false
 
-    - name: Install ping package
+    - name: Install curl package
       apt:
-        name: iputils-ping
+        name: curl
 
     - name: With group vpn - Not accessible in default network namespace
-      command: "sg vpn -c 'ping -c 1 8.8.8.8'"
+      command: "sg vpn -c 'curl google.com'"
       changed_when: false
       register: result
       failed_when:
-        - result.rc != 1
+        - result.rc != 6
 
     - name: With group vpn - Not accessible in torrent network namespace
-      command: "ip netns exec torrent sg vpn -c 'ping -c 1 8.8.8.8'"
+      command: "ip netns exec torrent sg vpn -c 'curl google.com'"
       changed_when: false
       register: result
       failed_when:
-        - result.rc != 1
+        - result.rc != 6
 
     - name: Without group vpn - Accessible in default network namespace
-      command: "ping -c 1 8.8.8.8"
+      command: "curl google.com"
       changed_when: false
 
     - name: Without group vpn - Accessible in torrent network namespace
-      command: "ip netns exec torrent ping -c 1 8.8.8.8"
+      command: "ip netns exec torrent curl google.com"
       changed_when: false
 
     # Way of emulating an active tun0 is by rewriting
@@ -91,16 +91,24 @@
       changed_when: false
 
     - name: With group vpn - Not accessible in default network namespace
-      command: "sg vpn -c 'ping -c 2 8.8.8.8'"
+      command: "sg vpn -c 'curl google.com'"
       changed_when: false
       register: result
       failed_when:
-        - result.rc != 1
+        - result.rc != 6
 
     - name: With group vpn - Accessible in torrent network namespace
-      command: "ip netns exec torrent sg vpn -c 'ping -c 2 8.8.8.8'"
+      command: "ip netns exec torrent sg vpn -c 'curl google.com'"
       changed_when: false
       register: result
+
+    - name: Revert tun0 to veth_torrent again
+      shell: |
+        ip -n torrent link set tun0 down
+        ip -n torrent link set tun0 name veth_torrent
+        ip -n torrent link set veth_torrent up
+        ip -n torrent route add default via 10.44.44.1
+      changed_when: false
 
     - name: Port is closed for http
       uri:
