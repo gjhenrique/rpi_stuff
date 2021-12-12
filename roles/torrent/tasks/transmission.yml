@@ -16,6 +16,12 @@
     mode: '0644'
   notify: reload transmission
 
+- name: Enable/Start transmission service
+  systemd:
+    name: transmission-daemon-custom
+    enabled: true
+    state: started
+
 - name: Copy transmission nginx config file
   template:
     src: transmission.conf.j2
@@ -29,9 +35,3 @@
     dest: '/etc/nginx/sites-enabled/torrent.conf'
     state: 'link'
   notify: restart nginx
-
-- name: Enable/Start transmission service
-  systemd:
-    name: transmission-daemon-custom
-    enabled: true
-    state: started

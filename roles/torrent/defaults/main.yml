@@ -1,6 +1,10 @@
 ---
 torrent_user_gid_owner: "1500"
 
+torrent_cage_main_interface: "{{ ansible_default_ipv4.interface }}"
+torrent_cage_host_ip: "10.44.44.1"
+torrent_cage_torrent_ip: "10.44.44.2"
+
 torrent_jackett_version: "v0.18.385"
 torrent_bot_version: "v0.3.2"
 torrent_openpyn_version: "3.0.0"

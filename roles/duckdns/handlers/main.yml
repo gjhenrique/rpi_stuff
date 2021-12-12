@@ -1,8 +1,4 @@
 ---
-- name: reload services
-  systemd:
-    daemon_reload: true
-
 - name: restart duckdns
   systemd:
     name: duckdns.timer

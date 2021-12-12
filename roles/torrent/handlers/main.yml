@@ -1,10 +1,4 @@
 ---
-- name: reload transmission
-  systemd:
-    name: transmission-daemon-custom
-    daemon_reload: true
-    state: restarted
-
 - name: restart nginx
   systemd:
     name: nginx
@@ -13,22 +7,40 @@
 - name: save iptables
   shell: "iptables-save > /etc/iptables/rules.v4"
 
+- name: restart torrent-cage
+  systemd:
+    name: torrent-cage
+    daemon_reload: true
+    state: restarted
+
+- name: reload transmission
+  systemd:
+    name: transmission-daemon-custom
+    daemon_reload: true
+    state: restarted
+  listen: 'restart torrent-cage'
+
 - name: restart openpyn
+  when: molecule_file is not defined
   systemd:
     name: openpyn
+    daemon_reload: true
     state: restarted
+  listen: 'restart torrent-cage'
 
 - name: reload jackett
   systemd:
     name: jackett
     daemon_reload: true
     state: restarted
+  listen: 'restart torrent-cage'
 
 - name: reload flexget
   systemd:
     name: flexget
     daemon_reload: true
     state: restarted
+  listen: 'restart torrent-cage'
 
 - name: reload telegram-bot
   systemd:

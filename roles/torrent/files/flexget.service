@@ -2,8 +2,9 @@
 Description=Flexget Daemon
 
 [Service]
+NetworkNamespacePath=/run/netns/torrent
 Type=simple
-User=torrent
+Group=vpn
 Group=torrent
 WorkingDirectory=/home/torrent/flexget
 ExecStart=/usr/local/bin/flexget daemon start
