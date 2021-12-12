@@ -20,8 +20,9 @@ platforms:
       # nginx Jackett
       - 0.0.0.0:9118:9118/TCP
       # syncthing
-      # Different port to not mess up with local syncthing
       - 0.0.0.0:8385:8384/TCP
+      # emby
+      - 0.0.0.0:8097:8096/TCP
 provisioner:
   name: ansible
   config_options:

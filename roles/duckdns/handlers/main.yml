@@ -2,4 +2,5 @@
 - name: restart duckdns
   systemd:
     name: duckdns.timer
+    daemon_reload: true
     state: restarted

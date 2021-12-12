@@ -1,0 +1,6 @@
+---
+- name: restart emby-server
+  systemd:
+    name: "emby-server@{{ emby_user }}"
+    daemon_reload: true
+    state: restarted
