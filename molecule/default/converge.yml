@@ -8,6 +8,8 @@
       tags: syncthing
     - role: ../../roles/torrent
       tags: torrent
+    - role: ../../roles/emby
+      tags: emby
 
   vars:
     duckdns_hostname: "DuckdnsHost"

@@ -184,3 +184,13 @@
     - name: Check that telegram-bot is enabled
       command: systemctl is-enabled telegram-bot
       changed_when: false
+
+- name: Emby
+  hosts: all
+  tags: emby
+  tasks:
+    - name: Check if emby-server is running
+      uri:
+        url: "http://localhost:8096"
+        status_code: 200
+      changed_when: false
