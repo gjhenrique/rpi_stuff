@@ -1,0 +1,39 @@
+---
+- name: Create mount local directories
+  become: true
+  become_user: "{{ item.user | default('root') }}"
+  file:
+    path: "{{ item.mount_path }}"
+    state: directory
+    mode: '0755'
+  loop: "{{ mount_paths }}"
+
+- name: Fail when mount_path has spaces
+  fail:
+    msg: "This role doesn't support mount points with spaces. Tried to mount {{ item.mount_path }}"
+  when: "' ' in item.mount_path"
+  loop: "{{ mount_paths }}"
+
+- name: Create systemd mount files for mountpoints
+  template:
+    src: file.mount.j2
+    dest: "/lib/systemd/system/{{ file_systemd }}.mount"
+    mode: "0644"
+  vars:
+    mount_path: "{{ item.mount_path }}"
+    file_systemd: "{{ item.mount_path[1:].split('/') | join('-') }}"
+    mount_from: "{{ item.mount_from }}"
+    type: "{{ item.type }}"
+    depends: "{{ item.depends | default(None) }}"
+    options: "{{ item.options | default(None) }}"
+  loop: "{{ mount_paths }}"
+  notify: "restart mounts"
+
+- name: Start and enable mount points
+  systemd:
+    name: "{{ file_systemd }}.mount"
+    enabled: true
+    state: started
+  vars:
+    file_systemd: "{{ item.mount_path[1:].split('/') | join('-') }}"
+  loop: "{{ mount_paths }}"

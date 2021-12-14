@@ -194,3 +194,33 @@
         url: "http://localhost:8096"
         status_code: 200
       changed_when: false
+
+- name: Mount
+  hosts: all
+  tags: mount
+  tasks:
+    - name: Stat first folder
+      stat:
+        path: "/mnt/dir1"
+      register: mount1_result
+
+    - name: Check if it's mounted correctly
+      assert:
+        that: mount1_result.stat.exists and mount1_result.stat.isdir
+
+    - name: Stat second folder
+      stat:
+        path: "/mnt/dir2/file"
+      register: mount2_result
+
+    - name: Check if it's mounted correctly
+      assert:
+        that: mount2_result.stat.exists
+
+    - name: Check that mount1 is enabled
+      command: systemctl is-enabled mnt-dir1.mount
+      changed_when: false
+
+    - name: Check that mount1 is enabled
+      command: systemctl is-enabled mnt-dir2.mount
+      changed_when: false
