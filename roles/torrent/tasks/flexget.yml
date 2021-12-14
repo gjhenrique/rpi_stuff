@@ -22,19 +22,19 @@
     state: directory
     mode: '0755'
 
-- name: Create temp TV directory
+- name: Create TV directory
   become: true
   become_user: torrent
   file:
-    path: /home/torrent/media/temp/TV
+    path: /home/torrent/media/TV
     state: directory
     mode: '0755'
 
-- name: Create temp Movies directory
+- name: Create Movies directory
   become: true
   become_user: torrent
   file:
-    path: /home/torrent/media/temp/Movies
+    path: /home/torrent/media/Movies
     state: directory
     mode: '0755'
 
@@ -44,10 +44,8 @@
       - "flexget=={{ torrent_flexget_version }}"
       - python-telegram-bot
       - transmission-rpc
-      - pysftp
       # https://github.com/Flexget/Flexget/issues/2749
-      - pytz==2021.1
-      - subliminal>=2.0
+      - "pytz=={{ torrent_pytz_version }}"
 
 - name: Create flexget directory
   become: true
