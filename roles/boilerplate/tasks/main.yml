@@ -8,5 +8,3 @@
       - sudo
       - htop
       - acl
-  tags:
-    boilerplate

@@ -1,0 +1,18 @@
+[Unit]
+Description=Mount {{ mount_path }}
+{% if depends | length %}
+Requires={{ depends[1:].split('/') | join('-') }}.mount
+{% else %}
+Requires=local-fs.target
+{% endif %}
+
+[Mount]
+Where={{ mount_path }}
+What={{ mount_from }}
+Type={{ type }}
+{% if options | length  %}
+Options={{ options }}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

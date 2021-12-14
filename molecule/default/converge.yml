@@ -1,5 +1,5 @@
 ---
-- name: prepare
+- name: Converge
   hosts: all
   roles:
     - role: ../../roles/duckdns
@@ -10,6 +10,8 @@
       tags: torrent
     - role: ../../roles/emby
       tags: emby
+    - role: ../../roles/mount
+      tags: mount
 
   vars:
     duckdns_hostname: "DuckdnsHost"
@@ -31,3 +33,14 @@
 
     torrent_flexget_rss: 'https://rss.com'
     torrent_flexget_telegram_receiver: 'Torrents'
+
+    mount_paths:
+      - mount_path: /mnt/dir1
+        mount_from: /tmp/dir1
+        type: None
+        options: bind
+      - mount_path: /mnt/dir2
+        mount_from: /mnt/dir1/dir2
+        depends: /mnt/dir1
+        type: None
+        options: bind
