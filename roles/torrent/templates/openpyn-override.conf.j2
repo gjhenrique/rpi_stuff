@@ -1,0 +1,9 @@
+[Unit]
+After=network-online.target torrent-cage.service
+
+[Service]
+NetworkNamespacePath=/run/netns/torrent
+ExecStart=
+ExecStart=/usr/local/bin/openpyn --skip-dns-patch {{ torrent_nordvpn_country }}
+StandardOutput=journal
+StandardError=journal

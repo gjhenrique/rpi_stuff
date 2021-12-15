@@ -10,7 +10,10 @@ ip netns exec torrent iptables -A OUTPUT -o lo -m owner --gid-owner {{ torrent_u
 ip netns exec torrent iptables -A OUTPUT -m owner --gid-owner {{ torrent_user_gid_owner }} -j REJECT --reject-with icmp-port-unreachable
 
 mkdir -p /etc/netns/torrent
-cp /etc/resolv.conf /etc/netns/torrent
+
+# Better to trust Cloudflare than NordVPN
+# Disable DNS from NordVPN with openpyn settings
+echo nameserver 1.1.1.1 > /etc/netns/torrent/resolv.conf
 
 ip link add veth_host type veth peer name veth_torrent
 ip link set veth_torrent netns torrent

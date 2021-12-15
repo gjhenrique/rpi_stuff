@@ -23,23 +23,23 @@
     mode: '0755'
 
 - name: Override openpyn service
-  copy:
-    src: openpyn-override.conf
+  template:
+    src: openpyn-override.conf.j2
     dest: /etc/systemd/system/openpyn.service.d/openpyn-override.conf
     mode: '0644'
   notify: restart openpyn
 
 - name: create openpyn service files
   expect:
+    # Using DNS Server from Cloudflare
     command: openpyn --init
     responses:
       username: "{{ torrent_nordvpn_user }}"
       password: "{{ torrent_nordvpn_password }}"
-      systemd: "{{ torrent_nordvpn_country | default('de') }}"
+      systemd: "{{ torrent_nordvpn_country }}"
     creates: /etc/systemd/system/openpyn.service
   notify: restart openpyn
-  tags: vixi
-  # no_log: true
+  no_log: true
   timeout: 300
 
 - name: Start openpyn service
