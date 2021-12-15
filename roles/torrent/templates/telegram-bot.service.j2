@@ -19,6 +19,7 @@ Environment="OMDB_TOKEN={{ torrent_telegram_omdb_token }}"
 Environment="TRANSMISSION_TV_PATH=/home/torrent/media/torrent/TV"
 Environment="TRANSMISSION_MOVIE_PATH=/home/torrent/media/torrent/Movies"
 Environment="TRANSMISSION_CREDENTIALS={{ torrent_transmission_user }}:{{ torrent_transmission_password }}"
+Environment="TRANSMISSION_URL=http://{{ torrent_transmission_ip }}:9091"
 
 [Install]
 WantedBy=multi-user.target

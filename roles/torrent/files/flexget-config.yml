@@ -4,7 +4,7 @@ variables: vars.yml
 templates:
   torrent:
     transmission:
-      host: localhost
+      host: "{? transmission.ip ?}"
       port: 9091
       ratio: 1
       path: "{{ torrent_path }}"
@@ -39,7 +39,7 @@ tasks:
       - torrent
       - notification
 
-  move-series-local:
+  move-series:
     priority: 2
     disable: [seen, seen_info_hash, retry_failed]
     filesystem:
@@ -75,7 +75,7 @@ tasks:
         - (s|S)ample
         - Featurettes
     filesystem:
-      path: "{? torrent.movie_path ?}"
+      path: "{? torrent.torrent_movie_path ?}"
       recursive: true
       regexp: '.*\.(avi|mkv|mp4)$'
       retrieve: files
@@ -95,7 +95,7 @@ tasks:
     priority: 4
     from_transmission:
       only_complete: true
-      host: localhost
+      host: "{? transmission.ip ?}"
       port: 9091
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
@@ -106,7 +106,7 @@ tasks:
       - not transmission_idle_limit_ok: reject
     transmission:
       action: remove
-      host: localhost
+      host: "{? transmission.ip ?}"
       port: 9091
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
