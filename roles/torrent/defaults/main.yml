@@ -10,6 +10,8 @@ torrent_bot_version: "v0.3.2"
 torrent_openpyn_version: "3.0.0"
 torrent_flexget_version: "v3.1.137"
 
+torrent_nordvpn_country: "de"
+
 # Force mono instead of jackett for ARMv7+
 torrent_jackett_use_mono: false
 
