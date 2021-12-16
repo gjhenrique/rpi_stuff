@@ -20,7 +20,8 @@
 - name: Run flexget
   become: true
   become_user: torrent
-  shell: "flexget execute --task move-movies"
+  command: "flexget execute --task move-movies"
+  changed_when: false
   args:
     chdir: "/home/torrent/flexget"
 
