@@ -14,7 +14,7 @@
     src: transmission-daemon-custom.service.j2
     dest: /lib/systemd/system/transmission-daemon-custom.service
     mode: '0644'
-  notify: reload transmission
+  notify: restart transmission
 
 - name: Enable/Start transmission service
   systemd:

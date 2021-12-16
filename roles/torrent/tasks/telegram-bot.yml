@@ -21,7 +21,7 @@
     force: true
     mode: '0755'
   when: "'x86_64' in ansible_architecture and torrent_telegram_token is defined and install_bot"
-  notify: 'reload telegram-bot'
+  notify: 'restart telegram-bot'
 
 - name: Download armv6 bot binary
   get_url:
@@ -29,14 +29,14 @@
     dest: /usr/bin/telegram-bot
     mode: '0755'
   when: "'arm' in ansible_architecture and torrent_telegram_token is defined"
-  notify: 'reload telegram-bot'
+  notify: 'restart telegram-bot'
 
 - name: Copy telegram-bot service file
   template:
     src: telegram-bot.service.j2
     dest: /lib/systemd/system/telegram-bot.service
     mode: '0644'
-  notify: 'reload telegram-bot'
+  notify: 'restart telegram-bot'
   no_log: true
   when: 'torrent_telegram_token is defined'
 

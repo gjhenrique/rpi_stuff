@@ -36,4 +36,4 @@
     dest: /lib/systemd/system/jackett.service
     mode: '0644'
   notify:
-    - reload jackett
+    - restart jackett

@@ -13,7 +13,7 @@
     daemon_reload: true
     state: restarted
 
-- name: reload transmission
+- name: restart transmission
   systemd:
     name: transmission-daemon-custom
     daemon_reload: true
@@ -28,21 +28,21 @@
     state: restarted
   listen: 'restart torrent-cage'
 
-- name: reload jackett
+- name: restart jackett
   systemd:
     name: jackett
     daemon_reload: true
     state: restarted
   listen: 'restart torrent-cage'
 
-- name: reload flexget
+- name: restart flexget
   systemd:
     name: flexget
     daemon_reload: true
     state: restarted
   listen: 'restart torrent-cage'
 
-- name: reload telegram-bot
+- name: restart telegram-bot
   systemd:
     name: telegram-bot
     daemon_reload: true

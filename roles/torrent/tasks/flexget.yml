@@ -62,7 +62,7 @@
     dest: /home/torrent/flexget/config.yml
     mode: '0644'
   notify:
-    - reload flexget
+    - restart flexget
 
 - name: Copy flexget vars file
   become: true
@@ -73,7 +73,7 @@
     mode: '0644'
   no_log: true
   notify:
-    - reload flexget
+    - restart flexget
 
 - name: Copy flexget service file
   copy:
@@ -81,7 +81,7 @@
     dest: /lib/systemd/system/flexget.service
     mode: '0644'
   notify:
-    - reload flexget
+    - restart flexget
 
 - name: Ensure flexget is started/enabled
   become: true
