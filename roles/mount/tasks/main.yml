@@ -1,13 +1,4 @@
 ---
-- name: Create mount local directories
-  become: true
-  become_user: "{{ item.user | default('root') }}"
-  file:
-    path: "{{ item.mount_path }}"
-    state: directory
-    mode: '0755'
-  loop: "{{ mount_paths }}"
-
 - name: Fail when mount_path has spaces
   fail:
     msg: "This role doesn't support mount points with spaces. Tried to mount {{ item.mount_path }}"
@@ -36,4 +27,12 @@
     state: started
   vars:
     file_systemd: "{{ item.mount_path[1:].split('/') | join('-') }}"
+  loop: "{{ mount_paths }}"
+
+- name: Change ownership to specified user
+  file:
+    path: "{{ item.mount_path }}"
+    owner: "{{ item.user }}"
+    recurse: true
+  when: "item.user is defined"
   loop: "{{ mount_paths }}"

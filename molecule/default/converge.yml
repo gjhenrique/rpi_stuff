@@ -44,3 +44,4 @@
         depends: /mnt/dir1
         type: None
         options: bind
+        user: mount

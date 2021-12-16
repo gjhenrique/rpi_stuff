@@ -2,13 +2,18 @@
 - name: Prepare tasks
   hosts: all
   tasks:
-    - name: "Create directory"
+    - name: Create mount user
+      user:
+        name: mount
+        uid: 1200
+
+    - name: Create directory for mount tests
       file:
         path: '/tmp/dir1/dir2'
         state: directory
         mode: '0755'
 
-    - name: "Create a file inside directory"
+    - name: Create a file inside the mount directory
       file:
         path: '/tmp/dir1/dir2/file'
         mode: '0644'

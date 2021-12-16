@@ -217,6 +217,10 @@
       assert:
         that: mount2_result.stat.exists
 
+    - name: Check that it belongs to mount user
+      assert:
+        that: mount2_result.stat.uid == 1200
+
     - name: Check that mount1 is enabled
       command: systemctl is-enabled mnt-dir1.mount
       changed_when: false
