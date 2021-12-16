@@ -5,29 +5,15 @@ torrent_cage_main_interface: "{{ ansible_default_ipv4.interface }}"
 torrent_cage_host_ip: "10.44.44.1"
 torrent_cage_torrent_ip: "10.44.44.2"
 
-torrent_jackett_version: "v0.18.385"
+torrent_jackett_version: "v0.20.172"
 torrent_bot_version: "v0.3.2"
 torrent_openpyn_version: "3.0.0"
-torrent_flexget_version: "v3.1.137"
+torrent_flexget_version: "v3.2.4"
+torrent_pytz_version: "v2021.3"
+
+torrent_transmission_ip: '10.44.44.2'
 
 torrent_nordvpn_country: "de"
 
 # Force mono instead of jackett for ARMv7+
 torrent_jackett_use_mono: false
-
-torrent_flexget_server_host: 'localhost'
-torrent_flexget_server_username: 'torrent'
-torrent_flexget_server_password: 'password'
-torrent_flexget_server_tv_path: './TV'
-torrent_flexget_server_movie_path: './Movies'
-# By default, listing providers that don't need authentication
-# Although opensubtitles is the best one, but ti needs credentials
-torrent_flexget_subtitle_providers: ['podnapisi', 'thesubdb', 'tvsubtitles']
-torrent_flexget_subtitle_langs: [eng]
-torrent_flexget_subtitle_authentication:
-  opensubtitles:
-    username: User
-    password: Password
-  legendastv:
-    username: User
-    password: Password

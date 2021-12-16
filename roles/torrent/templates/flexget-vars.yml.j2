@@ -6,29 +6,12 @@ rss:
   tv_url: {{ torrent_flexget_rss }}
 
 torrent:
-  tv_path: "/home/torrent/media/torrent/TV"
-  temp_tv_path: "/home/torrent/media/temp/TV"
-  movie_path: "/home/torrent/media/torrent/Movies"
-  temp_movie_path: "/home/torrent/media/temp/Movies"
-
-sftp:
-  host: {{ torrent_flexget_server_host }}
-  username: {{ torrent_flexget_server_username }}
-  password: {{ torrent_flexget_server_password }}
-  tv_path: {{ torrent_flexget_server_tv_path }}
-  movie_path: {{ torrent_flexget_server_movie_path }}
+  torrent_tv_path: "/home/torrent/media/torrent/TV"
+  tv_path: "/home/torrent/media/TV"
+  torrent_movie_path: "/home/torrent/media/torrent/Movies"
+  movie_path: "/home/torrent/media/Movies"
 
 transmission:
   username: {{ torrent_transmission_user }}
   password: {{ torrent_transmission_password }}
-
-subliminal:
-  providers: {{ torrent_flexget_subtitle_providers }}
-  langs: {{ torrent_flexget_subtitle_langs }}
-  authentication:
-    opensubtitles:
-      username: {{ torrent_flexget_subtitle_authentication.opensubtitles.username | default('') }}
-      password: {{ torrent_flexget_subtitle_authentication.opensubtitles.password | default('') }}
-    legendastv:
-      username: {{ torrent_flexget_subtitle_authentication.legendastv.username | default('') }}
-      password: {{ torrent_flexget_subtitle_authentication.legendastv.password | default('' )}}
+  ip: {{ torrent_transmission_ip }}

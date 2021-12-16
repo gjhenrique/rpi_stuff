@@ -4,7 +4,7 @@ variables: vars.yml
 templates:
   torrent:
     transmission:
-      host: localhost
+      host: "{? transmission.ip ?}"
       port: 9091
       ratio: 1
       path: "{{ torrent_path }}"
@@ -22,20 +22,6 @@ templates:
               disable_previews: false
               recipients:
                 - group: "{? telegram.group_name ?}"
-  subtitle:
-    accept_all: true
-    seen: local
-    subliminal:
-      providers: "{? subliminal.providers ?}"
-      languages: "{? subliminal.langs ?}"
-      single: false
-      authentication:
-        opensubtitles:
-          username: "{? subliminal.authentication.opensubtitles.username ?}"
-          password: "{? subliminal.authentication.opensubtitles.password ?}"
-        legendastv:
-          username: "{? subliminal.authentication.legendastv.username ?}"
-          password: "{? subliminal.authentication.legendastv.password ?}"
   rename-serie-name:
     set:
       trakt_series_name: "{{ trakt_series_name | replace('&', 'and') | replace(':', '')}}"
@@ -47,17 +33,17 @@ tasks:
     all_series: true
     trakt_lookup: true
     set:
-      torrent_path: "{? torrent.tv_path ?}"
+      torrent_path: "{? torrent.torrent_tv_path ?}"
       notification_message: "🧲: {{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode | pad(2) }}"
     template:
       - torrent
       - notification
 
-  move-series-local:
+  move-series:
     priority: 2
     disable: [seen, seen_info_hash, retry_failed]
     filesystem:
-      path: "{? torrent.tv_path ?}"
+      path: "{? torrent.torrent_tv_path ?}"
       recursive: true
       regexp: '.*\.(avi|mkv|mp4)$'
       retrieve: files
@@ -69,45 +55,16 @@ tasks:
       - trakt_series_name == None: reject
       - trakt_season == None: reject
     template:
-      - rename-serie-name
-    move:
-      to: "{? torrent.temp_tv_path ?}"
-      rename: "{{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode|pad(2) }}"
-
-  download-subtitle-series:
-    priority: 3
-    filesystem:
-      path: "{? torrent.temp_tv_path ?}"
-      recursive: true
-      regexp: '.*\.(avi|mkv|mp4)$'
-      retrieve: files
-    template:
-      - subtitle
-
-  move-series-server:
-    priority: 4
-    filesystem:
-      path: "{? torrent.temp_tv_path ?}"
-      retrieve: files
-    disable: [seen, seen_info_hash, retry_failed]
-    accept_all: true
-    trakt_lookup: true
-    all_series:
-      parse_only: true
-    set:
-      notification_message: "✅: {{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode|pad(2) }}"
-    template:
       - notification
       - rename-serie-name
-    sftp_upload:
-      host: "{? sftp.host ?}"
-      username: "{? sftp.username ?}"
-      password: "{? sftp.password ?}"
-      to: "{? sftp.tv_path ?}/{{ trakt_series_name }}/S{{ trakt_season | pad(2) }}"
-      delete_origin: true
+    set:
+      notification_message: "✅: {{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode|pad(2) }}"
+    move:
+      to: "{? torrent.tv_path ?}/{{ trakt_series_name }}/s{{ trakt_season|pad(2) }}"
+      rename: "{{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode|pad(2) }}"
 
   move-movies:
-    priority: 5
+    priority: 3
     disable: [seen, seen_info_hash, retry_failed]
     regexp:
       from: title
@@ -118,54 +75,27 @@ tasks:
         - (s|S)ample
         - Featurettes
     filesystem:
-      path: "{? torrent.movie_path ?}"
-      recursive: true
-      regexp: '.*\.(avi|mkv|mp4|srt)$'
-      retrieve: files
-    accept_all: true
-    imdb_lookup: true
-    if:
-      - imdb_name == None: reject
-    move:
-      to: "{? torrent.temp_movie_path ?}"
-      rename: '{{ imdb_name }} ({{ imdb_year }})'
-
-  download-subtitle-movies:
-    priority: 6
-    filesystem:
-      path: "{? torrent.temp_movie_path ?}"
+      path: "{? torrent.torrent_movie_path ?}"
       recursive: true
       regexp: '.*\.(avi|mkv|mp4)$'
       retrieve: files
-    template:
-      - subtitle
-
-  move-movies-server:
-    priority: 7
-    filesystem:
-      path: "{? torrent.temp_movie_path ?}"
-      retrieve: files
-    disable: [seen, seen_info_hash, retry_failed]
     accept_all: true
     imdb_lookup: true
-    all_series:
-      parse_only: true
-    set:
-      notification_message: "✅: {{ imdb_name }} ({{ imdb_year }})"
     template:
       - notification
-    sftp_upload:
-      host: "{? sftp.host ?}"
-      username: "{? sftp.username ?}"
-      password: "{? sftp.password ?}"
-      to: "{? sftp.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})"
-      delete_origin: true
+    if:
+      - imdb_name == None: reject
+    set:
+      notification_message: "✅: {{ imdb_name }} ({{ imdb_year }})"
+    move:
+      to: "{? torrent.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})"
+      rename: '{{ imdb_name }} ({{ imdb_year }})'
 
   delete-transmission:
-    priority: 6
+    priority: 4
     from_transmission:
       only_complete: true
-      host: localhost
+      host: "{? transmission.ip ?}"
       port: 9091
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
@@ -176,7 +106,7 @@ tasks:
       - not transmission_idle_limit_ok: reject
     transmission:
       action: remove
-      host: localhost
+      host: "{? transmission.ip ?}"
       port: 9091
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
