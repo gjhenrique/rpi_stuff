@@ -1,0 +1,40 @@
+---
+- name: Stop telegram-bot
+  systemd:
+    name: telegram-bot
+    state: stopped
+
+- name: Stop flexget
+  systemd:
+    name: flexget
+    state: stopped
+
+- name: Touch Matrix movie
+  become: true
+  become_user: torrent
+  file:
+    path: '/home/torrent/media/torrent/Movies/Matrix (1999).mkv'
+    mode: '0644'
+    state: touch
+
+- name: Run flexget
+  become: true
+  become_user: torrent
+  shell: "flexget execute --task move-movies"
+  args:
+    chdir: "/home/torrent/flexget"
+
+- name: Start telegram-bot
+  systemd:
+    name: telegram-bot
+    state: started
+
+- name: Start flexget
+  systemd:
+    name: flexget
+    state: started
+
+- name: Remove Matrix temp file
+  file:
+    path: "/home/torrent/media/Movies/The Matrix (1999)"
+    state: absent
