@@ -2,7 +2,7 @@
 # Ispired by:
 # https://github.com/damex/ansible-collections-systemd/blob/21ec44d2fba75d2a299d4fea2c12bd0091c46026/.github/workflows/galaxy.yml
 name: Publish to Ansible Galaxy
-on: # yamllint disable-line rule:truthy
+on:  # yamllint disable-line rule:truthy
   push:
     tags:
       - v*
