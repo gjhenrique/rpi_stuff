@@ -1,56 +1,39 @@
 ---
 ### REQUIRED
 
-# The name of the collection. Has the same character restrictions as 'namespace'
 namespace: gjhenrique
 
-# The version of the collection. Must be compatible with semantic versioning
-name: stuff_rpi
+name: rpi_stuff
 
-# The version of the collection. Must be compatible with semantic versioning
 version: 0.1.0
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
 
-# A list of the collection's content authors. Can be just the name or in the format 'Full Name <email> (url)
-# @nicks:irc/im.site#channel'
 authors:
   - Guilherme Henrique <gjhenrique@gmail.com>
 
-
-### OPTIONAL but strongly recommended
-
-# A short summary description of the collection
-description: Stuff to do with raspberry pi
+description: Stuff to do with an old and retired raspberry pi
 
 license_file: 'LICENSE'
 
-# A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
-# requirements as 'namespace' and 'name'
 tags:
   - raspberry
+  - rpi
   - pi
   - torrent
+  - transmission
+  - jackett
+  - flexget
+  - emby
   - nordvpn
   - duckdns
   - dynamicdns
   - syncthing
 
-# Collections that this collection requires to be installed for it to be usable. The key of the dict is the
-# collection label 'namespace.name'. The value is a version range
-# L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
-# range specifiers can be set and are separated by ','
 dependencies: {}
 
-# The URL of the originating SCM repository
-repository: https://github.com/gjhenrique/stuff-rpi
-
-# The URL to any online docs
-documentation: https://github.com/gjhenrique/stuff-rpi
-
-# The URL to the homepage of the collection/project
-homepage: https://github.com/gjhenrique/stuff-rpi
-
-# The URL to the collection issue tracker
-issues: https://github.com/gjhenrique/stuff-rpi/issues
+repository: https://github.com/gjhenrique/rpi_stuff
+documentation: https://github.com/gjhenrique/rpi_stuff
+homepage: https://github.com/gjhenrique/rpi_stuff
+issues: https://github.com/gjhenrique/rpi_stuff/issues
