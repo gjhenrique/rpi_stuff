@@ -4,21 +4,22 @@
     update_cache: true
     name: transmission-daemon
 
-- name: Stop vanilla transmission service
-  systemd:
-    name: transmission-daemon
-    state: stopped
+- name: Create transmission override directory
+  file:
+    path: /etc/systemd/system/transmission-daemon.service.d
+    state: directory
+    mode: '0755'
 
-- name: Copy transmission custom systemd service
+- name: Copy transmission override systemd service
   template:
-    src: transmission-daemon-custom.service.j2
-    dest: /lib/systemd/system/transmission-daemon-custom.service
+    src: transmission-override.conf.j2
+    dest: /etc/systemd/system/transmission-daemon.service.d/transmission-override.conf
     mode: '0644'
   notify: restart transmission
 
 - name: Enable/Start transmission service
   systemd:
-    name: transmission-daemon-custom
+    name: transmission-daemon
     daemon_reload: true
     enabled: true
     state: started

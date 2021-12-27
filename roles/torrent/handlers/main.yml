@@ -15,7 +15,7 @@
 
 - name: restart transmission
   systemd:
-    name: transmission-daemon-custom
+    name: transmission-daemon
     daemon_reload: true
     state: restarted
   listen: 'restart torrent-cage'
