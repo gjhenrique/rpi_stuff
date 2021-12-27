@@ -22,11 +22,12 @@ ansible-playbook --extra-vars='ansible_user=pi' --extra-vars='ansible_ssh_pass=r
 
 1. (Optional) If you wanna encrypt the contents of secrets.yml to upload to a GitHub repo
 ``` bash
-# Replace "password" with a strong password
-echo "password" > ~/.ansible-vault.txt
-# To encrypt the file
+# To encrypt the file. Store a strong password somewhere safe
 ansible-vault encrypt secrets.yml
 
 # To update or add a new value
 ansible-vault decrypt secrets.yml
 ```
+
+Uncomment the line `vault_password_file` on `ansible.cfg` if you don't want to type the password every time.
+The file `$HOME/.ansible-vault.txt` must contain the password.
