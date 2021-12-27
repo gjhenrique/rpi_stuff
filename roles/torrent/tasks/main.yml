@@ -17,6 +17,7 @@
 
 - name: Include openpyn
   include: openpyn.yml
+  when: "torrent_openpyn_disabled is false and torrent_cage_non_enforcing is false"
   tags:
     - openpyn
     - notest

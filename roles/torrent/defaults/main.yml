@@ -1,9 +1,11 @@
 ---
 torrent_user_gid_owner: "1500"
 
+torrent_cage_non_enforcing: false
 torrent_cage_main_interface: "{{ ansible_default_ipv4.interface }}"
 torrent_cage_host_ip: "10.44.44.1"
 torrent_cage_torrent_ip: "10.44.44.2"
+torrent_cage_group: "{{ 'torrent' if torrent_cage_non_enforcing else 'vpn' }}"
 
 torrent_jackett_version: "v0.20.172"
 torrent_jackett_ip: "{{ torrent_cage_torrent_ip }}"
@@ -15,6 +17,8 @@ torrent_pytz_version: "v2021.3"
 torrent_transmission_ip: "{{ torrent_cage_torrent_ip }}"
 torrent_transmission_username: 'admin'
 torrent_transmission_password: 'admin'
+
+torrent_openpyn_disabled: false
 
 torrent_nordvpn_country: "de"
 

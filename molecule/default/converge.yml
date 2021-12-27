@@ -31,6 +31,8 @@
     torrent_transmission_user: 'TransmissionUser'
     torrent_transmission_password: 'TransmissionPassword'
 
+    torrent_cage_non_enforcing: false
+
     torrent_flexget_rss: 'https://rss.com'
     torrent_flexget_telegram_receiver: 'Torrents'
 

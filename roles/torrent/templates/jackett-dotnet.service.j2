@@ -5,12 +5,12 @@ After=network-online.target torrent-cage.service
 [Service]
 NetworkNamespacePath=/run/netns/torrent
 User=torrent
-Group=vpn
+Group={{ torrent_cage_group }}
 Restart=always
 RestartSec=5
 Type=simple
 Environment=XDG_CONFIG_HOME=/home/torrent/.config/jackett
-ExecStart=mono --debug /usr/lib/jackett/JackettConsole.exe --NoRestart --NoUpdates --DataFolder /home/torrent/.config/jackett
+ExecStart=/usr/lib/jackett/jackett --NoRestart --NoUpdates --DataFolder /home/torrent/.config/jackett
 TimeoutStopSec=20
 
 [Install]

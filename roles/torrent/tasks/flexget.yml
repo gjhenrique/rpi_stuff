@@ -76,8 +76,8 @@
     - restart flexget
 
 - name: Copy flexget service file
-  copy:
-    src: flexget.service
+  template:
+    src: flexget.service.j2
     dest: /lib/systemd/system/flexget.service
     mode: '0644'
   notify:

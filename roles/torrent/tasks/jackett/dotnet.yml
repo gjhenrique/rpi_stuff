@@ -36,8 +36,8 @@
   when: install_jackett is defined
 
 - name: Deploy jackett service file
-  copy:
-    src: jackett-dotnet.service
+  template:
+    src: jackett-dotnet.service.j2
     dest: /lib/systemd/system/jackett.service
     mode: '0644'
   notify:

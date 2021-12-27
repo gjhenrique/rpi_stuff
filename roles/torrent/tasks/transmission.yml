@@ -19,6 +19,7 @@
 - name: Enable/Start transmission service
   systemd:
     name: transmission-daemon-custom
+    daemon_reload: true
     enabled: true
     state: started
 
