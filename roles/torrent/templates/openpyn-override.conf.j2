@@ -3,6 +3,7 @@ After=network-online.target torrent-cage.service
 
 [Service]
 NetworkNamespacePath=/run/netns/torrent
+BindPaths=/etc/netns/torrent/resolv.conf:/etc/resolv.conf
 ExecStart=
 ExecStart=/usr/local/bin/openpyn --skip-dns-patch {{ torrent_nordvpn_country }}
 StandardOutput=journal

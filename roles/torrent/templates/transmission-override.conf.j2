@@ -3,6 +3,7 @@ After=network-online.target torrent-cage.service
 
 [Service]
 NetworkNamespacePath=/run/netns/torrent
+BindPaths=/etc/netns/torrent/resolv.conf:/etc/resolv.conf
 User=torrent
 Group={{ torrent_cage_group }}
 ExecStart=
