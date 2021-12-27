@@ -1,0 +1,8 @@
+---
+enable_duckdns: false
+enable_syncthing: false
+enable_torrent: false
+enable_emby: false
+enable_mount: false
+
+emby_user: "torrent"

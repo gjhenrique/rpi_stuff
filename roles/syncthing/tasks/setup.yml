@@ -47,8 +47,8 @@
   vars:
     config_values:
       gui:
-        user: "{{ syncthing_http_user | mandatory }}"
-        password: "{{ syncthing_http_password | mandatory }}"
+        user: "{{ syncthing_http_user | default('admin') }}"
+        password: "{{ syncthing_http_password | default('admin') }}"
         useTLS: true
         address: "0.0.0.0:8384"
 

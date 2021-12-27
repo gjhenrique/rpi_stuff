@@ -5,32 +5,32 @@
 
 Collection of opinionated Ansible roles to automate some stuff I use in my day-to-day in a Raspberry Pi.
 
-The following roles are supported:
-- syncthing to synchronize pictures, documents, files
-- DuckDNS to bind public IP to a DNS entry
+This repo brings the following features:
+- syncthing to synchronize files
+- DuckDNS to bind the transient ISP external IP to a DNS entry
 - secure and easy torrent download
-- emby for watching media
-- external disks mounted automatically
+- emby for media
+- external disks mounted declarativelly
 
-## Why not k*n*s or docker(-swarm)?
+## Why not k*n*s or docker-swarm?
 Isn't Ansible deprecated already?!
-Container orchestration is all the rage today, but it's impossible to add it for older versions, and newer versions are not that powerful to have it there.
-When something goes awry, it's simpler to troubleshoot the service directly instead of going through another layer.
+Container orchestration is all the rage today, but older versions are not powerful enought to support them.
+When something goes awry, it's simpler to troubleshoot the service directly instead of going through another abstraction layer.
 Shipping in containers is more straightforward, though.
-This repo depends either on release pages or the OS repo to install these programs, which is also a manual step.
+Because this repo depends either on release pages or the OS repo to install these programs.
 
 These roles use systemd to configure autostart, timers and mount points.
-A counter-argument is that systemd is pretty complex, but at least it's what Raspberry Pi OS/Debian supports by default. It's pretty lightweight, even for older Raspberry Pi versions.
+A counter-argument is that systemd is pretty complex, but at least it's what Raspberry Pi OS/Debian supports by default, and it's pretty lightweight, even for older Raspberry Pi versions.
 
-Ansible also brings tests with [molecule](https://molecule.readthedocs.io/en/latest/) and its [podman-plugin](https://github.com/ansible-community/molecule-podman) to ensure that newer versions won't break code
+With Ansible, it's possible to have tests with [molecule](https://molecule.readthedocs.io/en/latest/) and its [podman-plugin](https://github.com/ansible-community/molecule-podman) to ensure that changes won't break code.
 
 ## Support
-These roles run on Raspberry Pi OS (old raspbian) Bulleye. The devices are rpi1 (armv6), rpi2/3/4 (armv7) and rpi4 (aarch64).
+These roles run on Raspberry Pi OS (old raspbian) Bullseye. The devices are rpi1 (armv6), rpi2/3/4 (armv7) and rpi4 (aarch64).
 This repo also supports Debian Bullseye x86.
-Although I don't use it, the molecule tests are running in the ubiquitous x86. So it (probably) works.
+Although I don't use a x86 machine, the molecule tests are running in the ubiquitous x86. So it (probably) works.
 
 I dogfooded these roles on a Raspberry Pi 1 for approximately one year.
-I don't recommend this because the CPU was the bottleneck when encrypting packets by the VPN and transmission.
+I don't recommend this because the CPU was the bottleneck when encrypting packets by the VPN.
 But, it's possible nevertheless if there is no other option.
 
 ## Roles
@@ -48,16 +48,16 @@ Installs [Syncthing](https://syncthing.net)
 ### Torrent
 Collection of tools to automate Torrent related software.
 
-For now, only NordVPN with [openpyn](https://github.com/jotyGill/openpyn-nordvpn), but it's the most accessible VPN there is.
+For now, only NordVPN with [openpyn](https://github.com/jotyGill/openpyn-nordvpn), but it's the most affordable VPN there is.
 
-Because NordVPN is shady and might decrease the Internet throughput, the Torrent traffic is isolated into its own network namespace, and any traffic outside of the VPN is denied based on some iptables rules.
+Because NordVPN is shady and might handicap the Internet throughput, the Torrent traffic is isolated into its own network namespace, and any traffic outside of the VPN is denied based on some iptables rules.
 
 The usual traffic from other programs is sent via the unencrypted interface.
-Install  Mullvad or ProtonVPN in the default network namespace instead if you want privacy
+Run Mullvad or ProtonVPN in the default network namespace instead if privacy is a goal.
 
 Here are some set of features:
-- iptables rules to kill traffic when the VPN is off.
-- Molecule tests to guarantee that the firewall is not allowing it, so no regression is introduced.
+- iptables rules to kill torrent traffic when the VPN is off.
+- Molecule tests to guarantee that the firewall is doing its job, so no regression is introduced.
 - Run all torrent programs in an isolated network namespace
 - Cloudflare DNS (1.1.1.1) instead of the default NordVPN ones.
 - [openpyn](https://github.com/jotyGill/openpyn-nordvpn) connecting with `OpenVPN` directly in NordVPN servers. The official client is too intrusive.
@@ -66,17 +66,19 @@ Here are some set of features:
 - [Telegram bot](https://github.com/gjhenrique/telegram-bot-torrents/) to search torrents from Jackett and send them to transmission
 - out-of-box HTTPS with Nginx to access transmission and jacket (self-signed certificate)
 - [flexget](https://flexget.com/) to download new TV Shows with an RSS URL, rename movies and TV shows to a pretty format, and remove torrents when they're finished.
+- option to bring your own vpn. As long as it's running in the torrent namespace, it's protected
+- option to allow torrrent traffic without VPN. Useful for countries that don't impose fines for torrent traffic
 
 ### Emby
 Plex is the most popular streaming service today, so it would be the safest choice.
-But, at least, in my experience, the client always needs to transcode (translate the source video to a format the clients can stream) most videos in my fire stick, even though direct play is possible.
+But, at least, in my experience, the client always needs to transcode (translate the source video to a format the clients can stream) all videos in my fire stick, even though the device can play it directly.
 Besides, Plex doesn't look like it's very interested in supporting Raspberry PI.
-Just look at the amount of +1s in this [forum request](https://forums.plex.tv/t/hardware-transcoding-for-raspberry-pi-4-plex-media-server/538779/210) to support hardware transcoding and no reply from their engineers.
+Just look at the amount of +1s in this [forum request](https://forums.plex.tv/t/hardware-transcoding-for-raspberry-pi-4-plex-media-server/538779/210) to support hardware transcoding and no reply from any employee.
 Their bread and butter now apparently is DVR and adding B-movies into its platform.
 
 The competitor [emby](https://emby.media/) allows the client to play the videos directly, and no transcoding is needed.
 That moves the bottleneck to the network.
-I stream even 4k videos smoothly from the weak Raspberry pi in my Fire Stick.
+I stream even 4k videos smoothly from the weak Raspberry Pi in my Fire Stick.
 
 If your client is not capable enough and you ever need to transcode in a Raspberry PI, even 1080p movies, you're in trouble.
 Emby allegedly supports hardware transcoding via OpenMAX, but even Raspberry Pi engineers advocate for the newer V4L2 API.
@@ -102,10 +104,10 @@ mount_paths:
     user: user
 ```
 
-## Related projects
+## Related
 - Demo: In there, you'll put all of your credentials and use the roles of this collection to automate everything
-- mine: My settings. The credentials are encrypted.
-- telegram-bot-torrents: Bot that downloads stuff
+- Torrent role. 
+- mine: How . The credentials are encrypted
 
 ## Roadmap
 - [ ] moleculre-libvirt to test ARM architecture with  qemu/KVM. Graviton 2 in AWS doesn't support nested virtualization. Therefore, emulating from x86 to ARM is unfeasible.

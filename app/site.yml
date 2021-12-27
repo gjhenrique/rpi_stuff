@@ -1,0 +1,19 @@
+---
+- hosts: rpis
+  become: true
+  collections:
+    - gjhenrique.rpi_stuff
+  vars_files:
+    - secrets.yml
+    - vars.yml
+  roles:
+    - role: duckdns
+      tags: duckdns
+    - role: syncthing
+      tags: syncthing
+    - role: torrent
+      tags: torrent
+    - role: emby
+      tags: emby
+    - role: mount
+      tags: mount
