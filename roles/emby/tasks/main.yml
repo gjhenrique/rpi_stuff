@@ -9,7 +9,7 @@
     emby_architecture: "arm64"
   when: "'aarch64' in ansible_architecture"
 
-- name: Register architecture - (aarch64)
+- name: Register architecture - (armv7)
   set_fact:
     emby_architecture: "armhf"
   when: "'armv7l' in ansible_architecture"

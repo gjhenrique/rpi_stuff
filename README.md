@@ -70,9 +70,6 @@ Here are some set of features:
 ### Emby
 Plex is the most popular streaming service today, so it would be the safest choice.
 But, at least, in my experience, the client always needs to transcode (translate the source video to a format the clients can stream) all videos in my fire stick, even though the device can play it directly.
-Besides, Plex doesn't look like it's very interested in supporting Raspberry PI.
-Just look at the amount of +1s in this [forum request](https://forums.plex.tv/t/hardware-transcoding-for-raspberry-pi-4-plex-media-server/538779/210) to support hardware transcoding and no reply from any employee.
-Their bread and butter now apparently is DVR and adding B-movies into its platform.
 
 The competitor [emby](https://emby.media/) allows the client to play the videos directly, and no transcoding is needed.
 That moves the bottleneck to the network.
@@ -85,7 +82,7 @@ If I need it in the future, it's easier to send the video to my desktop machine 
 
 In short, avoid transcoding and invest in an adequate device that supports the most used video and audio codecs.
 
-I tried to use its open-source fork [jellyfin](https://jellyfin.org/), but the client in the fire stick had some issues, but it's probably a good idea to support that if needed.
+I tried to use its open-source fork [jellyfin](https://jellyfin.org/), but the client in the Fire Stick had some issues, but it's probably a good idea to support that if needed.
 
 ### mount
 SD Cards are slower, more expensive and get corrupted more quickly when compared with HDs or SSDs.

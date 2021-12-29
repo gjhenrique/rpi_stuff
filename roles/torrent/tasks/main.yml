@@ -33,6 +33,7 @@
 - name: Include telegram-bot
   include: telegram-bot.yml
   tags: telegram-bot
+  when: torrent_telegram_token is defined
 
 - name: Manual task to include telegram token in Flexget database
   include: telegram-flexget-fix.yml
