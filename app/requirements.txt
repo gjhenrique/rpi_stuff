@@ -1,6 +1,6 @@
 collections:
   - name: gjhenrique.rpi_stuff
-    version: 0.1.1
+    version: 0.1.2
 
 #   - name: https://github.com/gjhenrique/rpi_stuff.git
 #     type: git
