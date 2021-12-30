@@ -46,9 +46,9 @@ Installs [Syncthing](https://syncthing.net)
 ### Torrent
 Collection of tools to automate Torrent related software.
 
-For now, only NordVPN with [openpyn](https://github.com/jotyGill/openpyn-nordvpn), but it's the most affordable VPN there is.
+Only NordVPN with [openpyn](https://github.com/jotyGill/openpyn-nordvpn) is supported because it's the most affordable VPN.
 
-Because NordVPN is shady and might handicap the Internet throughput, the Torrent traffic is isolated into its own network namespace. Any traffic outside of the VPN is denied based on some iptables rules.
+NordVPN is shady and might handicap the Internet throughput, so the Torrent traffic is isolated into its own network namespace. Any traffic outside of the VPN is denied based on some iptables rules.
 
 The usual traffic from other programs is sent via the unencrypted interface.
 Run Mullvad or ProtonVPN in the default network namespace instead if privacy is a goal.
@@ -88,7 +88,7 @@ I tried to use its open-source fork [jellyfin](https://jellyfin.org/), but the c
 SD Cards are slower, more expensive and get corrupted more quickly when compared with HDs or SSDs.
 A typical setup is to plug a disk in the USB port and use a bigger and more reliable storage.
 
-This role allows you to mount the devices with mount points controller by systemd.
+This role allows you to mount the devices with mount points controlled by systemd.
 For example, every mount operation, even samba or NFS mounts, is possible with this role.
 
 ``` yaml
@@ -107,6 +107,6 @@ mount_paths:
 
 ## Roadmap
 - [ ] molecule-libvirt to test ARM "computers" with qemu/KVM. Graviton 2 in AWS doesn't support nested virtualization. So, emulating from x86 to ARM is unfeasible.
-We need wait for the newer Graviton 3 or use the expensive aws metal arm. Another alternative is to use a raspberry pi 4B to test it. Open to ideas on this one.
+We need to wait for the newer Graviton 3 or use the expensive AWS bare metal ARM-based instances. Another alternative is to use a raspberry pi 4B to test it. Open to ideas on this one.
 - [ ] pihole
 - [ ] Backup settings and documents to cloud with rclone
