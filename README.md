@@ -100,12 +100,13 @@ mount_paths:
 ```
 
 ## Related
-- Demo: In there, you'll put all of your credentials and use the roles of this collection to automate everything
-- Torrent role. 
-- mine: How . The credentials are encrypted
+- [Demo app](./app): A sample playbook pointing to latest tag. It's the recommended way to configure your own servers.
+- [Torrent role](./roles/torrent): Manual steps required to have a functioning infrastructure
+- [Private Configuration](https://github.com/gjhenrique/rpi_stuff_private): The repo I'm using to control my Raspberry Pi. The secrets are encrypted.
+- [telegram-bot-torrents](https://github.com/gjhenrique/telegram-bot-torrents): Bot written in rust to search torrents in Jackett and upload them to Transmission
 
 ## Roadmap
-- [ ] molecule-libvirt to test ARM architecture with qemu/KVM. Graviton 2 in AWS doesn't support nested virtualization. Therefore, emulating from x86 to ARM is unfeasible.
-So, we wait for the newer Graviton 3 or use the expensive aws metal arm. Another alternative is to use a raspberry pi 4B to test it.
+- [ ] molecule-libvirt to test ARM "computers" with qemu/KVM. Graviton 2 in AWS doesn't support nested virtualization. So, emulating from x86 to ARM is unfeasible.
+We need wait for the newer Graviton 3 or use the expensive aws metal arm. Another alternative is to use a raspberry pi 4B to test it. Open to ideas on this one.
 - [ ] pihole
 - [ ] Backup settings and documents to cloud with rclone

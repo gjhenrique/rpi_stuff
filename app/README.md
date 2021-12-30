@@ -1,3 +1,5 @@
+## Sample app
+
 This is an ansible task that uses the rpi_stuff as a collection to really install
 
 All roles are disabled by default. Go to file `vars.yml` and enable the roles you're interested in.
