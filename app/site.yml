@@ -9,11 +9,16 @@
   roles:
     - role: duckdns
       tags: duckdns
+      when: enable_duckdns is true
     - role: syncthing
       tags: syncthing
+      when: enable_syncthing is true
     - role: torrent
       tags: torrent
+      when: enable_torrent is true
     - role: emby
       tags: emby
+      when: enable_emby is true
     - role: mount
       tags: mount
+      when: enable_mount is true
