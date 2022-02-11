@@ -1,42 +1,42 @@
 ---
 - name: Include boilerplate
-  include: boilerplate.yml
+  include_tasks: boilerplate.yml
   tags: torrent-boilerplate
 
 - name: Include iptables and network namespace
-  include: torrent-cage.yml
+  include_tasks: torrent-cage.yml
   tags: torrent-cage
 
 - name: Include nginx server
-  include: nginx.yml
+  include_tasks: nginx.yml
   tags: nginx
 
 - name: Include transmission
-  include: transmission.yml
+  include_tasks: transmission.yml
   tags: transmission
 
 - name: Include openpyn
-  include: openpyn.yml
+  include_tasks: openpyn.yml
   when: "torrent_openpyn_disabled is false and torrent_cage_non_enforcing is false"
   tags:
     - openpyn
     - notest
 
 - name: Include jackett
-  include: jackett.yml
+  include_tasks: jackett.yml
   tags: jackett
 
 - name: Include flexget
-  include: flexget.yml
+  include_tasks: flexget.yml
   tags: flexget
 
 - name: Include telegram-bot
-  include: telegram-bot.yml
+  include_tasks: telegram-bot.yml
   tags: telegram-bot
   when: torrent_telegram_token is defined
 
 - name: Manual task to include telegram token in Flexget database
-  include: telegram-flexget-fix.yml
+  include_tasks: telegram-flexget-fix.yml
   when: add_telegram_to_flexget | default(False)
   tags:
     - never

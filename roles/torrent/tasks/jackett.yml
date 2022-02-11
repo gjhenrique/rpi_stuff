@@ -12,11 +12,11 @@
   when: "'armv6l' not in ansible_machine and not torrent_jackett_use_mono"
 
 - name: Include mono
-  include: jackett/dotnet.yml
+  include_tasks: jackett/dotnet.yml
   when: not use_mono
 
 - name: Include dotnet jackett
-  include: jackett/mono.yml
+  include_tasks: jackett/mono.yml
   when: use_mono
 
 - name: Copy nginx config file
