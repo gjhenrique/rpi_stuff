@@ -20,18 +20,17 @@
   when: "emby_architecture is not defined"
 
 - name: Register emby_version
-  command: "dpkg -s emby-server | grep '^Version:' | awk '{print $2}'"
+  shell: "dpkg -s emby-server | grep '^Version:' | awk '{print $2}'"
   register: installed_emby_version
   changed_when: false
   ignore_errors: true
-# - name: Check if a new package needs to be installed
 
 - name: Check if emby needs to be installed
   set_fact:
     install_emby: true
   when: (not installed_emby_version.stdout | regex_search(emby_version))
 
-- name: Fail when archictere is not supported
+- name: Fail when architecture is not supported
   fail:
     msg: "Emby architecture {{ emby_archicture not supported }}"
   when: emby_architecture is not defined
@@ -39,6 +38,7 @@
 - name: Install emby version
   apt:
     deb: "https://github.com/MediaBrowser/Emby.Releases/releases/download/{{ emby_version }}/emby-server-deb_{{ emby_version }}_{{ emby_architecture }}.deb"
+    force: true
   when: install_emby is defined and install_emby is true
   notify: 'restart emby-server'
 

@@ -5,7 +5,7 @@
 
 # Following instructions from https://apt.syncthing.net/ to get latest version
 - name: Include syncthing installation
-  include: install.yml
+  include_tasks: install.yml
   tags: syncthing-install
 
 - name: Enable syncthing service
@@ -15,5 +15,5 @@
     state: started
 
 - name: Include syncthing installation
-  include: setup.yml
+  include_tasks: setup.yml
   tags: syncthing-setup
