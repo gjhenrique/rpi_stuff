@@ -28,7 +28,7 @@
 - name: Check if emby needs to be installed
   set_fact:
     install_emby: true
-  when: (not installed_emby_version.stdout | regex_search(emby_version))
+  when: jackett_version.rc != 1 or (installed_emby_version.stdout != emby_version)
 
 - name: Fail when architecture is not supported
   fail:
@@ -37,7 +37,7 @@
 
 - name: Install emby version
   apt:
-    deb: "https://github.com/MediaBrowser/Emby.Releases/releases/download/{{ emby_version }}/emby-server-deb_{{ emby_version }}_{{ emby_architecture }}.deb"
+    deb: "https://github.com/MediaBrowser/Emby.Releases/releases/download/{{ emby_version | replace('-beta', '') }}/emby-server-deb_{{ emby_version | replace('-beta', '') }}_{{ emby_architecture }}.deb"
     force: true
   when: install_emby is defined and install_emby is true
   notify: 'restart emby-server'
