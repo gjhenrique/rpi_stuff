@@ -43,5 +43,5 @@
   apt:
     update_cache: true
     name: jellyfin
-    state: latest
+    state: latest  # noqa 403
   notify: 'restart jellyfin'
