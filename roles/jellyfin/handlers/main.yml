@@ -1,0 +1,6 @@
+---
+- name: restart jellyfin
+  systemd:
+    name: "jellyfin"
+    daemon_reload: true
+    state: restarted

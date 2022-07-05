@@ -185,13 +185,13 @@
       command: systemctl is-enabled telegram-bot
       changed_when: false
 
-- name: Emby
+- name: Jellyfin
   hosts: all
-  tags: emby
+  tags: jellyfin
   tasks:
-    - name: Check if emby-server is running
+    - name: Check if jellyfin server is running
       uri:
-        url: "http://localhost:8096"
+        url: "http://localhost:8096/web/index.html"
         status_code: 200
       changed_when: false
 

@@ -9,7 +9,7 @@ This repo brings the following features:
 - syncthing to synchronize pictures, documents, and notes
 - DuckDNS to bind the transient external IP to a DNS entry
 - secure and easy torrent download
-- emby for media
+- jellyfin for media
 - external disks mounted declaratively
 
 ## Why not k*n*s or docker-swarm?
@@ -67,16 +67,16 @@ Here are some set of features:
 - option to bring your own VPN. As long as it's running in the torrent namespace, it's protected
 - option to allow torrent traffic without VPN. Useful for countries that don't impose fines for torrent traffic
 
-### Emby
+### Jellyfin
 Plex is the most popular streaming service today, so it would be the safest choice.
 But, at least, in my experience, the client always needs to transcode (translate the source video to a format the clients can stream) all videos in my fire stick, even though the device can play it directly.
 
-The competitor [emby](https://emby.media/) allows the client to play the videos directly, and no transcoding is needed.
+The open-source competitor [jellyfin](https://jellyfin.org/) allows the client to play the videos directly, and no transcoding is needed.
 That moves the bottleneck to the network.
 I stream even 4k videos smoothly from the weak Raspberry Pi in my Fire Stick.
 
 If your client is not capable enough and you ever need to transcode in a Raspberry PI, even 1080p movies, you're in trouble.
-Emby allegedly supports hardware transcoding via OpenMAX, but even Raspberry Pi engineers advocate for the newer V4L2 API.
+Jellyfin allegedly supports hardware transcoding via OpenMAX, but even Raspberry Pi engineers advocate for the newer V4L2 API.
 In my case, not even OpenMAX is used for transcoding via CPU kicks in, which provides a poor experience.
 If I need it in the future, it's easier to send the video to my desktop machine and transcode it with `FFmpeg` manually and send the converted video back to the Raspberry Pi.
 
