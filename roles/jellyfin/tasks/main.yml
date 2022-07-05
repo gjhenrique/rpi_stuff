@@ -1,0 +1,47 @@
+---
+- name: Install https transport for apt
+  apt:
+    name:
+      - apt-transport-https
+      - gnupg
+      - lsb-release
+    force: true
+
+- name: Pin syncthing repo
+  copy:
+    dest: /etc/apt/preferences.d/syncthing
+    content: |
+        Package: *
+        Pin: origin apt.syncthing.net
+        Pin-Priority: 990
+    mode: '0644'
+
+- name: Import jellyfin repository key
+  apt_key:
+    url: 'https://repo.jellyfin.org/debian/jellyfin_team.gpg.key'
+    state: present
+
+- name: Add jellyfin repository
+  apt_repository:
+    repo: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}] https://repo.jellyfin.org/debian {{ ansible_distribution_release }} main"
+    state: present
+
+- name: Create default jellyfin override directory
+  file:
+    path: '/etc/systemd/system/jellyfin.service.d'
+    state: 'directory'
+    mode: '0755'
+
+- name: Copy override file
+  template:
+    src: jellyfin-override.conf.j2
+    dest: '/etc/systemd/system/jellyfin.service.d'
+    mode: '0755'
+  notify: 'restart jellyfin'
+
+- name: Install jellyfin repository
+  apt:
+    update_cache: true
+    name: jellyfin
+    state: latest  # noqa 403
+  notify: 'restart jellyfin'

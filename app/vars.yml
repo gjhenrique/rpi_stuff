@@ -2,10 +2,10 @@
 enable_duckdns: false
 enable_syncthing: false
 enable_torrent: false
-enable_emby: false
+enable_jellyfin: false
 enable_mount: false
 
-emby_user: "torrent"
+jellyfin_user: "torrent"
 
 # Bring your own VPN
 # You're responsible to install/autostart the VPN on the torrent namespace

@@ -21,7 +21,7 @@ platforms:
       - 0.0.0.0:9118:9118/TCP
       # syncthing
       - 0.0.0.0:8385:8384/TCP
-      # emby
+      # jellyfin
       - 0.0.0.0:8097:8096/TCP
 provisioner:
   name: ansible

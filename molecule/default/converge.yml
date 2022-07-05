@@ -8,8 +8,8 @@
       tags: syncthing
     - role: ../../roles/torrent
       tags: torrent
-    - role: ../../roles/emby
-      tags: emby
+    - role: ../../roles/jellyfin
+      tags: jellyfin
     - role: ../../roles/mount
       tags: mount
 

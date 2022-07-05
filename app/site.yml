@@ -16,9 +16,9 @@
     - role: torrent
       tags: torrent
       when: enable_torrent is true
-    - role: emby
-      tags: emby
-      when: enable_emby is true
+    - role: jellyfin
+      tags: jellyfin
+      when: enable_jellyfin is true
     - role: mount
       tags: mount
       when: enable_mount is true
