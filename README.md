@@ -12,7 +12,7 @@ This repo brings the following features:
 - jellyfin for media
 - external disks mounted declaratively
 
-## Why not k*n*s or docker-swarm?
+## Why not k*n*s or docker-swarm or <insert your container orchestrator here>?
 Isn't Ansible deprecated already?!
 Container orchestration is all the rage today, but older Raspberry Pi versions are simply not powerful enough to support this abstraction layer.
 Also, for these simple tasks, it's simpler to troubleshoot the service directly when something goes awry.
@@ -20,7 +20,7 @@ Also, for these simple tasks, it's simpler to troubleshoot the service directly 
 These roles use systemd to configure autostart, timers and mount points.
 A counter-argument is that systemd is pretty complex, but at least it's what Raspberry Pi OS/Debian supports by default. It's pretty lightweight, even for older Raspberry Pi versions.
 
-Another advantage is that, with Ansible, it's possible to have tests with [molecule](https://molecule.readthedocs.io/en/latest/) and its [podman-plugin](https://github.com/ansible-community/molecule-podman) to ensure that changes won't break code.
+Another advantage is that, with Ansible, it's possible to have tests with [molecule](https://molecule.readthedocs.io/en/latest/) and its [podman-plugin](https://github.com/ansible-community/molecule-podman) to ensure that new changes won't break functionality.
 
 ## Support
 These roles run on Raspberry Pi OS (old raspbian) Bullseye. The devices are rpi1 (armv6), rpi2/3/4 (armv7) and rpi4 (aarch64).
@@ -82,8 +82,6 @@ If I need it in the future, it's easier to send the video to my desktop machine 
 
 In short, avoid transcoding and invest in an adequate device that supports the most used video and audio codecs.
 
-I tried to use its open-source fork [jellyfin](https://jellyfin.org/), but the client in the Fire Stick had some issues, but it's probably a good idea to support that if needed.
-
 ### mount
 SD Cards are slower, more expensive and get corrupted more quickly when compared with HDs or SSDs.
 A typical setup is to plug a disk in the USB port and use a bigger and more reliable storage.
@@ -102,7 +100,7 @@ mount_paths:
 ## Related
 - [Demo app](./app): A sample playbook pointing to latest tag. It's the recommended way to configure your own servers.
 - [Torrent role](./roles/torrent): Manual steps required to have a functioning infrastructure
-- [Private Configuration](https://github.com/gjhenrique/rpi_stuff_private): The repo I'm using to control my Raspberry Pi. The secrets are encrypted.
+- [Private Configuration](https://github.com/gjhenrique/rpi_stuff_private): The repo I'm using to control my Raspberry Pi. The secrets are encrypted with ansible vault.
 - [telegram-bot-torrents](https://github.com/gjhenrique/telegram-bot-torrents): Bot written in rust to search torrents in Jackett and upload them to Transmission
 
 ## Roadmap

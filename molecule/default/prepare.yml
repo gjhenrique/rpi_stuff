@@ -18,3 +18,8 @@
         path: '/tmp/dir1/dir2/file'
         mode: '0644'
         state: touch
+
+    - name: Create jellyfin user
+      user:
+        name: jellyfintest
+        uid: 1300
