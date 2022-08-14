@@ -12,7 +12,7 @@ This repo brings the following features:
 - jellyfin for media
 - external disks mounted declaratively
 
-## Why not k*n*s or docker-swarm or <insert your container orchestrator here>?
+## Why not k*n*s or docker-swarm or \<insert your container orchestrator here\>?
 Isn't Ansible deprecated already?!
 Container orchestration is all the rage today, but older Raspberry Pi versions are simply not powerful enough to support this abstraction layer.
 Also, for these simple tasks, it's simpler to troubleshoot the service directly when something goes awry.
