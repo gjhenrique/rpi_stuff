@@ -74,22 +74,23 @@ tasks:
         - screener
         - (s|S)ample
         - Featurettes
+        - Interview
     filesystem:
       path: "{? torrent.torrent_movie_path ?}"
       recursive: true
       regexp: '.*\.(avi|mkv|mp4)$'
       retrieve: files
     accept_all: true
-    imdb_lookup: true
+    trakt_lookup: true
     template:
       - notification
     if:
-      - imdb_name == None: reject
+      - trakt_movie_name == None: reject
     set:
-      notification_message: "✅: {{ imdb_name }} ({{ imdb_year }})"
+      notification_message: "✅: {{ trakt_movie_name }} ({{ trakt_movie_year }})"
     move:
-      to: "{? torrent.movie_path ?}/{{ imdb_name }} ({{ imdb_year }})"
-      rename: '{{ imdb_name }} ({{ imdb_year }})'
+      to: "{? torrent.movie_path ?}/{{ trakt_movie_name }} ({{ trakt_movie_year }})"
+      rename: '{{ trakt_movie_name }} ({{ trakt_movie_year }})'
 
   delete-transmission:
     priority: 4
