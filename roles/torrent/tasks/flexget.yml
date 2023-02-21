@@ -64,6 +64,14 @@
   notify:
     - restart flexget
 
+- name: Copy subtitle extractor file
+  become: true
+  become_user: torrent
+  copy:
+    src: extract-subtitles.sh
+    dest: /home/torrent/flexget/extract-subtitles.sh
+    mode: '0644'
+
 - name: Copy flexget vars file
   become: true
   become_user: torrent
