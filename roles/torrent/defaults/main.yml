@@ -7,11 +7,10 @@ torrent_cage_host_ip: "10.44.44.1"
 torrent_cage_torrent_ip: "10.44.44.2"
 torrent_cage_group: "{{ 'torrent' if torrent_cage_non_enforcing else 'vpn' }}"
 
-torrent_jackett_version: "v0.20.2480"
+torrent_jackett_version: "v0.20.3463"
 torrent_jackett_ip: "{{ torrent_cage_torrent_ip }}"
 torrent_bot_version: "v0.4.2"
-torrent_openpyn_version: "3.0.0"
-torrent_flexget_version: "v3.5.25"
+torrent_flexget_version: "v3.5.29"
 torrent_pytz_version: "v2022.6"
 
 torrent_transmission_ip: "{{ torrent_cage_torrent_ip }}"
