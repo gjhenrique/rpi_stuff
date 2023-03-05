@@ -12,7 +12,7 @@ torrent_jackett_ip: "{{ torrent_cage_torrent_ip }}"
 torrent_bot_version: "v0.4.2"
 torrent_openpyn_version: "3.0.0"
 torrent_flexget_version: "v3.5.25"
-torrent_pytz_version: "v2022.1"
+torrent_pytz_version: "v2022.6"
 
 torrent_transmission_ip: "{{ torrent_cage_torrent_ip }}"
 torrent_transmission_username: 'admin'
