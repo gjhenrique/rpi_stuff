@@ -79,14 +79,14 @@
       command: "ip netns exec torrent curl google.com"
       changed_when: false
 
-    # Way of emulating an active tun0 is by rewriting
+    # Way of emulating an active wg0 is by rewriting
     # Other way would be to have a simple vpn: https://github.com/gawen/pytun
     # But it's good enough
-    - name: Change veth_torrent interface to tun0
+    - name: Change veth_torrent interface to wg0
       shell: |
         ip -n torrent link set veth_torrent down
-        ip -n torrent link set veth_torrent name tun0
-        ip -n torrent link set tun0 up
+        ip -n torrent link set veth_torrent name wg0
+        ip -n torrent link set wg0 up
         ip -n torrent route add default via 10.44.44.1
       changed_when: false
 
@@ -102,10 +102,10 @@
       changed_when: false
       register: result
 
-    - name: Revert tun0 to veth_torrent again
+    - name: Revert wg0 to veth_torrent again
       shell: |
-        ip -n torrent link set tun0 down
-        ip -n torrent link set tun0 name veth_torrent
+        ip -n torrent link set wg0 down
+        ip -n torrent link set wg0 name veth_torrent
         ip -n torrent link set veth_torrent up
         ip -n torrent route add default via 10.44.44.1
       changed_when: false

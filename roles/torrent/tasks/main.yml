@@ -15,11 +15,11 @@
   include_tasks: transmission.yml
   tags: transmission
 
-- name: Include openpyn
-  include_tasks: openpyn.yml
-  when: "torrent_openpyn_disabled is false and torrent_cage_non_enforcing is false"
+- name: Include wireguard
+  include_tasks: wireguard.yml
+  when: "torrent_vpn_disabled is false and torrent_cage_non_enforcing is false"
   tags:
-    - openpyn
+    - wireguard
     - notest
 
 - name: Include jackett
@@ -41,3 +41,5 @@
   tags:
     - never
     - telegram-flexget-fix
+    - wireguard
+    # - notest

@@ -46,19 +46,12 @@ Installs [Syncthing](https://syncthing.net)
 ### Torrent
 Collection of tools to automate Torrent related software.
 
-Only NordVPN with [openpyn](https://github.com/jotyGill/openpyn-nordvpn) is supported because it's the most affordable VPN.
-
-NordVPN is shady and might handicap the Internet throughput, so the Torrent traffic is isolated into its own network namespace. Any traffic outside of the VPN is denied based on some iptables rules.
-
-The usual traffic from other programs is sent via the unencrypted interface.
-Run Mullvad or ProtonVPN in the default network namespace instead if privacy is a goal.
-
 Here are some set of features:
 - iptables rules to kill torrent traffic when the VPN is off.
 - Molecule tests to guarantee that the firewall is doing its job, so no regression is introduced.
 - Run all torrent programs in an isolated network namespace
-- Cloudflare DNS (1.1.1.1) instead of the default NordVPN ones.
-- [openpyn](https://github.com/jotyGill/openpyn-nordvpn) connecting with `OpenVPN` directly in NordVPN servers. The official client is too intrusive.
+- Point to Cloudflare DNS (1.1.1.1).
+- [wireguard](https://wireguard.com) connection
 - [Jackett](https://github.com/Jackett/Jackett) to search torrents in hundreds of torrent indexers. Supported mono client for Raspberry Pi 1 because the new dotnet binary doesn't support ARMv6.
 - [Transmission](https://transmissionbt.com/) to download and seed the torrent files
 - [Telegram bot](https://github.com/gjhenrique/telegram-bot-torrents/) to search torrents from Jackett and send them to Transmission

@@ -25,9 +25,6 @@
     torrent_telegram_groups: "123456"
     torrent_telegram_omdb_token: "OmdbToken"
 
-    torrent_nordvpn_user: "NordvpnUser"
-    torrent_nordvpn_password: "NorvpnPassword"
-
     torrent_transmission_user: "TransmissionUser"
     torrent_transmission_password: "TransmissionPassword"
 

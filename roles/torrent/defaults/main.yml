@@ -17,7 +17,7 @@ torrent_transmission_ip: "{{ torrent_cage_torrent_ip }}"
 torrent_transmission_username: 'admin'
 torrent_transmission_password: 'admin'
 
-torrent_openpyn_disabled: false
+torrent_vpn_disabled: false
 
 torrent_nordvpn_country: "de"
 
