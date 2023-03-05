@@ -1,12 +1,12 @@
 ---
 - name: Fail when mount_path has spaces
-  fail:
+  ansible.builtin.fail:
     msg: "This role doesn't support mount points with spaces. Tried to mount {{ item.mount_path }}"
   when: "' ' in item.mount_path"
   loop: "{{ mount_paths }}"
 
 - name: Create systemd mount files for mountpoints
-  template:
+  ansible.builtin.template:
     src: file.mount.j2
     dest: "/lib/systemd/system/{{ file_systemd }}.mount"
     mode: "0644"
@@ -18,10 +18,10 @@
     depends: "{{ item.depends | default(None) }}"
     options: "{{ item.options | default(None) }}"
   loop: "{{ mount_paths }}"
-  notify: "restart mounts"
+  notify: "Restart mounts"
 
 - name: Start and enable mount points
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ file_systemd }}.mount"
     enabled: true
     state: started
@@ -30,7 +30,7 @@
   loop: "{{ mount_paths }}"
 
 - name: Change ownership to specified user
-  file:
+  ansible.builtin.file:
     path: "{{ item.mount_path }}"
     owner: "{{ item.user }}"
     recurse: true

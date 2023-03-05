@@ -4,3 +4,5 @@ exclude_paths:
 
 skip_list:
   - '701'  # Skip because galaxy_info is already on galaxy.yml
+  - 'galaxy[no-changelog]'
+  - role-name[path]

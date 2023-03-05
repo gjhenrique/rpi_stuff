@@ -1,6 +1,6 @@
 ---
 - name: Install https transport for apt
-  apt:
+  ansible.builtin.apt:
     name:
       - apt-transport-https
       - gnupg
@@ -8,44 +8,44 @@
     force: true
 
 - name: Import jellyfin repository key
-  apt_key:
+  ansible.builtin.apt_key:
     url: "https://repo.jellyfin.org/debian/jellyfin_team.gpg.key"
     state: present
 
-- name: set x86 variable
-  set_fact:
+- name: Set x86 variable
+  ansible.builtin.set_fact:
     jellyfin_arch: "amd64"
   when: "'x86_64' in ansible_architecture"
 
-- name: set armv7 variable
-  set_fact:
+- name: Set armv7 variable
+  ansible.builtin.set_fact:
     jellyfin_arch: "armhf"
   when: "'armv7l' in ansible_architecture"
 
-- name: set arm 64-bit variable
-  set_fact:
+- name: Set arm 64-bit variable
+  ansible.builtin.set_fact:
     jellyfin_arch: "arm64"
   when: "'aarch64' in ansible_architecture"
 
 - name: Fail jellyfin installation when architecture is not supported
-  fail:
+  ansible.builtin.fail:
     msg: "Architecture {{ ansible_architecture }} is not supported by jellyfin repository"
   when: "jellyfin_arch is not defined"
 
 - name: Add jellyfin repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb [arch={{ jellyfin_arch }}] https://repo.jellyfin.org/debian {{ ansible_distribution_release }} main"
     state: present
 
 - name: Install jellyfin repository
-  apt:
+  ansible.builtin.apt:
     update_cache: true
     name: jellyfin
-    state: latest  # noqa 403
-  notify: "restart jellyfin"
+    state: latest  # noqa package-latest
+  notify: "Restart jellyfin"
 
 - name: Change ownership of specified directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     owner: "{{ jellyfin_user }}"
     recurse: true
@@ -54,20 +54,20 @@
     - "/etc/jellyfin"
 
 - name: Create default jellyfin override directory
-  file:
+  ansible.builtin.file:
     path: '/etc/systemd/system/jellyfin.service.d'
     state: 'directory'
     mode: '0755'
 
 - name: Copy override file
-  template:
+  ansible.builtin.template:
     src: jellyfin-override.conf.j2
     dest: "/etc/systemd/system/jellyfin.service.d/jellyfin-override.conf"
     mode: "0755"
-  notify: "restart jellyfin"
+  notify: "Restart jellyfin"
 
 - name: Enable jellyfin service
-  systemd:
+  ansible.builtin.systemd:
     name: jellyfin
     enabled: true
     state: started

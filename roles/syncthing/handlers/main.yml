@@ -1,6 +1,6 @@
 ---
-- name: restart syncthing
-  systemd:
+- name: Restart syncthing
+  ansible.builtin.systemd:
     name: syncthing@syncthing
     daemon_reload: true
     state: restarted

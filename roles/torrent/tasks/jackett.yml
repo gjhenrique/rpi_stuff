@@ -2,39 +2,39 @@
 # https://github.com/dotnet/runtime/issues/7764
 # Alternative would be to use mono for these cases, but it's very bloated
 - name: Use mono form armv6
-  set_fact:
+  ansible.builtin.set_fact:
     use_mono: true
   when: "'armv6l' in ansible_machine or torrent_jackett_use_mono"
 
 - name: Use .net for the rest
-  set_fact:
+  ansible.builtin.set_fact:
     use_mono: false
   when: "'armv6l' not in ansible_machine and not torrent_jackett_use_mono"
 
 - name: Include mono
-  include_tasks: jackett/dotnet.yml
+  ansible.builtin.include_tasks: jackett/dotnet.yml
   when: not use_mono
 
 - name: Include dotnet jackett
-  include_tasks: jackett/mono.yml
+  ansible.builtin.include_tasks: jackett/mono.yml
   when: use_mono
 
 - name: Copy nginx config file
-  template:
+  ansible.builtin.template:
     src: jackett.conf.j2
     dest: /etc/nginx/sites-available/jackett.conf
     mode: '0644'
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Symlink available nginx conf
-  file:
+  ansible.builtin.file:
     src: '/etc/nginx/sites-available/jackett.conf'
     dest: '/etc/nginx/sites-enabled/jackett.conf'
     state: 'link'
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Enable jackett service
-  systemd:
+  ansible.builtin.systemd:
     name: jackett
     enabled: true
     state: started

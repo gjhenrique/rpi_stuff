@@ -114,21 +114,21 @@ tasks:
 
   # Jellyfin has issues with encoded subtitles
   # Let's extract only the relevant subtitles with ffmpeg
-  # extract-subtitles:
-  #   priority: 5
-  #   filesystem:
-  #     path:
-  #       - "{? torrent.tv_path ?}"
-  #       - "{? torrent.movie_path ?}"
-  #     recursive: true
-  #     regexp: '.*\.(avi|mkv|mp4)$'
-  #     retrieve: files
-  #   accept_all: true
-  #   seen: local
-  #   exec:
-  #     on_output:
-  #       for_accepted:
-  #         - bash extract-subtitles.sh "{{location}}"
+  extract-subtitles:
+    priority: 5
+    filesystem:
+      path:
+        - "{? torrent.tv_path ?}"
+        - "{? torrent.movie_path ?}"
+      recursive: true
+      regexp: '.*\.(avi|mkv|mp4)$'
+      retrieve: files
+    accept_all: true
+    seen: local
+    exec:
+      on_output:
+        for_accepted:
+          - bash extract-subtitles.sh "{{location}}"
 
 schedules:
   - tasks: '*'

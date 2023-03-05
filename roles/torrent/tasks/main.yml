@@ -1,42 +1,42 @@
 ---
 - name: Include boilerplate
-  include_tasks: boilerplate.yml
+  ansible.builtin.include_tasks: boilerplate.yml
   tags: torrent-boilerplate
 
 - name: Include iptables and network namespace
-  include_tasks: torrent-cage.yml
+  ansible.builtin.include_tasks: torrent-cage.yml
   tags: torrent-cage
 
 - name: Include nginx server
-  include_tasks: nginx.yml
+  ansible.builtin.include_tasks: nginx.yml
   tags: nginx
 
 - name: Include transmission
-  include_tasks: transmission.yml
+  ansible.builtin.include_tasks: transmission.yml
   tags: transmission
 
 - name: Include wireguard
-  include_tasks: wireguard.yml
+  ansible.builtin.include_tasks: wireguard.yml
   when: "torrent_vpn_disabled is false and torrent_cage_non_enforcing is false"
   tags:
     - wireguard
     - notest
 
 - name: Include jackett
-  include_tasks: jackett.yml
+  ansible.builtin.include_tasks: jackett.yml
   tags: jackett
 
 - name: Include flexget
-  include_tasks: flexget.yml
+  ansible.builtin.include_tasks: flexget.yml
   tags: flexget
 
 - name: Include telegram-bot
-  include_tasks: telegram-bot.yml
+  ansible.builtin.include_tasks: telegram-bot.yml
   tags: telegram-bot
   when: torrent_telegram_token is defined
 
 - name: Manual task to include telegram token in Flexget database
-  include_tasks: telegram-flexget-fix.yml
+  ansible.builtin.include_tasks: telegram-flexget-fix.yml
   when: add_telegram_to_flexget | default(False)
   tags:
     - never

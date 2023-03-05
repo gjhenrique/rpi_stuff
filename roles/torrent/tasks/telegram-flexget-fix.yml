@@ -1,18 +1,18 @@
 ---
 - name: Stop telegram-bot
-  systemd:
+  ansible.builtin.systemd:
     name: telegram-bot
     state: stopped
 
 - name: Stop flexget
-  systemd:
+  ansible.builtin.systemd:
     name: flexget
     state: stopped
 
 - name: Touch Matrix movie
   become: true
   become_user: torrent
-  file:
+  ansible.builtin.file:
     path: '/home/torrent/media/torrent/Movies/Matrix (1999).mkv'
     mode: '0644'
     state: touch
@@ -20,22 +20,22 @@
 - name: Run flexget
   become: true
   become_user: torrent
-  command: "flexget execute --task move-movies"
+  ansible.builtin.command: "flexget execute --task move-movies"
   changed_when: false
   args:
     chdir: "/home/torrent/flexget"
 
 - name: Start telegram-bot
-  systemd:
+  ansible.builtin.systemd:
     name: telegram-bot
     state: started
 
 - name: Start flexget
-  systemd:
+  ansible.builtin.systemd:
     name: flexget
     state: started
 
 - name: Remove Matrix temp file
-  file:
+  ansible.builtin.file:
     path: "/home/torrent/media/Movies/The Matrix (1999)"
     state: absent

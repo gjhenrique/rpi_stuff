@@ -49,10 +49,6 @@
   hosts: all
   tags: torrent
   tasks:
-    - name: save iptables with gid 1500
-      shell: "grep 1500 /etc/iptables/rules.v4"
-      changed_when: false
-
     - name: Install curl package
       apt:
         name: curl

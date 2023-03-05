@@ -1,39 +1,39 @@
 ---
 - name: Install transmission
-  apt:
+  ansible.builtin.apt:
     update_cache: true
     name: transmission-daemon
 
 - name: Create transmission override directory
-  file:
+  ansible.builtin.file:
     path: /etc/systemd/system/transmission-daemon.service.d
     state: directory
     mode: '0755'
 
 - name: Copy transmission override systemd service
-  template:
+  ansible.builtin.template:
     src: transmission-override.conf.j2
     dest: /etc/systemd/system/transmission-daemon.service.d/transmission-override.conf
     mode: '0644'
-  notify: restart transmission
+  notify: Restart transmission
 
 - name: Enable/Start transmission service
-  systemd:
+  ansible.builtin.systemd:
     name: transmission-daemon
     daemon_reload: true
     enabled: true
     state: started
 
 - name: Copy transmission nginx config file
-  template:
+  ansible.builtin.template:
     src: transmission.conf.j2
     dest: /etc/nginx/sites-available/torrent.conf
     mode: '0644'
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Symlink sites-available to sites-enabled
-  file:
+  ansible.builtin.file:
     src: '/etc/nginx/sites-available/torrent.conf'
     dest: '/etc/nginx/sites-enabled/torrent.conf'
     state: 'link'
-  notify: restart nginx
+  notify: Restart nginx

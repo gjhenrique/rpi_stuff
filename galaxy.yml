@@ -1,11 +1,12 @@
 ---
 ### REQUIRED
 
+
 namespace: gjhenrique
 
 name: rpi_stuff
 
-version: 0.1.2
+version: 1.0.0
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -18,6 +19,8 @@ description: Stuff to do with an old and retired raspberry pi
 license_file: 'LICENSE'
 
 tags:
+  - linux
+  - networking
   - raspberry
   - rpi
   - pi

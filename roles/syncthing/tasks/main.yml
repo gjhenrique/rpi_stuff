@@ -1,19 +1,19 @@
 ---
 - name: Create syncthing user
-  user:
+  ansible.builtin.user:
     name: syncthing
 
 # Following instructions from https://apt.syncthing.net/ to get latest version
 - name: Include syncthing installation
-  include_tasks: install.yml
+  ansible.builtin.include_tasks: install.yml
   tags: syncthing-install
 
 - name: Enable syncthing service
-  systemd:
+  ansible.builtin.systemd:
     name: "syncthing@syncthing"
     enabled: true
     state: started
 
 - name: Include syncthing installation
-  include_tasks: setup.yml
+  ansible.builtin.include_tasks: setup.yml
   tags: syncthing-setup

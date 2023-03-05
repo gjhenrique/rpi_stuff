@@ -1,39 +1,41 @@
 ---
 - name: Install mono
-  apt:
+  ansible.builtin.apt:
     update_cache: true
     name: mono-complete
 
 - name: Register current installed jacket version
-  command: "mono --debug /usr/lib/jackett/JackettConsole.exe --version"
+  ansible.builtin.command: "mono --debug /usr/lib/jackett/JackettConsole.exe --version"
   register: jackett_version
   changed_when: false
   ignore_errors: true
 
 - name: New Jackett
-  set_fact:
+  ansible.builtin.set_fact:
     install_jackett: true
   when: (jackett_version.rc != 1 or (not jackett_version.stdout | regex_search(torrent_jackett_version)))
 
 - name: Download jackett bin
-  get_url:
+  ansible.builtin.get_url:
     url: "https://github.com/Jackett/Jackett/releases/download/{{ torrent_jackett_version }}/Jackett.Binaries.Mono.tar.gz"
     dest: /tmp/jackett-mono-{{ torrent_jackett_version }}.tar.gz
+    mode: "0644"
   when: install_jackett is defined
 
-- name: Extract jackett bin  # noqa 303
-  shell: |
+- name: Extract jackett bin  # noqa command-instead-of-module
+  ansible.builtin.shell: |
     tar -xzvf jackett-mono-{{ torrent_jackett_version }}.tar.gz
     rm -rf /usr/lib/jackett
     mv Jackett /usr/lib/jackett
   args:
     chdir: "/tmp"
+  changed_when: true
   when: install_jackett is defined
 
 - name: Deploy jackett service file
-  template:
+  ansible.builtin.template:
     src: jackett-mono.service.j2
     dest: /lib/systemd/system/jackett.service
-    mode: '0644'
+    mode: "0644"
   notify:
-    - restart jackett
+    - Restart jackett

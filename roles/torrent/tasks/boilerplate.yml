@@ -1,10 +1,10 @@
 ---
 - name: Add vpn group
-  group:
+  ansible.builtin.group:
     name: vpn
     state: present
     gid: "{{ torrent_user_gid_owner }}"
 
 - name: Create torrent user
-  user:
+  ansible.builtin.user:
     name: torrent

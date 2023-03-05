@@ -1,46 +1,48 @@
 ---
-- name: set arm variable
-  set_fact:
+- name: Set arm variable
+  ansible.builtin.set_fact:
     jacket_arch: "ARM32"
   when: "'arm' in ansible_architecture"
 
-- name: set x86 variable
-  set_fact:
+- name: Set x86 variable
+  ansible.builtin.set_fact:
     jacket_arch: "AMDx64"
   when: "'x86_64' in ansible_architecture"
 
 - name: Register current installed jacket version
-  command: "/usr/lib/jackett/jackett --version"
+  ansible.builtin.command: "/usr/lib/jackett/jackett --version"
   register: jackett_version
   changed_when: false
   ignore_errors: true
 
 - name: New Jackett
-  set_fact:
+  ansible.builtin.set_fact:
     install_jackett: true
   when: jackett_version.rc != 1 or (not jackett_version.stdout | regex_search(torrent_jackett_version))
 
 - name: Download jackett bin
-  get_url:
+  ansible.builtin.get_url:
     url: "https://github.com/Jackett/Jackett/releases/download/{{ torrent_jackett_version }}/Jackett.Binaries.Linux{{ jacket_arch }}.tar.gz"
     dest: /tmp/jackett-dotnet-{{ torrent_jackett_version }}.tar.gz
+    mode: '0644'
   when: install_jackett is defined
 
-- name: Extract jackett bin  # noqa 303
-  shell: |
+- name: Extract jackett bin  # noqa command-instead-of-module
+  ansible.builtin.shell: |
     tar -xzvf jackett-dotnet-{{ torrent_jackett_version }}.tar.gz
     rm -rf /usr/lib/jackett
     mv Jackett /usr/lib/jackett
   args:
     chdir: "/tmp"
+  changed_when: true
   when: install_jackett is defined
   notify:
-    - restart jackett
+    - Restart jackett
 
 - name: Deploy jackett service file
-  template:
+  ansible.builtin.template:
     src: jackett-dotnet.service.j2
     dest: /lib/systemd/system/jackett.service
     mode: '0644'
   notify:
-    - restart jackett
+    - Restart jackett

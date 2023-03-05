@@ -1,6 +1,6 @@
 ---
 - name: Install packages
-  apt:
+  ansible.builtin.apt:
     update_cache: true
     name:
       - python3

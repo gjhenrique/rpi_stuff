@@ -1,24 +1,23 @@
 ---
-- hosts: rpis
+- name: Sample app
+  hosts: rpis
   become: true
-  collections:
-    - gjhenrique.rpi_stuff
   vars_files:
     - secrets.yml
     - vars.yml
   roles:
-    - role: duckdns
+    - role: gjhenrique.rpi_stuff.duckdns
       tags: duckdns
       when: enable_duckdns is true
-    - role: syncthing
+    - role: gjhenrique.rpi_stuff.syncthing
       tags: syncthing
       when: enable_syncthing is true
-    - role: torrent
+    - role: gjhenrique.rpi_stuff.torrent
       tags: torrent
       when: enable_torrent is true
-    - role: jellyfin
+    - role: gjhenrique.rpi_stuff.jellyfin
       tags: jellyfin
       when: enable_jellyfin is true
-    - role: mount
+    - role: gjhenrique.rpi_stuff.mount
       tags: mount
       when: enable_mount is true

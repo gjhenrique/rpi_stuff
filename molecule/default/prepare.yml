@@ -3,23 +3,23 @@
   hosts: all
   tasks:
     - name: Create mount user
-      user:
+      ansible.builtin.user:
         name: mount
         uid: 1200
 
     - name: Create directory for mount tests
-      file:
+      ansible.builtin.file:
         path: '/tmp/dir1/dir2'
         state: directory
         mode: '0755'
 
     - name: Create a file inside the mount directory
-      file:
+      ansible.builtin.file:
         path: '/tmp/dir1/dir2/file'
         mode: '0644'
         state: touch
 
     - name: Create jellyfin user
-      user:
+      ansible.builtin.user:
         name: jellyfintest
         uid: 1300

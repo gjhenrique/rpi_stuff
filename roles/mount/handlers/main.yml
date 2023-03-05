@@ -1,6 +1,6 @@
 ---
-- name: restart mounts
-  systemd:
+- name: Restart mounts
+  ansible.builtin.systemd:
     name: "{{ file_systemd }}.mount"
     daemon_reload: true
     state: restarted

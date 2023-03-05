@@ -1,48 +1,47 @@
 ---
-- name: restart nginx
-  systemd:
+- name: Restart nginx
+  ansible.builtin.systemd:
     name: nginx
     state: restarted
 
-- name: save iptables
-  shell: "iptables-save > /etc/iptables/rules.v4"
+- name: Save iptables
+  ansible.builtin.shell: "iptables-save > /etc/iptables/rules.v4"
 
-- name: restart torrent-cage
-  systemd:
+- name: Restart torrent-cage
+  ansible.builtin.systemd:
     name: torrent-cage
     daemon_reload: true
     state: restarted
 
-- name: restart transmission
-  systemd:
+- name: Restart transmission
+  ansible.builtin.systemd:
     name: transmission-daemon
     daemon_reload: true
     state: restarted
-  listen: 'restart torrent-cage'
+  listen: 'Restart torrent-cage'
 
-- name: restart wg-quick
-  systemd:
+- name: Restart wg-quick
+  ansible.builtin.systemd:
     name: wg-quick@wg0
     daemon_reload: true
     state: restarted
-  listen: 'restart wg-quick'
 
-- name: restart jackett
-  systemd:
+- name: Restart jackett
+  ansible.builtin.systemd:
     name: jackett
     daemon_reload: true
     state: restarted
-  listen: 'restart torrent-cage'
+  listen: 'Restart torrent-cage'
 
-- name: restart flexget
-  systemd:
+- name: Restart flexget
+  ansible.builtin.systemd:
     name: flexget
     daemon_reload: true
     state: restarted
-  listen: 'restart torrent-cage'
+  listen: 'Restart torrent-cage'
 
-- name: restart telegram-bot
-  systemd:
+- name: Restart telegram-bot
+  ansible.builtin.systemd:
     name: telegram-bot
     daemon_reload: true
     state: restarted
