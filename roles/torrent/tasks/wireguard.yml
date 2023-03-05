@@ -1,0 +1,35 @@
+---
+- name: Install required packages
+  apt:
+    update_cache: true
+    name: ['wireguard', 'resolvconf']
+
+- name: Enable wireguard module
+  modprobe:
+    name: wireguard
+    state: present
+
+- name: Save configuration to /etc/wireguard/wg0.conf
+  copy:
+    content: "{{ torrent_wireguard_configuration }}"
+    dest: /etc/wireguard/wg0.conf
+  notify: "restart wg-quick"
+
+- name: Create wg-quick@ override directory
+  file:
+    path: '/etc/systemd/system/wg-quick@.service.d'
+    state: 'directory'
+    mode: '0755'
+
+- name: Copy override file
+  copy:
+    src: wg-quick@.service
+    dest: "/etc/systemd/system/wg-quick@.service.d/namespace.conf"
+    mode: "0644"
+  notify: "restart wg-quick"
+
+- name: Enable wg-quick service
+  systemd:
+    name: "wg-quick@wg0"
+    enabled: true
+    state: started

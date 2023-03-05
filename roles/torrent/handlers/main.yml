@@ -20,13 +20,12 @@
     state: restarted
   listen: 'restart torrent-cage'
 
-- name: restart openpyn
-  when: molecule_file is not defined
+- name: restart wg-quick
   systemd:
-    name: openpyn
+    name: wg-quick@wg0
     daemon_reload: true
     state: restarted
-  listen: 'restart torrent-cage'
+  listen: 'restart wg-quick'
 
 - name: restart jackett
   systemd:

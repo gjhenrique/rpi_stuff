@@ -5,14 +5,12 @@ set -xe
 ip netns add torrent
 
 ip netns exec torrent iptables -A OUTPUT -d {{ torrent_cage_host_ip }} -j ACCEPT
-ip netns exec torrent iptables -A OUTPUT -o tun0 -m owner --gid-owner {{ torrent_user_gid_owner }} -j ACCEPT
+ip netns exec torrent iptables -A OUTPUT -o wg0 -m owner --gid-owner {{ torrent_user_gid_owner }} -j ACCEPT
 ip netns exec torrent iptables -A OUTPUT -o lo -m owner --gid-owner {{ torrent_user_gid_owner }} -j ACCEPT
 ip netns exec torrent iptables -A OUTPUT -m owner --gid-owner {{ torrent_user_gid_owner }} -j REJECT --reject-with icmp-port-unreachable
 
 mkdir -p /etc/netns/torrent
 
-# Better to trust Cloudflare than NordVPN
-# Disable DNS from NordVPN with openpyn settings
 echo nameserver 1.1.1.1 > /etc/netns/torrent/resolv.conf
 
 ip link add veth_host type veth peer name veth_torrent

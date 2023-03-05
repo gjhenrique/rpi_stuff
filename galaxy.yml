@@ -26,7 +26,7 @@ tags:
   - jackett
   - flexget
   - jellyfin
-  - nordvpn
+  - wireguard
   - duckdns
   - dynamicdns
   - syncthing

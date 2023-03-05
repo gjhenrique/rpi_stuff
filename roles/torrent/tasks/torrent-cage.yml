@@ -85,9 +85,9 @@
 # Even tough these rules are used on torrent namespace, it's safer to have them in the default namespace also
 # It might happen that a process from group vpn are running on the default namespace
 # The same three rules are duplicated in the cage script
-- name: Allow torrent traffic from tun0
+- name: Allow torrent traffic from wg0
   iptables:
-    out_interface: tun0
+    out_interface: wg0
     chain: OUTPUT
     gid_owner: "{{ torrent_user_gid_owner }}"
     jump: ACCEPT
