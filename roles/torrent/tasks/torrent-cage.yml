@@ -81,30 +81,3 @@
     out_interface: "{{ torrent_cage_main_interface }}"
     jump: ACCEPT
   notify: save iptables
-
-# Even tough these rules are used on torrent namespace, it's safer to have them in the default namespace also
-# It might happen that a process from group vpn are running on the default namespace
-# The same three rules are duplicated in the cage script
-- name: Allow torrent traffic from wg0
-  iptables:
-    out_interface: wg0
-    chain: OUTPUT
-    gid_owner: "{{ torrent_user_gid_owner }}"
-    jump: ACCEPT
-  notify: save iptables
-
-- name: Allow torrent traffic from localhost
-  iptables:
-    out_interface: lo
-    chain: OUTPUT
-    gid_owner: "{{ torrent_user_gid_owner }}"
-    jump: ACCEPT
-  notify: save iptables
-
-- name: Allow torrent traffic from localhost
-  iptables:
-    chain: OUTPUT
-    gid_owner: "{{ torrent_user_gid_owner }}"
-    jump: REJECT
-    reject_with: icmp-port-unreachable
-  notify: save iptables

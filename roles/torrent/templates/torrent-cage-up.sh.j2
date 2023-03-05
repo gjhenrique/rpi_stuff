@@ -5,9 +5,8 @@ set -xe
 ip netns add torrent
 
 ip netns exec torrent iptables -A OUTPUT -d {{ torrent_cage_host_ip }} -j ACCEPT
-ip netns exec torrent iptables -A OUTPUT -o wg0 -m owner --gid-owner {{ torrent_user_gid_owner }} -j ACCEPT
-ip netns exec torrent iptables -A OUTPUT -o lo -m owner --gid-owner {{ torrent_user_gid_owner }} -j ACCEPT
-ip netns exec torrent iptables -A OUTPUT -m owner --gid-owner {{ torrent_user_gid_owner }} -j REJECT --reject-with icmp-port-unreachable
+ip netns exec torrent iptables -A OUTPUT ! -o wg0 -m mark ! --mark "0xca6c" -m addrtype ! --dst-type LOCAL -m owner --gid-owner 1500 -j REJECT
+ip netns exec torrent ip6tables -A OUTPUT ! -o wg0 -m mark ! --mark "0xca6c" -m addrtype ! --dst-type LOCAL -m owner --gid-owner 1500 -j REJECT
 
 mkdir -p /etc/netns/torrent
 
