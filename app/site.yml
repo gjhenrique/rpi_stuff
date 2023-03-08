@@ -6,9 +6,6 @@
     - secrets.yml
     - vars.yml
   roles:
-    - role: gjhenrique.rpi_stuff.duckdns
-      tags: duckdns
-      when: enable_duckdns is true
     - role: gjhenrique.rpi_stuff.syncthing
       tags: syncthing
       when: enable_syncthing is true

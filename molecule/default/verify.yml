@@ -1,24 +1,4 @@
 ---
-- name: Duckdns
-  hosts: all
-  tags: duckdns
-  tasks:
-    - name: Check that duckns.timer is running
-      command: systemctl list-timers duckdns.timer
-      changed_when: false
-
-    - name: Check that duckns.timer is enabled
-      command: systemctl is-enabled duckdns.timer
-      changed_when: false
-
-    - name: Check that duckns.service is attached
-      command: systemctl list-timers duckdns.timer | grep duckdns.service
-      changed_when: false
-
-    - name: Check that duckns.service is attached
-      command: grep "duckdns_token=DuckdnsToken" /etc/duckdns.d/default.cfg
-      changed_when: false
-
 - name: Syncthing
   hosts: all
   tags: syncthing

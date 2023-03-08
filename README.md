@@ -7,7 +7,6 @@ Collection of opinionated Ansible roles to automate some stuff I use in my day-t
 
 This repo brings the following features:
 - syncthing to synchronize pictures, documents, and notes
-- DuckDNS to bind the transient external IP to a DNS entry
 - secure and easy torrent download
 - jellyfin for media
 - external disks mounted declaratively
@@ -32,11 +31,6 @@ I don't recommend this because the CPU was the bottleneck when encrypting packet
 But, it's possible nevertheless if there is no other option.
 
 ## Roles
-
-### Duckdns
-Send your public IP to a [Duck DNS](https://www.duckdns.org/) record.
-
-- Systemd timer pinging Duck DNS server periodically.
 
 ### Syncthing
 Installs [Syncthing](https://syncthing.net)

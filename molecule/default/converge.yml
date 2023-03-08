@@ -2,8 +2,6 @@
 - name: Converge
   hosts: all
   roles:
-    - role: ../../roles/duckdns
-      tags: duckdns
     - role: ../../roles/syncthing
       tags: syncthing
     - role: ../../roles/torrent
@@ -14,9 +12,6 @@
       tags: mount
 
   vars:
-    duckdns_hostname: "DuckdnsHost"
-    duckdns_token: "DuckdnsToken"
-
     syncthing_http_user: "SyncthingUser"
     syncthing_http_password: "SyncthingPassword"
 

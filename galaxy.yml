@@ -30,8 +30,6 @@ tags:
   - flexget
   - jellyfin
   - wireguard
-  - duckdns
-  - dynamicdns
   - syncthing
 
 dependencies: {}

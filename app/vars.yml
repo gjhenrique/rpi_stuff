@@ -1,5 +1,4 @@
 ---
-enable_duckdns: false
 enable_syncthing: false
 enable_torrent: false
 enable_jellyfin: false

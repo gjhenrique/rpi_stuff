@@ -1,6 +1,0 @@
----
-- name: Restart duckdns
-  ansible.builtin.systemd:
-    name: duckdns.timer
-    daemon_reload: true
-    state: restarted
