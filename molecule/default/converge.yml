@@ -2,6 +2,8 @@
 - name: Converge
   hosts: all
   roles:
+    - role: ../../roles/caddy
+      tags: caddy
     - role: ../../roles/syncthing
       tags: syncthing
     - role: ../../roles/torrent
@@ -29,6 +31,10 @@
     torrent_flexget_telegram_receiver: "Torrents"
 
     jellyfin_user: "jellyfintest"
+
+    caddy_domain: example.com
+    caddy_cert_email: "email@email.com"
+    caddy_cert_cloudflare_token: "token"
 
     mount_paths:
       - mount_path: /mnt/dir1

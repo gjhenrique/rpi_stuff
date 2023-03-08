@@ -7,7 +7,7 @@ BindPaths=/etc/netns/torrent/resolv.conf:/etc/resolv.conf
 User=torrent
 Group={{ torrent_cage_group }}
 ExecStart=
-ExecStart=/usr/bin/transmission-daemon -f --log-debug --username {{ torrent_transmission_user }} --password {{ torrent_transmission_password }} --auth --rpc-bind-address={{ torrent_cage_torrent_ip }} --allowed="{{ torrent_cage_host_ip }},{{ torrent_cage_torrent_ip }},127.0.0.1"
+ExecStart=/usr/bin/transmission-daemon -f --log-debug --rpc-bind-address={{ torrent_cage_torrent_ip }} --allowed="{{ torrent_cage_host_ip }},{{ torrent_cage_torrent_ip }},127.0.0.1"
 
 [Install]
 WantedBy=multi-user.target

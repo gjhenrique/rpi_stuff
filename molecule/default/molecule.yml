@@ -15,6 +15,9 @@ platforms:
     systemd: always
     privileged: true
     published_ports:
+      # caddy
+      - 0.0.0.0:80:80/TCP
+      - 0.0.0.0:443:443/TCP
       # jellyfin
       - 0.0.0.0:8097:8096/TCP
 provisioner:
