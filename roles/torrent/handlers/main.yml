@@ -1,9 +1,4 @@
 ---
-- name: Restart nginx
-  ansible.builtin.systemd:
-    name: nginx
-    state: restarted
-
 - name: Save iptables
   ansible.builtin.shell: "iptables-save > /etc/iptables/rules.v4"
 

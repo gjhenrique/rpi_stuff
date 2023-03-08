@@ -23,17 +23,3 @@
     daemon_reload: true
     enabled: true
     state: started
-
-- name: Copy transmission nginx config file
-  ansible.builtin.template:
-    src: transmission.conf.j2
-    dest: /etc/nginx/sites-available/torrent.conf
-    mode: '0644'
-  notify: Restart nginx
-
-- name: Symlink sites-available to sites-enabled
-  ansible.builtin.file:
-    src: '/etc/nginx/sites-available/torrent.conf'
-    dest: '/etc/nginx/sites-enabled/torrent.conf'
-    state: 'link'
-  notify: Restart nginx

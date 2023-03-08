@@ -15,12 +15,6 @@ platforms:
     systemd: always
     privileged: true
     published_ports:
-      # nginx Transmission
-      - 0.0.0.0:9092:9092/TCP
-      # nginx Jackett
-      - 0.0.0.0:9118:9118/TCP
-      # syncthing
-      - 0.0.0.0:8385:8384/TCP
       # jellyfin
       - 0.0.0.0:8097:8096/TCP
 provisioner:

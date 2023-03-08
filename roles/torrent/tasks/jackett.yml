@@ -19,20 +19,6 @@
   ansible.builtin.include_tasks: jackett/mono.yml
   when: use_mono
 
-- name: Copy nginx config file
-  ansible.builtin.template:
-    src: jackett.conf.j2
-    dest: /etc/nginx/sites-available/jackett.conf
-    mode: '0644'
-  notify: Restart nginx
-
-- name: Symlink available nginx conf
-  ansible.builtin.file:
-    src: '/etc/nginx/sites-available/jackett.conf'
-    dest: '/etc/nginx/sites-enabled/jackett.conf'
-    state: 'link'
-  notify: Restart nginx
-
 - name: Enable jackett service
   ansible.builtin.systemd:
     name: jackett

@@ -49,7 +49,6 @@ Here are some set of features:
 - [Jackett](https://github.com/Jackett/Jackett) to search torrents in hundreds of torrent indexers. Supported mono client for Raspberry Pi 1 because the new dotnet binary doesn't support ARMv6.
 - [Transmission](https://transmissionbt.com/) to download and seed the torrent files
 - [Telegram bot](https://github.com/gjhenrique/telegram-bot-torrents/) to search torrents from Jackett and send them to Transmission
-- out-of-box HTTPS with Nginx to access Transmission and jacket (self-signed certificate)
 - [flexget](https://flexget.com/) to download new TV Shows with an RSS URL, rename movies and TV shows to a pretty format, and remove torrents when they're finished.
 - option to bring your own VPN. As long as it's running in the torrent namespace, it's protected
 - option to allow torrent traffic without VPN. Useful for countries that don't impose fines for torrent traffic

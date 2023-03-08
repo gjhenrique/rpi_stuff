@@ -7,10 +7,6 @@
   ansible.builtin.include_tasks: torrent-cage.yml
   tags: torrent-cage
 
-- name: Include nginx server
-  ansible.builtin.include_tasks: nginx.yml
-  tags: nginx
-
 - name: Include transmission
   ansible.builtin.include_tasks: transmission.yml
   tags: transmission
