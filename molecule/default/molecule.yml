@@ -26,5 +26,7 @@ provisioner:
     defaults:
       stdout_callback: yaml
       bin_ansible_callbacks: true
+  env:
+    ANSIBLE_ROLES_PATH: ../../roles
 verifier:
   name: ansible

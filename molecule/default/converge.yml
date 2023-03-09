@@ -2,15 +2,13 @@
 - name: Converge
   hosts: all
   roles:
-    - role: ../../roles/caddy
-      tags: caddy
-    - role: ../../roles/syncthing
+    - role: syncthing
       tags: syncthing
-    - role: ../../roles/torrent
+    - role: torrent
       tags: torrent
-    - role: ../../roles/jellyfin
+    - role: jellyfin
       tags: jellyfin
-    - role: ../../roles/mount
+    - role: mount
       tags: mount
 
   vars:
