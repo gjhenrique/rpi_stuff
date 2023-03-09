@@ -13,3 +13,15 @@
     name: "syncthing@syncthing"
     enabled: true
     state: started
+
+- name: Install caddy
+  ansible.builtin.import_role:
+    name: roles/caddy
+    tasks_from: subdomains
+  vars:
+    subdomain_name: syncthing
+    subdomain_host: 127.0.0.1
+    subdomain_port: 8384
+    state: present
+    auth_user: "{{ syncthing_http_user }}"
+    auth_password: "{{ syncthing_http_password }}"

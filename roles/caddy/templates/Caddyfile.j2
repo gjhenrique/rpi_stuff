@@ -1,5 +1,5 @@
 *.{{ caddy_domain }} {
-        {% if caddy_enable_cert_verification %}
+	{% if caddy_enable_cert_verification %}
 	tls {{ caddy_cert_email }} {
 		{% if caddy_use_staging_ca %}
 		ca https://acme-staging-v02.api.letsencrypt.org/directory
@@ -12,35 +12,5 @@
 	tls internal
 	{% endif %}
 
-	# These lines are really really broken
-	# This role shouldn't have any configuration about other roles
-	# Ideally we should use the include directive and each role would inject it
-	# The issue is that each subdomain information should be inside the top-level wildcard host
-	# TODO: Make them configurable invoking this role
-	@syncthing host syncthing.{{ caddy_domain }}
-	handle @syncthing {
-		reverse_proxy http://127.0.0.1:8384 {
-			header_up Host 127.0.0.1
-		}
-
-		basicauth /* {
-			{{ syncthing_http_user | default('admin') }} {{ syncthing_http_password | default('admin') | password_hash("bcrypt") }}
-		}
-	}
-
-	@transmission host transmission.{{ caddy_domain }}
-	handle @transmission {
-		# Taking this from the default torrent_cage_torrent_ip variable
-		reverse_proxy http://10.44.44.2:9091
-
-		basicauth /* {
-			{{ torrent_transmission_username | default('admin') }} {{ torrent_transmission_password | default('admin') | password_hash("bcrypt") }}
-		}
-	}
-
-	@jackett host jackett.{{ caddy_domain }}
-	handle @jackett {
-		# Taking this from the default torrent_cage_torrent_ip variable
-		reverse_proxy http://10.44.44.2:9117
-	}
+	import /etc/caddy/subdomains/*.caddy
 }

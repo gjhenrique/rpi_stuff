@@ -1,0 +1,12 @@
+@{{ subdomain_name }} host {{ subdomain_name }}.{{ caddy_domain }}
+handle @{{ subdomain_name }} {
+  reverse_proxy http://{{ subdomain_host}}:{{ subdomain_port }} {
+    header_up Host {{ subdomain_host }}
+  }
+
+  {% if auth_user is defined %}
+  basicauth /* {
+    {{ auth_user | default('admin') }} {{ auth_password | default('admin') | password_hash("bcrypt") }}
+  }
+  {% endif %}
+}

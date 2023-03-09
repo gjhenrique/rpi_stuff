@@ -1,0 +1,23 @@
+---
+- name: Create subdomains directory
+  ansible.builtin.file:
+    path: "/etc/caddy/subdomains"
+    state: directory
+    mode: "0755"
+    owner: "www-data"
+
+- name: Create subdomain file
+  ansible.builtin.template:
+    src: subdomain.caddy.j2
+    dest: /etc/caddy/subdomains/{{ subdomain_name }}.caddy
+    mode: "0644"
+    owner: "www-data"
+  notify: Reload caddy
+  when: state == "present"
+
+- name: Remove subdomain file
+  ansible.builtin.file:
+    path: /etc/caddy/subdomains/{{ subdomain_name }}.caddy
+    state: absent
+  notify: Reload caddy
+  when: state == "absent"

@@ -24,3 +24,13 @@
     name: jackett
     enabled: true
     state: started
+
+- name: Install caddy ingress
+  ansible.builtin.import_role:
+    name: roles/caddy
+    tasks_from: subdomains
+  vars:
+    subdomain_name: jackett
+    subdomain_host: "{{ torrent_cage_torrent_ip }}"
+    subdomain_port: 9117
+    state: present
