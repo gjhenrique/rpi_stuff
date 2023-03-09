@@ -16,7 +16,7 @@
 
 - name: Install caddy
   ansible.builtin.import_role:
-    name: roles/caddy
+    name: caddy
     tasks_from: subdomains
   vars:
     subdomain_name: syncthing
