@@ -58,8 +58,6 @@
       tags: torrent
     - role: jellyfin
       tags: jellyfin
-    # - role: mount
-    #   tags: mount
 
   vars:
     syncthing_http_user: "SyncthingUser"
