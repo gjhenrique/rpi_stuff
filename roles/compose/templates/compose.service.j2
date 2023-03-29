@@ -1,0 +1,30 @@
+[Unit]
+Description=Compose service for {{ service_name }}
+After=network-online.target
+
+[Service]
+{% if network_namespace_path is defined %}
+NetworkNamespacePath={{ network_namespace_path }}
+BindPaths={{ namespace_dns_path }}:/etc/resolv.conf
+{% endif %}
+Type=simple
+{# EnvironmentFile=/etc/default/{{ service_name }} #}
+ExecStart=/usr/bin/docker-compose -f compose.yml up
+ExecStop=/usr/bin/docker-compose -f compose.yml down
+WorkingDirectory=/home/{{ user }}
+TimeoutStartSec=0
+{% if run_as_root != true %}
+User={{ user }}
+Group={{ user }}
+{% endif %}
+
+{% if run_in_docker != true %}
+{% if run_as_root == true %}
+Environment="DOCKER_HOST=unix:///run/podman/podman.sock"
+{% else %}
+Environment="DOCKER_HOST=unix:///run/user/{{ uid }}/podman/podman.sock"
+{% endif %}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

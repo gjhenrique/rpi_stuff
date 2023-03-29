@@ -1,0 +1,4 @@
+---
+run_as_root: false
+compose_file_name: "compose.yml.j2"
+run_in_docker: false

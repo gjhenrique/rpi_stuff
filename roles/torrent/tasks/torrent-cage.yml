@@ -1,23 +1,8 @@
 ---
 - name: Install required packages
-  ansible.builtin.apt:
+  community.general.pacman:
     update_cache: true
-    name: ['iptables', 'iptables-persistent', 'procps', 'iproute2']
-
-# Hack for making network namespaces work inpodman
-# https://github.com/containers/podman/issues/11887
-- name: Check if sys_temp is mounted
-  ansible.builtin.stat:
-    path: /sys_tmp
-  register: file_details
-  when: molecule_file is defined
-
-- name: Hack for making network namespaces work with Podman - Mounting folder  # noqa no-free-form
-  ansible.builtin.shell: |
-    mkdir -p /sys_tmp
-    mount -t sysfs --make-private /sys_tmp  # noqa command-instead-of-module
-  when: molecule_file is defined and not file_details.stat.exists
-  changed_when: true
+    name: ['iptables', 'procps', 'iproute2']
 
 - name: Copy torrent-cage-up script file
   ansible.builtin.template:

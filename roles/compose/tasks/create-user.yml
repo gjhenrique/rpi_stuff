@@ -1,0 +1,5 @@
+---
+- name: Create user
+  user:
+    name: "{{ user }}"
+  register: user_facts

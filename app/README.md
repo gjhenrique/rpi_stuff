@@ -7,7 +7,7 @@ All roles are disabled by default. Go to file `vars.yml` and enable the roles yo
 There needs to be a series of steps to enable
 1. Update the file `vars.yml` to enable the roles you want. All roles are disabled by default
 
-1. Update the file `secrets.yml` with the values you want, like NordVPN credentials and telegram token
+1. Update the file `secrets.yml` with the values you want, like VPN credentials and telegram token
 
 1. Add the RaspberryPi IP in the file `hosts.`
 

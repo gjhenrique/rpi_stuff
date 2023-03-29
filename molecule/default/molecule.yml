@@ -1,25 +1,22 @@
 ---
 dependency:
   name: galaxy
-driver:
-  name: podman
 lint: |
   set -e
   yamllint .
   ansible-lint
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
 platforms:
-  - name: local
-    image: debian
-    pre_build_image: false
-    override_command: false
-    systemd: always
-    privileged: true
-    published_ports:
-      # caddy
-      - 0.0.0.0:80:80/TCP
-      - 0.0.0.0:443:443/TCP
-      # jellyfin
-      - 0.0.0.0:8097:8096/TCP
+  - name: arch-test
+    image: manjaro
+    config_options:
+      synced_folder: true
+    box: generic/arch
+    memory: 1024
+    cpus: 1
 provisioner:
   name: ansible
   config_options:

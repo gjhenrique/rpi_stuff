@@ -1,99 +1,49 @@
 ---
-- name: Install packages
-  ansible.builtin.apt:
-    update_cache: true
-    name:
-      - libffi-dev
-
-- name: Create TV directory
-  become: true
-  become_user: torrent
+- name: Create Torrent TV directory
   ansible.builtin.file:
-    path: /home/torrent/media/torrent/TV
+    path: /home/torrent/torrents/TV
     state: directory
     mode: '0755'
 
-- name: Create Movie directory
-  become: true
-  become_user: torrent
+- name: Create Torrent TV directory
   ansible.builtin.file:
-    path: /home/torrent/media/torrent/Movies
+    path: /home/torrent/torrents/Movies
     state: directory
     mode: '0755'
 
 - name: Create TV directory
-  become: true
-  become_user: torrent
   ansible.builtin.file:
     path: /home/torrent/media/TV
     state: directory
     mode: '0755'
 
 - name: Create Movies directory
-  become: true
-  become_user: torrent
   ansible.builtin.file:
     path: /home/torrent/media/Movies
     state: directory
     mode: '0755'
 
-- name: Install required pip libraries
-  ansible.builtin.pip:
-    name:
-      - "flexget=={{ torrent_flexget_version }}"
-      - python-telegram-bot
-      - transmission-rpc
-      # https://github.com/Flexget/Flexget/issues/2749
-      - "pytz=={{ torrent_pytz_version }}"
-
 - name: Create flexget directory
-  become: true
-  become_user: torrent
   ansible.builtin.file:
-    path: /home/torrent/flexget
+    path: /home/torrent/flexget/config
     state: directory
     mode: '0755'
 
 - name: Copy flexget config file
-  become: true
-  become_user: torrent
   ansible.builtin.copy:
     src: flexget-config.yml
-    dest: /home/torrent/flexget/config.yml
+    dest: /home/torrent/flexget/config/config.yml
     mode: '0644'
-  notify:
-    - Restart flexget
 
 - name: Copy subtitle extractor file
-  become: true
-  become_user: torrent
   ansible.builtin.copy:
     src: extract-subtitles.sh
-    dest: /home/torrent/flexget/extract-subtitles.sh
+    dest: /home/torrent/flexget/config/extract-subtitles.sh
     mode: '0644'
 
 - name: Copy flexget vars file
-  become: true
-  become_user: torrent
   ansible.builtin.template:
     src: flexget-vars.yml.j2
-    dest: /home/torrent/flexget/vars.yml
+    dest: /home/torrent/flexget/config/vars.yml
     mode: '0644'
   no_log: true
-  notify:
-    - Restart flexget
-
-- name: Copy flexget service file
-  ansible.builtin.template:
-    src: flexget.service.j2
-    dest: /lib/systemd/system/flexget.service
-    mode: '0644'
-  notify:
-    - Restart flexget
-
-- name: Ensure flexget is started/enabled
-  become: true
-  ansible.builtin.systemd:
-    name: flexget
-    enabled: true
-    state: started

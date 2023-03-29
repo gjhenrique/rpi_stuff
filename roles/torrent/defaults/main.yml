@@ -1,25 +1,16 @@
 ---
 torrent_user_gid_owner: "1500"
 
-torrent_cage_non_enforcing: false
-torrent_cage_main_interface: "{{ ansible_default_ipv4.interface }}"
-torrent_cage_host_ip: "10.44.44.1"
-torrent_cage_torrent_ip: "10.44.44.2"
-torrent_cage_group: "{{ 'torrent' if torrent_cage_non_enforcing else 'vpn' }}"
+torrent_subnet: "10.44.44.0/24"
 
-torrent_jackett_version: "v0.20.3463"
-torrent_jackett_ip: "{{ torrent_cage_torrent_ip }}"
-torrent_bot_version: "v0.4.2"
-torrent_flexget_version: "v3.5.29"
-torrent_pytz_version: "v2022.6"
-
-torrent_transmission_ip: "{{ torrent_cage_torrent_ip }}"
 torrent_transmission_username: 'admin'
 torrent_transmission_password: 'admin'
 
-torrent_vpn_disabled: false
+torrent_wireguard_private_key: "private_key"
+torrent_wireguard_ip: "10.44.44.1"
+torrent_wireguard_city: "Frankfurt"
 
-torrent_nordvpn_country: "de"
+torrent_vpn_disabled: false
 
 # Force mono instead of jackett for ARMv7+
 torrent_jackett_use_mono: false

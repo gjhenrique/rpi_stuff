@@ -128,7 +128,7 @@ tasks:
     exec:
       on_output:
         for_accepted:
-          - bash extract-subtitles.sh "{{location}}"
+          - bash "{? media.extract_subtitles_path ?}" "{{location}}"
 
 schedules:
   - tasks: '*'

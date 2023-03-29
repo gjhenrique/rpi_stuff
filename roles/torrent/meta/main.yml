@@ -1,6 +1,0 @@
----
-dependencies:
-  - role: boilerplate
-    tags: boilerplate
-  - role: caddy
-    tags: caddy

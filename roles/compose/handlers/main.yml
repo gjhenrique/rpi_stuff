@@ -1,0 +1,6 @@
+---
+- name: "Restart compose-{{ service_name }}"
+  ansible.builtin.systemd:
+    name: "compose-{{ service_name }}"
+    daemon_reload: true
+    state: restarted

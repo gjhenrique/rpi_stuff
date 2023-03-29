@@ -1,15 +1,65 @@
 ---
 - name: Converge
   hosts: all
+  become: true
+  pre_tasks:
+    - name: Create server wireguard keys directory
+      ansible.builtin.file:
+        path: '/tmp/wireguard/server'
+        state: directory
+        mode: '0755'
+      tags: torrent
+
+    - name: Create peer wireguard keys directory
+      ansible.builtin.file:
+        path: '/tmp/wireguard/peer1'
+        state: directory
+        mode: '0755'
+      tags: torrent
+
+    - name: Save private key server
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_server_private_key }}"
+        dest: /tmp/wireguard/server/privatekey-server
+      tags: torrent
+
+    - name: Save public key server
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_server_public_key }}"
+        dest: /tmp/wireguard/server/publickey-server
+      tags: torrent
+
+    - name: Save private key peer
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_client_private_key }}"
+        dest: /tmp/wireguard/peer1/privatekey-peer1
+      tags: torrent
+
+    - name: Save public key peer
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_client_public_key }}"
+        dest: /tmp/wireguard/peer1/publickey-peer1
+      tags: torrent
+
+    - name: Save preshared key
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_preshared_key }}"
+        dest: /tmp/wireguard/peer1/presharedkey-peer1
+      tags: torrent
+
   roles:
+    - role: boilerplate
+      tags: boilerplate
+    - role: caddy
+      tags: caddy
     - role: syncthing
       tags: syncthing
     - role: torrent
       tags: torrent
-    - role: jellyfin
-      tags: jellyfin
-    - role: mount
-      tags: mount
+    # - role: jellyfin
+    #   tags: jellyfin
+    # - role: mount
+    #   tags: mount
 
   vars:
     syncthing_http_user: "SyncthingUser"
@@ -33,6 +83,26 @@
     caddy_domain: example.com
     caddy_cert_email: "email@email.com"
     caddy_cert_cloudflare_token: "token"
+
+    torrent_vpn_type: "custom"
+    torrent_custom_vpn_ip_addresses: "10.99.99.2/32"
+
+    torrent_vpn_server: true
+    torrent_vpn_server_endpoint: "10.44.44.100"
+    torrent_vpn_server_subnet: "10.99.99.0"
+    torrent_vpn_server_client_ip: "10.44.44.100"
+    torrent_vpn_client_ip: "10.99.99.50"
+
+    # Hardcoded and plain-text keys
+    # No worries. This is just for tests
+    # It's here because prepare needs those variables
+    torrent_custom_vpn_server_private_key: AL3YAfgHsMuQQjiqp6iGs1EB55tuCaxOFq38wq6QmEQ=
+    torrent_custom_vpn_server_public_key: CLW16gvNmmbZ8KZmtEhBgqvBnGOzya8GQAxIWU/RuAA=
+
+    torrent_custom_vpn_client_private_key: oM3x5tjDJQotbAOPECW5ck5+gz3/yZNHNi+eKmiPqWY=
+    torrent_custom_vpn_client_public_key: RTbiiT8rNnMmu+Y56xyyfB5eIC4gFow1g4/R/MRJiQE=
+
+    torrent_custom_vpn_preshared_key: 4KluUTo6CNcEeytQ53LlrHs0vZwr4Z4iWISmXdSWzbA=
 
     mount_paths:
       - mount_path: /mnt/dir1

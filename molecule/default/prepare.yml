@@ -1,6 +1,7 @@
 ---
 - name: Prepare tasks
   hosts: all
+  become: true
   tasks:
     - name: Create mount user
       ansible.builtin.user:
@@ -23,3 +24,35 @@
       ansible.builtin.user:
         name: jellyfintest
         uid: 1300
+
+    - name: Create server wireguard keys directory
+      ansible.builtin.file:
+        path: '/tmp/wireguard/server'
+        state: directory
+        mode: '0755'
+
+    - name: Create peer wireguard keys directory
+      ansible.builtin.file:
+        path: '/tmp/wireguard/peer1'
+        state: directory
+        mode: '0755'
+
+    - name: Save private key server
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_server_private_key }}"
+        dest: /tmp/wireguard/server/privatekey-server
+
+    - name: Save public key server
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_server_public_key }}"
+        dest: /tmp/wireguard/server/publickey-server
+
+    - name: Save private key peer
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_client_private_key }}"
+        dest: /tmp/wireguard/peer1/privatekey-peer1
+
+    - name: Save public key peer
+      ansible.builtin.copy:
+        content: "{{ torrent_custom_vpn_client_public_key }}"
+        dest: /tmp/wireguard/peer1/publickey-peer1

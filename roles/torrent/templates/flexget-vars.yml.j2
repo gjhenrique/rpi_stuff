@@ -6,12 +6,13 @@ rss:
   tv_url: {{ torrent_flexget_rss }}
 
 torrent:
-  torrent_tv_path: "/home/torrent/media/torrent/TV"
-  tv_path: "/home/torrent/media/TV"
-  torrent_movie_path: "/home/torrent/media/torrent/Movies"
-  movie_path: "/home/torrent/media/Movies"
+  torrent_tv_path: "/downloads/TV"
+  tv_path: "/media/TV"
+  torrent_movie_path: "/downloads/Movies"
+  movie_path: "/media/Movies"
+
+media:
+  extract_subtitles_path: "/config/extract-subtitles.sh"
 
 transmission:
-  username: {{ torrent_transmission_user }}
-  password: {{ torrent_transmission_password }}
-  ip: {{ torrent_transmission_ip }}
+  ip: 127.0.0.1

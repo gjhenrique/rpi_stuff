@@ -1,6 +1,6 @@
 ---
 - name: Save iptables
-  ansible.builtin.shell: "iptables-save > /etc/iptables/rules.v4"
+  ansible.builtin.shell: "iptables-save > /etc/iptables/iptable.rules"
 
 - name: Restart torrent-cage
   ansible.builtin.systemd:

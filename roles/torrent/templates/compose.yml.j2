@@ -1,0 +1,151 @@
+---
+networks:
+  vpn:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "{{ torrent_subnet }}"
+
+x-config: &vpn_config
+  network_mode: "service:vpn"
+  depends_on:
+    network_setup:
+      condition: service_completed_successfully
+
+services:
+{% if torrent_vpn_disabled == false and torrent_vpn_server == true %}
+  # Here for test purposes
+  server:
+    image: lscr.io/linuxserver/wireguard:latest
+    networks:
+      vpn:
+        ipv4_address: "{{ torrent_vpn_server_endpoint }}"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ="Europe/Berlin"
+      - PEERS=1
+      - INTERNAL_SUBNET={{ torrent_vpn_server_subnet }}
+    volumes:
+      - /tmp/wireguard:/config
+{% endif %}
+
+{% if torrent_vpn_disabled == false %}
+  vpn:
+    image: docker.io/qmcgaw/gluetun:latest
+    privileged: true
+    networks:
+      - vpn
+    # Hack to expose the ports from other services
+    # But reusing this network namespace has its costs
+    ports:
+      - 127.0.0.1:9117:9117
+      - 127.0.0.1:9091:9091
+    cap_add:
+      - NET_ADMIN
+    environment:
+      DOT: "off"
+      FIREWALL: "off"
+      TZ: "Europe/Berlin"
+      VPN_TYPE: "wireguard"
+
+      {% if torrent_vpn_type == "mullvad" %}
+      VPN_SERVICE_PROVIDER: "mullvad"
+      SERVER_CITIES: "{{ torrent_mullvad_vpn_city }}"
+      WIREGUARD_ADDRESSES: "{{ torrent_mullvad_vpn_ip }}"
+      WIREGUARD_PRIVATE_KEY: "{{ torrent_mullvad_vpn_pk }}"
+      {% elif torrent_vpn_type == "custom" -%}
+      VPN_SERVICE_PROVIDER: "custom"
+      VPN_ENDPOINT_IP: "{{ torrent_vpn_server_endpoint }}"
+      VPN_ENDPOINT_PORT: "{{ torrent_custom_vpn_endpoint_port | default(51820) }}"
+      WIREGUARD_PUBLIC_KEY: "{{ torrent_custom_vpn_server_public_key }}"
+      WIREGUARD_PRIVATE_KEY: "{{ torrent_custom_vpn_client_private_key }}"
+      WIREGUARD_PRESHARED_KEY: "{{ torrent_custom_vpn_preshared_key }}"
+      WIREGUARD_ADDRESSES: "{{ torrent_custom_vpn_ip_addresses }}"
+      {% endif -%}
+    restart: always
+
+  network_setup:
+    image: docker.io/alpine:3.17
+    depends_on:
+      - vpn
+    network_mode: "service:vpn"
+    privileged: true
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        sleep 5
+        echo "Installing dependencies"
+        apk add -U curl iptables jq
+
+        echo "Checking curl"
+        {% if torrent_vpn_type == "mullvad" %}
+        [ $(curl --connect-timeout 1 https://am.i.mullvad.net/json | jq ".mullvad_exit_ip") ] && exit 2 || echo "Connected"
+        {% elif torrent_vpn_type == "custom" -%}
+        [ $(curl --connect-timeout 1 https://google.com) ] && exit 2 || echo "Connected"
+        {% endif -%}
+
+        echo "Adding iptables rules"
+        iptables -I OUTPUT -d {{ torrent_subnet }} -j ACCEPT
+        iptables -A OUTPUT ! -o tun0 -m mark ! --mark "0xca6c" -m addrtype ! --dst-type LOCAL -m owner --gid-owner {{ torrent_user_gid_owner }} -j REJECT
+    restart: on-failure
+    cap_add:
+      - NET_ADMIN
+{% endif %}
+
+  # https://docs.linuxserver.io/images/docker-transmission
+  transmission:
+    image: lscr.io/linuxserver/transmission:4.0.1
+    <<: *vpn_config
+    restart: on-failure
+    environment:
+      PUID: "0"
+      PGID: "{{ torrent_user_gid_owner }}"
+    volumes:
+      - /home/torrent/transmission/config:/config
+      - /home/torrent/torrents:/downloads
+
+  # https://docs.linuxserver.io/images/docker-jackett
+  jackett:
+    image: lscr.io/linuxserver/jackett:0.20.3593
+    <<: *vpn_config
+    restart: on-failure
+    environment:
+      PUID: "0"
+      PGID: "{{ torrent_user_gid_owner }}"
+    volumes:
+      - /home/torrent/jackett:/config
+
+  # https://hub.docker.com/r/wiserain/flexget
+  flexget:
+    image: docker.io/wiserain/flexget:3.5.30
+    <<: *vpn_config
+    restart: on-failure
+    environment:
+      PUID: "0"
+      PGID: "{{ torrent_user_gid_owner }}"
+      TZ: "Europe/Berlin"
+    volumes:
+      - /home/torrent/torrents:/downloads
+      - /home/torrent/media:/media
+      - /home/torrent/flexget/config:/config
+    # Throttle ffmpeg extracting subtitles
+    cpu_count: 1
+
+
+  telegram-bot:
+    image: docker.io/gjhenrique/telegram-bot-torrents:v0.4.2
+    <<: *vpn_config
+    restart: on-failure
+    environment:
+      TRANSMISSION_TV_PATH: "/downloads/TV"
+      TRANSMISSION_MOVIE_PATH: "/downloads/Movies"
+      TRANSMISSION_URL: localhost:9091
+      JACKETT_DATA_DIR: /home/torrent/jackett
+      TELEGRAM_BOT_TOKEN: "{{ torrent_telegram_token }}"
+    volumes:
+      - /home/torrent/jackett:/jackett
