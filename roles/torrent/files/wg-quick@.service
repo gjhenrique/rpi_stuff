@@ -1,3 +1,0 @@
-[Service]
-NetworkNamespacePath=/run/netns/torrent
-BindPaths=/etc/netns/torrent/resolv.conf:/etc/resolv.conf

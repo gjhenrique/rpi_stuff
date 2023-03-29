@@ -11,6 +11,3 @@ torrent_wireguard_ip: "10.44.44.1"
 torrent_wireguard_city: "Frankfurt"
 
 torrent_vpn_disabled: false
-
-# Force mono instead of jackett for ARMv7+
-torrent_jackett_use_mono: false
