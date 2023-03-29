@@ -56,8 +56,8 @@
       tags: syncthing
     - role: torrent
       tags: torrent
-    # - role: jellyfin
-    #   tags: jellyfin
+    - role: jellyfin
+      tags: jellyfin
     # - role: mount
     #   tags: mount
 

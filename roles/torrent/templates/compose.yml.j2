@@ -24,11 +24,11 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ="Europe/Berlin"
-      - PEERS=1
-      - INTERNAL_SUBNET={{ torrent_vpn_server_subnet }}
+      PUID: 1000
+      PGID: 1000
+      TZ: "Europe/Berlin"
+      PEERS: 1
+      INTERNAL_SUBNET: {{ torrent_vpn_server_subnet }}
     volumes:
       - /tmp/wireguard:/config
 {% endif %}
