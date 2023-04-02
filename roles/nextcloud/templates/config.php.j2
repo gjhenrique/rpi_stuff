@@ -1,0 +1,13 @@
+<?php
+$CONFIG = array (
+  // The first two lines are copied from the base image
+  // https://github.com/linuxserver/docker-nextcloud/blob/master/root/defaults/config.php
+  'memcache.local' => '\OC\Memcache\APCu',
+  'datadirectory' => '/data',
+  // Add subdomain as trusted
+  'trusted_domains' =>
+    array (
+      0 => '127.0.0.1',
+      1 => 'files.{{ caddy_domain }}',
+    ),
+  );

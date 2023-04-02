@@ -12,6 +12,7 @@
         - syncthing
         - torrent
         - jackett
+        - files
 
 - name: Syncthing
   hosts: all
@@ -42,6 +43,25 @@
         validate_certs: false
         user: SyncthingUser
         password: SyncthingPassword
+        status_code: 200
+
+- name: NextCloud
+  hosts: all
+  tags: nextcloud
+  tasks:
+    - name: Check that nextcloud server is running
+      ansible.builtin.uri:
+        url: "https://files.example.com"
+        validate_certs: false
+        status_code: 200
+
+- name: Emby
+  hosts: all
+  tags: emby
+  tasks:
+    - name: Check if emby server is running
+      ansible.builtin.uri:
+        url: "http://localhost:8097/web/index.html"
         status_code: 200
 
 - name: Jellyfin

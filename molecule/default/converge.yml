@@ -65,6 +65,8 @@
       tags: jellyfin
     - role: emby
       tags: emby
+    - role: nextcloud
+      tags: nextcloud
 
   vars:
     syncthing_http_user: "SyncthingUser"

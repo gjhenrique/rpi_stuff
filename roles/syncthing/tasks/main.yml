@@ -17,3 +17,4 @@
     state: present
     auth_user: "{{ syncthing_http_user }}"
     auth_password: "{{ syncthing_http_password }}"
+    send_host_header: true
