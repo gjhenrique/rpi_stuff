@@ -63,6 +63,8 @@
       tags: torrent
     - role: jellyfin
       tags: jellyfin
+    - role: emby
+      tags: emby
 
   vars:
     syncthing_http_user: "SyncthingUser"
