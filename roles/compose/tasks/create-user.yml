@@ -1,5 +1,5 @@
 ---
 - name: Create user
-  user:
+  ansible.builtin.user:
     name: "{{ user }}"
   register: user_facts

@@ -21,30 +21,35 @@
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_server_private_key }}"
         dest: /home/torrent/wireguard/server/privatekey-server
+        mode: '0644'
       tags: torrent
 
     - name: Save public key server
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_server_public_key }}"
         dest: /home/torrent/wireguard/server/publickey-server
+        mode: '0644'
       tags: torrent
 
     - name: Save private key peer
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_client_private_key }}"
         dest: /home/torrent/wireguard/peer1/privatekey-peer1
+        mode: '0644'
       tags: torrent
 
     - name: Save public key peer
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_client_public_key }}"
         dest: /home/torrent/wireguard/peer1/publickey-peer1
+        mode: '0644'
       tags: torrent
 
     - name: Save preshared key
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_preshared_key }}"
         dest: /home/torrent/wireguard/peer1/presharedkey-peer1
+        mode: '0644'
       tags: torrent
 
   roles:
