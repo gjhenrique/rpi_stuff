@@ -5,14 +5,14 @@
   pre_tasks:
     - name: Create server wireguard keys directory
       ansible.builtin.file:
-        path: '/tmp/wireguard/server'
+        path: '/home/torrent/wireguard/server'
         state: directory
         mode: '0755'
       tags: torrent
 
     - name: Create peer wireguard keys directory
       ansible.builtin.file:
-        path: '/tmp/wireguard/peer1'
+        path: '/home/torrent/wireguard/peer1'
         state: directory
         mode: '0755'
       tags: torrent
@@ -20,31 +20,31 @@
     - name: Save private key server
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_server_private_key }}"
-        dest: /tmp/wireguard/server/privatekey-server
+        dest: /home/torrent/wireguard/server/privatekey-server
       tags: torrent
 
     - name: Save public key server
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_server_public_key }}"
-        dest: /tmp/wireguard/server/publickey-server
+        dest: /home/torrent/wireguard/server/publickey-server
       tags: torrent
 
     - name: Save private key peer
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_client_private_key }}"
-        dest: /tmp/wireguard/peer1/privatekey-peer1
+        dest: /home/torrent/wireguard/peer1/privatekey-peer1
       tags: torrent
 
     - name: Save public key peer
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_client_public_key }}"
-        dest: /tmp/wireguard/peer1/publickey-peer1
+        dest: /home/torrent/wireguard/peer1/publickey-peer1
       tags: torrent
 
     - name: Save preshared key
       ansible.builtin.copy:
         content: "{{ torrent_custom_vpn_preshared_key }}"
-        dest: /tmp/wireguard/peer1/presharedkey-peer1
+        dest: /home/torrent/wireguard/peer1/presharedkey-peer1
       tags: torrent
 
   roles:
@@ -63,7 +63,7 @@
     syncthing_http_user: "SyncthingUser"
     syncthing_http_password: "SyncthingPassword"
 
-    # Send a test token
+    # Allow to override a real token via environment
     torrent_telegram_token: "{{ lookup('env', 'TELEGRAM_TOKEN') | default('TelegramToken') }}"
     torrent_telegram_groups: "123456"
     torrent_telegram_omdb_token: "OmdbToken"
@@ -101,15 +101,3 @@
     torrent_custom_vpn_client_public_key: RTbiiT8rNnMmu+Y56xyyfB5eIC4gFow1g4/R/MRJiQE=
 
     torrent_custom_vpn_preshared_key: 4KluUTo6CNcEeytQ53LlrHs0vZwr4Z4iWISmXdSWzbA=
-
-    mount_paths:
-      - mount_path: /mnt/dir1
-        mount_from: /tmp/dir1
-        type: None
-        options: bind
-      - mount_path: /mnt/dir2
-        mount_from: /mnt/dir1/dir2
-        depends: /mnt/dir1
-        type: None
-        options: bind
-        user: mount

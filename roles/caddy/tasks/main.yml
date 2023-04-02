@@ -4,6 +4,7 @@
     name: net.ipv4.ip_unprivileged_port_start
     value: '80'
     sysctl_set: true
+    sysctl_file: /etc/sysctl.d/10-unprivileged-port.conf
 
 - name: Create caddy user
   ansible.builtin.include_role:

@@ -9,7 +9,6 @@ This repo brings the following features:
 - syncthing to synchronize pictures, documents, and notes
 - secure and easy torrent download
 - jellyfin for media
-- external disks mounted declaratively
 
 ## Why not k*n*s or docker-swarm or \<insert your container orchestrator here\>?
 Isn't Ansible deprecated already?!
@@ -67,21 +66,6 @@ In my case, not even OpenMAX is used for transcoding via CPU kicks in, which pro
 If I need it in the future, it's easier to send the video to my desktop machine and transcode it with `FFmpeg` manually and send the converted video back to the Raspberry Pi.
 
 In short, avoid transcoding and invest in an adequate device that supports the most used video and audio codecs.
-
-### mount
-SD Cards are slower, more expensive and get corrupted more quickly when compared with HDs or SSDs.
-A typical setup is to plug a disk in the USB port and use a bigger and more reliable storage.
-
-This role allows you to mount the devices with mount points controlled by systemd.
-For example, every mount operation, even samba or NFS mounts, is possible with this role.
-
-``` yaml
-mount_paths:
-  - mount_path: /mnt/external
-    mount_from: /dev/sda1
-    type: ext4
-    user: user
-```
 
 ## Related
 - [Demo app](./app): A sample playbook pointing to latest tag. It's the recommended way to configure your own servers.

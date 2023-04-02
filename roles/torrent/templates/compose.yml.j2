@@ -30,7 +30,7 @@ services:
       PEERS: 1
       INTERNAL_SUBNET: {{ torrent_vpn_server_subnet }}
     volumes:
-      - /tmp/wireguard:/config
+      - /home/torrent/wireguard:/config
 {% endif %}
 
 {% if torrent_vpn_disabled == false %}
@@ -51,7 +51,6 @@ services:
       FIREWALL: "off"
       TZ: "Europe/Berlin"
       VPN_TYPE: "wireguard"
-
       {% if torrent_vpn_type == "mullvad" %}
       VPN_SERVICE_PROVIDER: "mullvad"
       SERVER_CITIES: "{{ torrent_mullvad_vpn_city }}"
@@ -65,7 +64,8 @@ services:
       WIREGUARD_PRIVATE_KEY: "{{ torrent_custom_vpn_client_private_key }}"
       WIREGUARD_PRESHARED_KEY: "{{ torrent_custom_vpn_preshared_key }}"
       WIREGUARD_ADDRESSES: "{{ torrent_custom_vpn_ip_addresses }}"
-      {% endif -%}
+      {% endif %}
+
     restart: always
 
   network_setup:

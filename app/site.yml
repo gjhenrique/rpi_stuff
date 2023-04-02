@@ -15,6 +15,3 @@
     - role: gjhenrique.rpi_stuff.jellyfin
       tags: jellyfin
       when: enable_jellyfin is true
-    - role: gjhenrique.rpi_stuff.mount
-      tags: mount
-      when: enable_mount is true

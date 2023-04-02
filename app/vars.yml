@@ -2,7 +2,6 @@
 enable_syncthing: false
 enable_torrent: false
 enable_jellyfin: false
-enable_mount: false
 
 jellyfin_user: "torrent"
 
