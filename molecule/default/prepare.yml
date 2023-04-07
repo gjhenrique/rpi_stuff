@@ -1,0 +1,20 @@
+---
+- name: Prepare tasks
+  hosts: all
+  tasks:
+    - name: Create mount user
+      ansible.builtin.user:
+        name: mount
+        uid: 1200
+
+    - name: Create directory for mount tests
+      ansible.builtin.file:
+        path: '/tmp/dir1/dir2'
+        state: directory
+        mode: '0755'
+
+    - name: Create a file inside the mount directory
+      ansible.builtin.file:
+        path: '/tmp/dir1/dir2/file'
+        mode: '0644'
+        state: touch

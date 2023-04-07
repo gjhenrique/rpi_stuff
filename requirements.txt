@@ -1,5 +1,5 @@
 ansible==7.3.0
-ansible-lint==6.14.0
+ansible-lint==6.14.4
 molecule[ansible,lint]==3.6.0
-molecule-podman==1.0.1
+molecule-vagrant==2.0.0
 passlib

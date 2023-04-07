@@ -1,5 +1,5 @@
-FROM docker.io/manjarolinux/base
+FROM docker.io/ubuntu:focal
 
-RUN yes | pacman -Sy python systemd iproute2
+RUN apt-get update && apt-get install -y python3 systemd iproute2
 
 ENTRYPOINT ["/lib/systemd/systemd"]

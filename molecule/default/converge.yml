@@ -67,6 +67,8 @@
       tags: emby
     - role: nextcloud
       tags: nextcloud
+    - role: mount
+      tags: mount
 
   vars:
     syncthing_http_user: "SyncthingUser"
@@ -110,3 +112,15 @@
     torrent_custom_vpn_client_public_key: RTbiiT8rNnMmu+Y56xyyfB5eIC4gFow1g4/R/MRJiQE=
 
     torrent_custom_vpn_preshared_key: 4KluUTo6CNcEeytQ53LlrHs0vZwr4Z4iWISmXdSWzbA=
+
+    mount_paths:
+      - mount_path: /mnt/dir1
+        mount_from: /tmp/dir1
+        type: None
+        options: bind
+      - mount_path: /mnt/dir2
+        mount_from: /mnt/dir1/dir2
+        depends: /mnt/dir1
+        type: None
+        options: bind
+        user: mount
