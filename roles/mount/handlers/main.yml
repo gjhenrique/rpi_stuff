@@ -1,0 +1,9 @@
+---
+- name: Restart mounts
+  ansible.builtin.systemd:
+    name: "{{ file_systemd }}.mount"
+    daemon_reload: true
+    state: restarted
+  vars:
+    file_systemd: "{{ item.mount_path[1:].split('/') | join('-') }}"
+  loop: "{{ mount_paths }}"
