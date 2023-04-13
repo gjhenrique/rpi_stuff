@@ -3,36 +3,76 @@
 ![Github CI](https://github.com/gjhenrique/rpi_stuff/actions/workflows/local-test.yml/badge.svg)
 ![Ansible Galaxy](https://img.shields.io/badge/dynamic/json?style=flat&label=galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/gjhenrique/rpi_stuff/&query=latest_version.version)
 
-Collection of opinionated Ansible roles to automate some stuff I use in my day-to-day in a Raspberry Pi.
+Collection of opinionated Ansible roles to automate some stuff I use in my day-to-day in a Raspberry Pi 4B.
 
 This repo brings the following features:
-- syncthing to synchronize pictures, documents, and notes
+- syncthing to synchronize documents
 - secure and easy torrent download
 - jellyfin for media
+- automated tests with molecule
 
-## Why not k*n*s or docker-swarm or \<insert your container orchestrator here\>?
-Isn't Ansible deprecated already?!
-Container orchestration is all the rage today, but older Raspberry Pi versions are simply not powerful enough to support this abstraction layer.
-Also, for these simple tasks, it's simpler to troubleshoot the service directly when something goes awry.
+## Architecture
 
-These roles use systemd to configure autostart, timers and mount points.
-A counter-argument is that systemd is pretty complex, but at least it's what Raspberry Pi OS/Debian supports by default. It's pretty lightweight, even for older Raspberry Pi versions.
+Every role has a [Compose](https://github.com/compose-spec/compose-spec/) file as a foundation.
+By default, it uses a rootless container with podman, but it's possible to use docker if some feature is not supported.
 
-Another advantage is that, with Ansible, it's possible to have tests with [molecule](https://molecule.readthedocs.io/en/latest/) and its [podman-plugin](https://github.com/ansible-community/molecule-podman) to ensure that new changes won't break functionality.
+Writing new ansible roles is incredibly easy.
+
+1. Write a compose file and put it in `<role_dir>/templates/compose.yml.j2`
+
+``` yaml
+services:
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:1.23.2
+    ports:
+      - "127.0.0.1:8384:8384"
+    volumes:
+      - /home/syncthing/config:/config
+      - /home/syncthing/data:/data
+```
+
+1. Invoke the compose role to enable and start a new compose. By default, it uses rootless podman (even though it invokes `docker-compose`).
+``` yaml
+- name: Add caddy ingress
+  ansible.builtin.include_role:
+    name: compose
+  vars:
+    service_name: syncthing
+    user: syncthing
+```
+
+1. (Optional): Add the subdomain. It allows users to access the service through the subdomain `syncthing.{{ caddy_domain }}`
+
+``` yaml
+- name: Add caddy ingress
+  ansible.builtin.include_role:
+    name: caddy
+    tasks_from: subdomains
+  vars:
+    subdomain_name: syncthing
+    subdomain_host: 127.0.0.1
+    subdomain_port: 8384
+    state: present
+```
+
+1. Profit?
 
 ## Support
-These roles run on Raspberry Pi OS (old raspbian) Bullseye. The devices are rpi1 (armv6), rpi2/3/4 (armv7) and rpi4 (aarch64).
-This repo also supports Debian Bullseye x86.
-Although I don't use an x86 machine, the molecule tests are running in the ubiquitous x86. So it (probably) works.
-
-I dogfooded these roles on a Raspberry Pi 1 for approximately one year.
-I don't recommend this because the CPU was the bottleneck when encrypting packets by the VPN.
-But, it's possible nevertheless if there is no other option.
+These roles expect that you have a pacman-based distro, like Manjaro or Arch Linux, installed.
+I use it on a Raspberry Pi 4B, but older versions might work.
+Although I don't use an x86 machine, the molecule tests are running in it. So it (probably) works on a PC.
 
 ## Roles
 
+### Caddy
+Provides a caddy server that acts as a reverse proxy for the local services.
+
+- It uses a self-signed certificate by default.
+- Supports valid TLS certificates with Let's Encrypt and Cloudflare DNS.
+Refer to the [caddy-cloudflaredns repo](https://github.com/SlothCroissant/caddy-cloudflaredns) for the documentation.
+
 ### Syncthing
-Installs [Syncthing](https://syncthing.net)
+Syncs [Syncthing](https://syncthing.net). Access it with https://syncthing.<< caddy_domain >>
 
 - It uses the syncthing APT sources instead of the default repo
 
@@ -40,23 +80,22 @@ Installs [Syncthing](https://syncthing.net)
 Collection of tools to automate Torrent related software.
 
 Here are some set of features:
-- iptables rules to kill torrent traffic when the VPN is off.
+- iptables rules to kill torrent traffic in case the traffic is leaving unencrypted.
 - Molecule tests to guarantee that the firewall is doing its job, so no regression is introduced.
-- Run all torrent programs in an isolated network namespace
+- All torrent programs run in the same network namespace, so you don't need one VPN connection per container, a-la [docker-transmission-openvpn](https://github.com/haugene/docker-transmission-openvpn).
 - Point to Cloudflare DNS (1.1.1.1).
-- [wireguard](https://wireguard.com) connection
-- [Jackett](https://github.com/Jackett/Jackett) to search torrents in hundreds of torrent indexers. Supported mono client for Raspberry Pi 1 because the new dotnet binary doesn't support ARMv6.
-- [Transmission](https://transmissionbt.com/) to download and seed the torrent files
+- [wireguard](https://wireguard.com) connection with [gluetun](https://github.com/qdm12/gluetun). Out-of-the box support for Mullvad VPN.
+- [Jackett](https://github.com/Jackett/Jackett) to search torrents in hundreds of torrent indexers. Access it with `https://jackett.<<caddy_domain>>`.
+- [Transmission](https://transmissionbt.com/) to manage the torrents. Access it with `https://torrents.<<caddy_domain>>`.
 - [Telegram bot](https://github.com/gjhenrique/telegram-bot-torrents/) to search torrents from Jackett and send them to Transmission
-- [flexget](https://flexget.com/) to download new TV Shows with an RSS URL, rename movies and TV shows to a pretty format, and remove torrents when they're finished.
-- option to bring your own VPN. As long as it's running in the torrent namespace, it's protected
-- option to allow torrent traffic without VPN. Useful for countries that don't impose fines for torrent traffic
+- [flexget](https://flexget.com/) to download new TV Shows with an RSS URL, rename movies and TV shows to a consistent format, and remove torrents when they're finished.
+- option to allow torrent traffic without VPN. Useful for places that don't impose fines for torrent traffic
 
 ### Jellyfin
 Plex is the most popular streaming service today, so it would be the safest choice.
 But, at least, in my experience, the client always needs to transcode (translate the source video to a format the clients can stream) all videos in my fire stick, even though the device can play it directly.
 
-The open-source competitor [jellyfin](https://jellyfin.org/) allows the client to play the videos directly, and no transcoding is needed.
+The open-source competitor [jellyfin](https://jellyfin.org/) allows the client to play the videos directly without transcoding.
 That moves the bottleneck to the network.
 I stream even 4k videos smoothly from the weak Raspberry Pi in my Fire Stick.
 
@@ -67,14 +106,13 @@ If I need it in the future, it's easier to send the video to my desktop machine 
 
 In short, avoid transcoding and invest in an adequate device that supports the most used video and audio codecs.
 
-## Related
-- [Demo app](./app): A sample playbook pointing to latest tag. It's the recommended way to configure your own servers.
-- [Torrent role](./roles/torrent): Manual steps required to have a functioning infrastructure
-- [Private Configuration](https://github.com/gjhenrique/rpi_stuff_private): The repo I'm using to control my Raspberry Pi. The secrets are encrypted with ansible vault.
-- [telegram-bot-torrents](https://github.com/gjhenrique/telegram-bot-torrents): Bot written in rust to search torrents in Jackett and upload them to Transmission
 
-## Roadmap
-- [ ] molecule-libvirt to test ARM "computers" with qemu/KVM. Graviton 2 in AWS doesn't support nested virtualization. So, emulating from x86 to ARM is unfeasible.
-We need to wait for the newer Graviton 3 or use the expensive AWS bare metal ARM-based instances. Another alternative is to use a raspberry pi 4B to test it. Open to ideas on this one.
-- [ ] pihole
-- [ ] Backup settings and documents to cloud with rclone
+### Emby
+
+Jellyfin doesn't provide a nearly feature complete Android TV app as Emby. The viewing experience is much smoother, though.
+
+
+## Related
+- [My usage of these roles](./app): Playbook pointing to these roles and encrypting secrets with `ansible-vault`. Feel free to use it
+- [Torrent role](./roles/torrent): Manual steps required to have a functioning infrastructure
+- [telegram-bot-torrents](https://github.com/gjhenrique/telegram-bot-torrents): Telegram bot to search torrents in Jackett and to upload them to Transmission

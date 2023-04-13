@@ -11,3 +11,5 @@ torrent_wireguard_ip: "10.44.44.1"
 torrent_wireguard_city: "Frankfurt"
 
 torrent_vpn_disabled: false
+# This should be used only for tests
+torrent_vpn_server: false

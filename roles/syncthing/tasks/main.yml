@@ -1,5 +1,5 @@
 ---
-- name: Add caddy ingress
+- name: Add compose files
   ansible.builtin.include_role:
     name: compose
   vars:

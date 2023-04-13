@@ -1,17 +1,23 @@
 ---
-- name: Sample app
-  hosts: rpis
+- hosts: rpis
   become: true
   vars_files:
     - secrets.yml
     - vars.yml
   roles:
-    - role: gjhenrique.rpi_stuff.syncthing
+    - role: boilerplate
+      tags: boilerplate
+    - role: caddy
+      tags: caddy
+    - role: syncthing
       tags: syncthing
-      when: enable_syncthing is true
-    - role: gjhenrique.rpi_stuff.torrent
+    - role: torrent
       tags: torrent
-      when: enable_torrent is true
-    - role: gjhenrique.rpi_stuff.jellyfin
+    - role: jellyfin
       tags: jellyfin
-      when: enable_jellyfin is true
+    - role: emby
+      tags: emby
+    - role: nextcloud
+      tags: nextcloud
+    - role: mount
+      tags: mount

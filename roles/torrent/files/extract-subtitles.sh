@@ -5,6 +5,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+if ! command -v ffmpeg &> /dev/null
+then
+    echo "installing ffmpeg not found"
+    apk add --no-cache ffmpeg
+fi
 
 subtitles=$(ffprobe -v error -select_streams s -show_entries stream=index:stream_tags=language -of csv=print_section=0 "$1")
 

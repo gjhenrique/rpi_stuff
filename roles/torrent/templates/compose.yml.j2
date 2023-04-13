@@ -51,7 +51,7 @@ services:
       FIREWALL: "off"
       TZ: "Europe/Berlin"
       VPN_TYPE: "wireguard"
-      {% if torrent_vpn_type == "mullvad" %}
+      {% if torrent_vpn_type == "mullvad" -%}
       VPN_SERVICE_PROVIDER: "mullvad"
       SERVER_CITIES: "{{ torrent_mullvad_vpn_city }}"
       WIREGUARD_ADDRESSES: "{{ torrent_mullvad_vpn_ip }}"
@@ -83,10 +83,14 @@ services:
         apk add -U curl iptables jq
 
         echo "Checking curl"
-        {% if torrent_vpn_type == "mullvad" %}
-        [ $(curl --connect-timeout 1 https://am.i.mullvad.net/json | jq ".mullvad_exit_ip") ] && exit 2 || echo "Connected"
+        {% if torrent_vpn_type == "mullvad" -%}
+        if [ "$(curl --connect-timeout 1 https://am.i.mullvad.net/json | jq '.mullvad_exit_ip')" = "true" ]; then
+          echo "Connected"
+        else
+          echo "Disconnected"
+        fi
         {% elif torrent_vpn_type == "custom" -%}
-        [ $(curl --connect-timeout 1 https://google.com) ] && exit 2 || echo "Connected"
+        [ $(curl --connect-timeout 1 https://google.com) ] && echo "Connected" || exit 2
         {% endif -%}
 
         echo "Adding iptables rules"
@@ -138,14 +142,14 @@ services:
 
 
   telegram-bot:
-    image: docker.io/gjhenrique/telegram-bot-torrents:v0.4.2
+    image: docker.io/gjhenrique/telegram-bot-torrents:v0.4.4
     <<: *vpn_config
     restart: on-failure
     environment:
       TRANSMISSION_TV_PATH: "/downloads/TV"
       TRANSMISSION_MOVIE_PATH: "/downloads/Movies"
-      TRANSMISSION_URL: localhost:9091
-      JACKETT_DATA_DIR: /home/torrent/jackett
+      TRANSMISSION_URL: http://localhost:9091
+      JACKETT_DATA_DIR: /jackett/Jackett
       TELEGRAM_BOT_TOKEN: "{{ torrent_telegram_token }}"
     volumes:
       - /home/torrent/jackett:/jackett
