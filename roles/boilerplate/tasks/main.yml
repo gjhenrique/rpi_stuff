@@ -1,10 +1,21 @@
 ---
 - name: Install packages
-  ansible.builtin.apt:
-    update_cache: true
+  community.general.pacman:
     name:
-      - python3
-      - python3-pip
-      - sudo
+      - python
+      - python-pip
+      - podman
       - htop
-      - acl
+      - python-setuptools
+      # podman-compose is unmaitained
+      - docker-compose
+      # Using docker for some stuff
+      - docker
+    update_cache: true
+    state: present
+
+- name: Enable docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started

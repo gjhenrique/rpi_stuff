@@ -1,8 +1,0 @@
----
-dependencies:
-  - role: boilerplate
-  - role: caddy_ansible.caddy_ansible
-    tags: caddy
-    vars:
-      caddy_config: "{{ lookup('template', 'templates/Caddyfile.j2') }}"
-      caddy_systemd_capabilities_enabled: true

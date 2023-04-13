@@ -3,5 +3,5 @@
   ansible.builtin.include_role:
     name: compose
   vars:
-    service_name: jellyfin
-    user: "{{ jellyfin_user }}"
+    service_name: emby
+    user: "{{ emby_user }}"

@@ -1,7 +1,9 @@
 @{{ subdomain_name }} host {{ subdomain_name }}.{{ caddy_domain }}
 handle @{{ subdomain_name }} {
   reverse_proxy http://{{ subdomain_host}}:{{ subdomain_port }} {
+    {% if send_host_header is defined and send_host_header == true %}
     header_up Host {{ subdomain_host }}
+    {% endif %}
   }
 
   {% if auth_user is defined %}

@@ -1,0 +1,35 @@
+---
+- name: Allow binding ports lower than 1024
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_unprivileged_port_start
+    value: '80'
+    sysctl_set: true
+    sysctl_file: /etc/sysctl.d/10-unprivileged-port.conf
+
+- name: Create caddy user
+  ansible.builtin.include_role:
+    name: compose
+    tasks_from: create-user
+  vars:
+    user: caddy
+
+- name: Create Caddyfile directory
+  ansible.builtin.file:
+    path: "/home/caddy/etc"
+    state: directory
+    mode: "0755"
+    owner: "caddy"
+
+- name: Create Caddyfile
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: "/home/caddy/etc/Caddyfile"
+    mode: "0644"
+    owner: "caddy"
+
+- name: Include compose role
+  ansible.builtin.include_role:
+    name: compose
+  vars:
+    service_name: caddy
+    user: caddy

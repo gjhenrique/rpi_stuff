@@ -1,41 +1,47 @@
 ---
-- name: Include boilerplate
-  ansible.builtin.include_tasks: boilerplate.yml
-  tags: torrent-boilerplate
+- name: Create torrent user
+  ansible.builtin.include_role:
+    name: compose
+    tasks_from: create-user
+  vars:
+    user: torrent
 
-- name: Include iptables and network namespace
-  ansible.builtin.include_tasks: torrent-cage.yml
-  tags: torrent-cage
+- name: Add vpn group
+  ansible.builtin.group:
+    name: vpn
+    state: present
+    gid: "{{ torrent_user_gid_owner }}"
 
-- name: Include transmission
-  ansible.builtin.include_tasks: transmission.yml
-  tags: transmission
-
-- name: Include wireguard
-  ansible.builtin.include_tasks: wireguard.yml
-  when: "torrent_vpn_disabled is false and torrent_cage_non_enforcing is false"
-  tags:
-    - wireguard
-    - notest
-
-- name: Include jackett
-  ansible.builtin.include_tasks: jackett.yml
-  tags: jackett
-
-- name: Include flexget
+- name: Include flexget bootstrap
   ansible.builtin.include_tasks: flexget.yml
-  tags: flexget
 
-- name: Include telegram-bot
-  ansible.builtin.include_tasks: telegram-bot.yml
-  tags: telegram-bot
-  when: torrent_telegram_token is defined
+- name: Include compose role
+  ansible.builtin.include_role:
+    name: compose
+  vars:
+    service_name: torrent
+    user: torrent
+    run_as_root: true
+    run_in_docker: true
 
-- name: Manual task to include telegram token in Flexget database
-  ansible.builtin.include_tasks: telegram-flexget-fix.yml
-  when: add_telegram_to_flexget | default(False)
-  tags:
-    - never
-    - telegram-flexget-fix
-    - wireguard
-    # - notest
+- name: Add transmission ingress
+  ansible.builtin.include_role:
+    name: caddy
+    tasks_from: subdomains
+  vars:
+    subdomain_name: torrents
+    subdomain_host: 127.0.0.1
+    subdomain_port: 9091
+    state: present
+    auth_user: "{{ torrent_transmission_user }}"
+    auth_password: "{{ torrent_transmission_password }}"
+
+- name: Add jacket ingress
+  ansible.builtin.include_role:
+    name: caddy
+    tasks_from: subdomains
+  vars:
+    subdomain_name: jackett
+    subdomain_host: 127.0.0.1
+    subdomain_port: 9117
+    state: present

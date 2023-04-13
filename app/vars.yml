@@ -1,16 +1,22 @@
 ---
-enable_syncthing: false
-enable_torrent: false
-enable_jellyfin: false
-enable_mount: false
-
 jellyfin_user: "torrent"
+emby_user: "torrent"
 
-# Bring your own VPN
-# You're responsible to install/autostart the VPN on the torrent namespace
-torrent_vpn_disabled: false
+torrent_vpn_type: "mullvad"
 
-# No need to have a VPN installed and the traffic in not blocked
-# Be careful that your ISP is not spying on your traffic
-# Otherwise you'll receive some fines
-torrent_cage_non_enforcing: false
+mount_paths:
+  - mount_path: /mnt/external
+    mount_from: /dev/sda1
+    type: btrfs
+  - mount_path: /home/torrent/media
+    mount_from: /mnt/external/media
+    depends: /mnt/external
+    user: torrent
+    type: None
+    options: bind
+  - mount_path: /home/nextcloud/data
+    mount_from: /mnt/external/files
+    depends: /mnt/external
+    user: nextcloud
+    type: None
+    options: bind

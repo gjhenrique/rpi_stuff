@@ -1,175 +1,173 @@
 ---
+- name: Add hosts
+  hosts: all
+  become: true
+  tasks:
+    - name: Add host to /etc/hosts
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "{{ ansible_host }} {{ item }}.example.com"
+        state: present
+      with_items:
+        - syncthing
+        - torrent
+        - jackett
+        - files
+
 - name: Syncthing
   hosts: all
   tags: syncthing
   tasks:
+    - name: "Syncthing is not bound to network interface"
+      ansible.builtin.wait_for:
+        host: "{{ ansible_host }}"
+        port: "8384"
+        state: stopped
+        timeout: 5
+
+    - name: "Syncthing HTTP redirects to HTTPS"
+      ansible.builtin.uri:
+        url: "http://syncthing.example.com"
+        follow_redirects: false
+        status_code: 308
+
     - name: "Syncthing GUI with authentication"
-      uri:
-        url: "https://localhost:8384"
+      ansible.builtin.uri:
+        url: "https://syncthing.example.com"
         validate_certs: false
         status_code: 401
 
     - name: "Syncthing GUI with credentials"
-      uri:
-        url: "https://localhost:8384"
+      ansible.builtin.uri:
+        url: "https://syncthing.example.com"
         validate_certs: false
         user: SyncthingUser
         password: SyncthingPassword
         status_code: 200
 
-    - name: Check that syncthing is enabled
-      command: systemctl is-enabled syncthing@syncthing.service
-      changed_when: false
-
-    - name: Check that old syncthing version from debian is not installed
-      shell: "syncthing --version | grep -v 1.0.0"
-      changed_when: false
-
-- name: Torrent
+- name: NextCloud
   hosts: all
-  tags: torrent
+  tags: nextcloud
   tasks:
-    - name: Install curl package
-      apt:
-        name: curl
-
-    - name: With group vpn - Not accessible in default network namespace
-      command: "sg vpn -c 'curl google.com'"
-      changed_when: false
-      register: result
-      failed_when:
-        - result.rc != 6
-
-    - name: With group vpn - Not accessible in torrent network namespace
-      command: "ip netns exec torrent sg vpn -c 'curl google.com'"
-      changed_when: false
-      register: result
-      failed_when:
-        - result.rc != 6
-
-    - name: Without group vpn - Accessible in default network namespace
-      command: "curl google.com"
-      changed_when: false
-
-    - name: Without group vpn - Accessible in torrent network namespace
-      command: "ip netns exec torrent curl google.com"
-      changed_when: false
-
-    # Way of emulating an active wg0 is by rewriting
-    # Other way would be to have a simple vpn: https://github.com/gawen/pytun
-    # But it's good enough
-    - name: Change veth_torrent interface to wg0
-      shell: |
-        ip -n torrent link set veth_torrent down
-        ip -n torrent link set veth_torrent name wg0
-        ip -n torrent link set wg0 up
-        ip -n torrent route add default via 10.44.44.1
-      changed_when: false
-
-    - name: With group vpn - Not accessible in default network namespace
-      command: "sg vpn -c 'curl google.com'"
-      changed_when: false
-      register: result
-      failed_when:
-        - result.rc != 6
-
-    - name: With group vpn - Accessible in torrent network namespace
-      command: "ip netns exec torrent sg vpn -c 'curl google.com'"
-      changed_when: false
-      register: result
-
-    - name: Revert wg0 to veth_torrent again
-      shell: |
-        ip -n torrent link set wg0 down
-        ip -n torrent link set wg0 name veth_torrent
-        ip -n torrent link set veth_torrent up
-        ip -n torrent route add default via 10.44.44.1
-      changed_when: false
-
-    - name: Port is closed for http
-      uri:
-        url: "http://localhost:9092"
-        validate_certs: false
-        status_code: 400
-      changed_when: false
-
-    - name: Auth is required for transmission
-      uri:
-        url: "https://localhost:9092"
-        validate_certs: false
-        status_code: 401
-      changed_when: false
-
-    - name: Authentication is open with credentials
-      uri:
-        url: "https://localhost:9092"
-        validate_certs: false
-        user: TransmissionUser
-        password: TransmissionPassword
-        status_code: 200
-      changed_when: false
-
-    - name: Register pid
-      shell: ps aux | grep "transmission-daemon" | grep -v grep |  awk '{print $2}'
-      register: transmission_pid
-      changed_when: false
-
-    - name: Get gid
-      stat:
-        path: "/proc/{{ transmission_pid.stdout }}"
-      register: transmission_stat
-      changed_when: false
-
-    - name: Verify gid
-      assert:
-        that: transmission_stat.stat.gid == 1500
-
-    - name: Port is closed for http
-      uri:
-        url: "http://localhost:9118"
-        validate_certs: false
-        status_code: 400
-      changed_when: false
-
-    - name: Authentication is open with credentials
-      uri:
-        url: "https://localhost:9118"
+    - name: Check that nextcloud server is running
+      ansible.builtin.uri:
+        url: "https://files.example.com"
         validate_certs: false
         status_code: 200
-      changed_when: false
 
-    - name: Check if flexget configuration is valid
-      shell: 'ip netns exec torrent flexget check'
-      changed_when: false
-      args:
-        chdir: '/home/torrent/flexget'
-
-    - name: Register flexget db stat
-      stat:
-        path: /home/torrent/flexget/db-config.sqlite
-      register: flexget_db_result
-
-    - name: Check if flex database exists
-      assert:
-        that: flexget_db_result.stat.exists
-
-    - name: Check that flexget is enabled
-      command: systemctl is-enabled flexget
-      changed_when: false
-
-    - name: Check that telegram-bot is enabled
-      command: systemctl is-enabled telegram-bot
-      changed_when: false
+- name: Emby
+  hosts: all
+  tags: emby
+  tasks:
+    - name: Check if emby server is running
+      ansible.builtin.uri:
+        url: "http://localhost:8097/web/index.html"
+        status_code: 200
 
 - name: Jellyfin
   hosts: all
   tags: jellyfin
   tasks:
     - name: Check if jellyfin server is running
-      uri:
+      ansible.builtin.uri:
         url: "http://localhost:8096/web/index.html"
         status_code: 200
+
+- name: Torrent
+  hosts: all
+  tags: torrent
+  become: true
+  tasks:
+    - name: Remove ip rule
+      community.docker.docker_container_exec:
+        container: torrent-vpn-1
+        command: /bin/sh -c "ip rule delete priority 10 from all lookup main"
+      register: ip_rule
+      # Exit code 2 is for the cases when the rule does not exist
+      failed_when: ip_rule.rc != 2
+
+    - name: VPN container has access to the internet
+      community.docker.docker_container_exec:
+        container: torrent-vpn-1
+        command: /bin/sh -c "apk update && apk add curl && curl google.com"
+
+    - name: Jackett container has access to the internet
+      community.docker.docker_container_exec:
+        container: torrent-jackett-1
+        command: /bin/sh -c "curl google.com"
+
+    - name: Jackett container has access to the internet via 1500 group
+      community.docker.docker_container_exec:
+        container: torrent-jackett-1
+        # Group abc is created by linuxserver automatically
+        command: /bin/sh -c "apk update && apk add shadow-login && sg abc -c 'curl google.com'"
+
+    - name: Jackett container runs with gid 1500
+      community.docker.docker_container_exec:
+        container: torrent-jackett-1
+        command: /bin/sh -c "ps ax o gid,comm | grep -e 'jackett$' | cut -f 2 -d ' '"
+      register: result
+      failed_when:
+        - result.stdout != '1500'
+
+    - name: Add temporary rule that overrides jackett
+      community.docker.docker_container_exec:
+        container: torrent-vpn-1
+        command: /bin/sh -c "ip rule add priority 10 from all lookup main"
+
+    - name: Internet shouldn't work after VPN is down
+      community.docker.docker_container_exec:
+        container: torrent-jackett-1
+        command: /bin/sh -c "sg abc -c 'curl google.com'"
       changed_when: false
+      register: result
+      failed_when:
+        - result.rc != 6
+
+    - name: Internet should work even if VPN is down
+      community.docker.docker_container_exec:
+        container: torrent-jackett-1
+        command: /bin/sh -c "curl google.com"
+      changed_when: false
+
+    - name: Remove ip rule
+      community.docker.docker_container_exec:
+        container: torrent-vpn-1
+        command: /bin/sh -c "ip rule delete priority 10 from all lookup main"
+
+    - name: Check the configuration from flexget is correct
+      community.docker.docker_container_exec:
+        container: torrent-flexget-1
+        command: /bin/sh -c "flexget check"
+
+    - name: Register flexget db stat
+      ansible.builtin.stat:
+        path: /home/torrent/flexget/config/db-config.sqlite
+      register: flexget_db_result
+
+    - name: Check if flex database exists
+      ansible.builtin.assert:
+        that: flexget_db_result.stat.exists
+
+    - name: "Transmission GUI with authentication"
+      ansible.builtin.uri:
+        url: "https://torrents.example.com"
+        validate_certs: false
+        status_code: 401
+
+    - name: "Transmission works with credentials"
+      ansible.builtin.uri:
+        url: "https://torrents.example.com"
+        validate_certs: false
+        user: TransmissionUser
+        password: TransmissionPassword
+        status_code: 200
+
+    - name: "Jackett works with credentials"
+      ansible.builtin.uri:
+        url: "https://jackett.example.com"
+        validate_certs: false
+        status_code: 200
 
 - name: Mount
   hosts: all

@@ -1,21 +1,13 @@
 ---
-- name: Create syncthing user
-  ansible.builtin.user:
-    name: syncthing
+- name: Add compose files
+  ansible.builtin.include_role:
+    name: compose
+  vars:
+    service_name: syncthing
+    user: syncthing
 
-# Following instructions from https://apt.syncthing.net/ to get latest version
-- name: Include syncthing installation
-  ansible.builtin.include_tasks: install.yml
-  tags: syncthing-install
-
-- name: Enable syncthing service
-  ansible.builtin.systemd:
-    name: "syncthing@syncthing"
-    enabled: true
-    state: started
-
-- name: Install caddy
-  ansible.builtin.import_role:
+- name: Add caddy ingress
+  ansible.builtin.include_role:
     name: caddy
     tasks_from: subdomains
   vars:
@@ -25,3 +17,4 @@
     state: present
     auth_user: "{{ syncthing_http_user }}"
     auth_password: "{{ syncthing_http_password }}"
+    send_host_header: true

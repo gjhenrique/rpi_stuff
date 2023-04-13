@@ -1,0 +1,17 @@
+---
+services:
+  emby:
+    image: lscr.io/linuxserver/emby:version-4.7.11.0
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: "Europe/Berlin"
+    volumes:
+      - /home/{{ emby_user }}/emby:/config
+      - /home/{{ emby_user }}/media:/media
+    ports:
+      - 8097:8096
+      - 8921:8920
+      - 7360:7359/udp
+      - 1901:1900/udp
+    restart: unless-stopped
