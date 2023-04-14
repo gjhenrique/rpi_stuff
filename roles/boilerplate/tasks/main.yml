@@ -19,3 +19,10 @@
     name: docker
     enabled: true
     state: started
+
+- name: Allow binding ports lower than 1024
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_unprivileged_port_start
+    value: '80'
+    sysctl_set: true
+    sysctl_file: /etc/sysctl.d/10-unprivileged-port.conf

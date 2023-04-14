@@ -1,0 +1,18 @@
+---
+
+- name: Create directory for container volume
+  file:
+    path: "{{ item.host_path }}"
+    state: directory
+    owner: "{{ item.uid }}"
+  with_items: "{{ share_container_volumes }}"
+
+- name: Include compose role
+  ansible.builtin.include_role:
+    name: compose
+  vars:
+    service_name: share
+    user: "{{ share_user }}"
+    # I had some issues with uid mapping on rootless podman and samba
+    run_in_docker: true
+    run_as_root: true

@@ -17,7 +17,7 @@
       tags: jellyfin
     - role: emby
       tags: emby
-    - role: nextcloud
-      tags: nextcloud
+    - role: share
+      tags: share
     - role: mount
       tags: mount

@@ -45,16 +45,6 @@
         password: SyncthingPassword
         status_code: 200
 
-- name: NextCloud
-  hosts: all
-  tags: nextcloud
-  tasks:
-    - name: Check that nextcloud server is running
-      ansible.builtin.uri:
-        url: "https://files.example.com"
-        validate_certs: false
-        status_code: 200
-
 - name: Emby
   hosts: all
   tags: emby
@@ -202,3 +192,36 @@
     - name: Check that mount1 is enabled
       command: systemctl is-enabled mnt-dir2.mount
       changed_when: false
+
+- name: Share
+  hosts: all
+  become: true
+  tags: share
+  tasks:
+    - name: Install cifs-utils
+      pacman:
+        name: cifs-utils
+        state: present
+
+    - name: Mount samba share
+      mount:
+        name: /mnt/share
+        src: //127.0.0.1/Pictures
+        fstype: cifs
+        opts: "username=user1,password=pass1"
+        state: mounted
+
+    - name: Create blank file inside samba share
+      file:
+        path: /mnt/share/file.txt
+        state: touch
+        mode: 0644
+
+    - name: Stat file
+      stat:
+        path: "/mnt/share/file.txt"
+      register: file_result
+
+    - name: Check if file was created correctly
+      assert:
+        that: file_result.stat.exists

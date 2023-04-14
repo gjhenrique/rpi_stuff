@@ -1,0 +1,21 @@
+---
+services:
+  samba:
+    image: ghcr.io/servercontainers/samba:smbd-only-latest
+    ports:
+      - 445:445
+    environment:
+      {% for user, values in share_users.items() -%}
+      ACCOUNT_{{ user }}: {{ values.password }}
+      UID_{{ user }}: {{ values.uid }}
+      {% endfor %}
+
+
+      {% for key, value in share_samba_volumes.items() -%}
+      SAMBA_VOLUME_CONFIG_{{ key }}: "{{ value }}"
+      {% endfor %}
+
+    volumes:
+      {% for volume in share_container_volumes -%}
+      - {{ volume.host_path }}:{{ volume.container_path }}
+      {% endfor %}

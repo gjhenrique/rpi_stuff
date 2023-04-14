@@ -65,8 +65,8 @@
       tags: jellyfin
     - role: emby
       tags: emby
-    - role: nextcloud
-      tags: nextcloud
+    - role: share
+      tags: share
     - role: mount
       tags: mount
 
@@ -112,6 +112,19 @@
     torrent_custom_vpn_client_public_key: RTbiiT8rNnMmu+Y56xyyfB5eIC4gFow1g4/R/MRJiQE=
 
     torrent_custom_vpn_preshared_key: 4KluUTo6CNcEeytQ53LlrHs0vZwr4Z4iWISmXdSWzbA=
+
+    share_users:
+      user1:
+        password: pass1
+        uid: 1100
+
+    share_samba_volumes:
+      pictures: "[Pictures]; path=/shares/user1; valid users= user1; guest ok = no; read only = no; browseable = yes;"
+
+    share_container_volumes:
+      - host_path: /home/share/shares/user1
+        container_path: /shares/user1
+        uid: 1100
 
     mount_paths:
       - mount_path: /mnt/dir1

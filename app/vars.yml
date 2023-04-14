@@ -14,9 +14,9 @@ mount_paths:
     user: torrent
     type: None
     options: bind
-  - mount_path: /home/nextcloud/data
-    mount_from: /mnt/external/files
+  - mount_path: /home/share/shares
+    mount_from: /mnt/external/shares
     depends: /mnt/external
-    user: nextcloud
+    user: 1100
     type: None
     options: bind
