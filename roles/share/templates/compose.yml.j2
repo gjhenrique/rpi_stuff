@@ -19,3 +19,26 @@ services:
       {% for volume in share_container_volumes -%}
       - {{ volume.host_path }}:{{ volume.container_path }}
       {% endfor %}
+
+  photoprism:
+    image: docker.io/photoprism/photoprism:221118-jammy
+    ports:
+      - "127.0.0.1:2342:2342"
+    environment:
+      PHOTOPRISM_ADMIN_USER: "{{ share_photoprism_user }}"
+      PHOTOPRISM_ADMIN_PASSWORD: "{{ share_photoprism_password }}"
+      PHOTOPRISM_AUTH_MODE: "password"
+      PHOTOPRISM_SITE_URL: "https://files.{{ caddy_domain }}/"
+
+      # Do not touch the samba files
+      PHOTOPRISM_DISABLE_CHOWN: "true"
+      PHOTOPRISM_READONLY: "true"
+      # RPi is not powerful enough
+      PHOTOPRISM_DISABLE_TENSORFLOW: "true"
+      PHOTOPRISM_DISABLE_RAW: "true"
+
+    working_dir: "/photoprism"
+    cpus: 2
+    volumes:
+      - "{{ share_photoprism_originals_directory }}:/photoprism/originals"
+      - "/home/{{ share_user }}/photoprism/storage:/photoprism/storage"

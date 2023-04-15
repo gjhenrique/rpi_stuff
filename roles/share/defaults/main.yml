@@ -1,2 +1,5 @@
 ---
 share_user: share
+share_photoprism_originals_directory: /home/share/Pictures
+share_photoprism_user: admin
+share_photoprism_password: insecure

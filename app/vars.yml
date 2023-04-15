@@ -4,6 +4,15 @@ emby_user: "torrent"
 
 torrent_vpn_type: "mullvad"
 
+share_samba_volumes:
+  pictures: "[Pictures]; path=/shares/pictures; valid users= guilherme; guest ok = no; read only = no; browseable = yes;"
+  ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv; guest ok = no; read only = yes; browseable = yes;"
+share_container_volumes:
+  - host_path: /home/share/shares/pictures
+    container_path: /shares/pictures
+    uid: 1100
+share_photoprism_originals_directory: /home/share/shares/pictures
+
 mount_paths:
   - mount_path: /mnt/external
     mount_from: /dev/sda1
@@ -14,7 +23,7 @@ mount_paths:
     user: torrent
     type: None
     options: bind
-  - mount_path: /home/share/shares
+  - mount_path: /home/share/shares/pictures
     mount_from: /mnt/external/shares
     depends: /mnt/external
     user: 1100

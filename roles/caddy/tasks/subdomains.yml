@@ -12,12 +12,12 @@
     dest: /home/caddy/etc/subdomains/{{ subdomain_name }}.caddy
     mode: "0644"
     owner: "caddy"
-  # notify: Reload caddy
+  notify: Restart caddy
   when: state == "present"
 
 - name: Remove subdomain file
   ansible.builtin.file:
     path: /home/caddy/etc/subdomains/{{ subdomain_name }}.caddy
     state: absent
-  # notify: Reload caddy
+  notify: Restart caddy
   when: state == "absent"

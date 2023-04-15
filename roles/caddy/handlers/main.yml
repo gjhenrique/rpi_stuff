@@ -1,0 +1,5 @@
+- name: "Restart caddy"
+  ansible.builtin.systemd:
+    name: "compose-caddy"
+    daemon_reload: true
+    state: restarted
