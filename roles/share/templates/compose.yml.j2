@@ -36,6 +36,15 @@ services:
       # RPi is not powerful enough
       PHOTOPRISM_DISABLE_TENSORFLOW: "true"
       PHOTOPRISM_DISABLE_RAW: "true"
+      {% if share_running_in_rpi -%}
+      PHOTOPRISM_FFMPEG_ENCODER: "raspberry"
+      {% endif %}
+
+
+    {% if share_running_in_rpi -%}
+    devices:
+     - "/dev/video11:/dev/video11" # Video4Linux Video Encode Device (h264_v4l2m2m)
+    {% endif %}
 
     working_dir: "/photoprism"
     cpus: 2

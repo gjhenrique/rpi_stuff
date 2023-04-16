@@ -109,7 +109,7 @@ In short, avoid transcoding and invest in an adequate device that supports the m
 
 ### Emby
 
-Jellyfin doesn't provide a nearly feature complete Android TV app as Emby. The viewing experience is much smoother, though.
+Jellyfin doesn't provide a feature-complete Android TV app as [Emby](https://emby.media/). The viewing experience is much smoother, though.
 
 
 ## Related

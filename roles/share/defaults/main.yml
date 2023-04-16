@@ -3,3 +3,4 @@ share_user: share
 share_photoprism_originals_directory: /home/share/Pictures
 share_photoprism_user: admin
 share_photoprism_password: insecure
+share_running_in_rpi: false

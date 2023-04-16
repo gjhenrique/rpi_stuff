@@ -12,6 +12,7 @@ share_container_volumes:
     container_path: /shares/pictures
     uid: 1100
 share_photoprism_originals_directory: /home/share/shares/pictures
+share_running_in_rpi: true
 
 mount_paths:
   - mount_path: /mnt/external
