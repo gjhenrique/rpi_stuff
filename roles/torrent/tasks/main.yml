@@ -12,6 +12,10 @@
     state: present
     gid: "{{ torrent_user_gid_owner }}"
 
+- name: Include mock wireguard files inside tests
+  ansible.builtin.include_tasks: mock-wireguard-server.yml
+  when: molecule_file is defined
+
 - name: Include flexget bootstrap
   ansible.builtin.include_tasks: flexget.yml
 
@@ -45,3 +49,10 @@
     subdomain_host: 127.0.0.1
     subdomain_port: 9117
     state: present
+
+- name: Manual task to include telegram token in Flexget database
+  include: telegram-flexget-fix.yml
+  when: add_telegram_to_flexget | default(False)
+  tags:
+    - never
+    - telegram-flexget-fix

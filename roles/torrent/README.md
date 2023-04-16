@@ -7,19 +7,18 @@
 
 1. The telegram bot is open by default. Send a message `chat-id` and insert the value of the groups or private chats in the variable `torrent_telegram_groups`.
 
-Run only the `telegram-bot` tasks to restart the bot to restrict only these people to talk with the bot
+Rune the command in the machine to restart the service
 
 ``` bash
-# Replace with your ssh credentials
-ansible-playbook --tags=telegram-bot --extra-vars='ansible_user=pi' --extra-vars='ansible_ssh_pass=raspberry' site.yml
+systemctl restart compose-torrent
 ```
 
-1. Add the TV Shows and Movies to your streaming platform. `/home/torrent/media/Movies` is where Flexget renames the movies from Transmission and `/home/torrent/media/TV` is for TV Shows.
+1. Add the TV Shows and Movies to your streaming platform. Flexget renames the from the torrents directory to `/home/torrent/media/Movies` and `/home/torrent/media/TV` to TV Shows
 
 1. Flexget sends a telegram message when a new movie or episode is renamed and ready to be watched.
 The ansible variable with the group name is called `torrent_Flexget_telegram_receiver`.
 
-The issue is that the bot is already listening to new messages and Flexget doesn't have the opportunity to map the chat id with the group name. You can run a manual task to allow this mapping to be stored in Flexget database as a workaround. It will:
+Theres is an annoying issue where the bot is already listening to new messages and Flexget doesn't have the opportunity to map the chat id with the group name. You can run a manual task to allow this mapping to be stored in Flexget database as a workaround. It will:
 
 - Stop telegram-bot service
 - Stop Flexget service
@@ -33,5 +32,5 @@ The issue is that the bot is already listening to new messages and Flexget doesn
 
 The command is:
 ``` bash
-ansible-playbook --tags=telegram-Flexget-fix  -e add_telegram_to_flexget=true --extra-vars='ansible_user=pi' --extra-vars='ansible_ssh_pass=raspberry' site.yml
+ansible-playbook --tags=telegram-flexget-fix  -e add_telegram_to_flexget=true site.yml
 ```

@@ -111,7 +111,7 @@ services:
       PGID: "{{ torrent_user_gid_owner }}"
     volumes:
       - /home/torrent/transmission/config:/config
-      - /home/torrent/torrents:/downloads
+      - /home/torrent/media/torrents:/downloads
 
   # https://docs.linuxserver.io/images/docker-jackett
   jackett:
@@ -134,7 +134,7 @@ services:
       PGID: "{{ torrent_user_gid_owner }}"
       TZ: "Europe/Berlin"
     volumes:
-      - /home/torrent/torrents:/downloads
+      - /home/torrent/media/torrents:/downloads
       - /home/torrent/media:/media
       - /home/torrent/flexget/config:/config
     # Throttle ffmpeg extracting subtitles

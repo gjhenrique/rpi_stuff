@@ -1,44 +1,51 @@
 ---
 - name: Create Torrent TV directory
   ansible.builtin.file:
-    path: /home/torrent/torrents/TV
+    path: /home/torrent/media/torrents/TV
     state: directory
+    owner: torrent
     mode: '0755'
 
 - name: Create Torrent TV directory
   ansible.builtin.file:
-    path: /home/torrent/torrents/Movies
+    path: /home/torrent/media/torrents/Movies
     state: directory
+    owner: torrent
     mode: '0755'
 
 - name: Create TV directory
   ansible.builtin.file:
     path: /home/torrent/media/TV
     state: directory
+    owner: torrent
     mode: '0755'
 
 - name: Create Movies directory
   ansible.builtin.file:
     path: /home/torrent/media/Movies
     state: directory
+    owner: torrent
     mode: '0755'
 
 - name: Create flexget directory
   ansible.builtin.file:
     path: /home/torrent/flexget/config
     state: directory
+    owner: torrent
     mode: '0755'
 
 - name: Copy flexget config file
   ansible.builtin.copy:
     src: flexget-config.yml
     dest: /home/torrent/flexget/config/config.yml
+    owner: torrent
     mode: '0644'
 
 - name: Copy subtitle extractor file
   ansible.builtin.copy:
     src: extract-subtitles.sh
     dest: /home/torrent/flexget/config/extract-subtitles.sh
+    owner: torrent
     mode: '0644'
 
 - name: Copy flexget vars file
@@ -46,4 +53,5 @@
     src: flexget-vars.yml.j2
     dest: /home/torrent/flexget/config/vars.yml
     mode: '0644'
+    owner: torrent
   no_log: true

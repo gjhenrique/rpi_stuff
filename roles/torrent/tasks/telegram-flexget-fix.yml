@@ -1,38 +1,40 @@
 ---
-- name: Stop telegram-bot
+- name: Stop torrent service
   ansible.builtin.systemd:
-    name: telegram-bot
-    state: stopped
-
-- name: Stop flexget
-  ansible.builtin.systemd:
-    name: flexget
+    name: compose-torrent
     state: stopped
 
 - name: Touch Matrix movie
   become: true
   become_user: torrent
   ansible.builtin.file:
-    path: '/home/torrent/media/torrent/Movies/Matrix (1999).mkv'
-    mode: '0644'
+    path: "/home/torrent/media/torrents/Movies/Matrix (1999).mkv"
+    mode: "0644"
     state: touch
 
+- name: Install requests package
+  ansible.builtin.pip:
+    name: requests
+
+- name: Wait for user input
+  ansible.builtin.pause:
+    prompt: "Send a message to the chat like \"/search Movie\" before continuing"
+
 - name: Run flexget
-  become: true
-  become_user: torrent
-  ansible.builtin.command: "flexget execute --task move-movies"
+  community.docker.docker_container:
+    image: docker.io/wiserain/flexget:latest
+    name: flexget-fix-telegram
+    entrypoint: "flexget"
+    command: "execute --task move-movies"
+    volumes:
+      - /home/torrent/flexget/config:/config
+      - /home/torrent/media/torrents:/downloads
+      - /home/torrent/media:/media
   changed_when: false
-  args:
-    chdir: "/home/torrent/flexget"
 
-- name: Start telegram-bot
+- name: Start torrent service
   ansible.builtin.systemd:
-    name: telegram-bot
-    state: started
-
-- name: Start flexget
-  ansible.builtin.systemd:
-    name: flexget
+    name: compose-torrent
     state: started
 
 - name: Remove Matrix temp file
