@@ -98,8 +98,6 @@ tasks:
       only_complete: true
       host: "{? transmission.ip ?}"
       port: 9091
-      username: "{? transmission.username ?}"
-      password: "{? transmission.password ?}"
     disable: [seen, seen_info_hash]
     if:
       - transmission_progress == 100: accept
