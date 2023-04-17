@@ -34,11 +34,13 @@
   ansible.builtin.template:
     # TODO: Maybe use lookup here?
     src: "{{ ansible_parent_role_paths[0] }}/templates/{{ compose_file_name }}"
-    dest: "/home/{{ user }}/compose.yml"
+    dest: "/home/{{ user }}/compose-{{ service_name }}.yml"
     mode: "0644"
     owner: "{{ user }}"
     group: "{{ user }}"
   notify: "Restart compose-{{ service_name }}"
+  vars:
+    user_id: user_facts.uid
 
 - name: Create systemd unit file
   ansible.builtin.template:

@@ -107,7 +107,7 @@ services:
     <<: *vpn_config
     restart: on-failure
     environment:
-      PUID: "0"
+      PUID: "{{ user_id }}"
       PGID: "{{ torrent_user_gid_owner }}"
     volumes:
       - /home/torrent/transmission/config:/config
@@ -119,7 +119,7 @@ services:
     <<: *vpn_config
     restart: on-failure
     environment:
-      PUID: "0"
+      PUID: "{{ user_id }}"
       PGID: "{{ torrent_user_gid_owner }}"
     volumes:
       - /home/torrent/jackett:/config
@@ -130,7 +130,7 @@ services:
     <<: *vpn_config
     restart: on-failure
     environment:
-      PUID: "0"
+      PUID: "{{ user_id }}"
       PGID: "{{ torrent_user_gid_owner }}"
       TZ: "Europe/Berlin"
     volumes:
