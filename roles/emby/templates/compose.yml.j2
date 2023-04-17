@@ -3,8 +3,8 @@ services:
   emby:
     image: lscr.io/linuxserver/emby:version-4.7.11.0
     environment:
-      PUID: 1000
-      PGID: 1000
+      PUID: 0
+      PGID: 0
       TZ: "Europe/Berlin"
     volumes:
       - /home/{{ emby_user }}/emby:/config
@@ -15,3 +15,4 @@ services:
       - 7360:7359/udp
       - 1901:1900/udp
     restart: unless-stopped
+    cpus: 1

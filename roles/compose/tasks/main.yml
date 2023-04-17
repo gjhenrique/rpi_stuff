@@ -40,7 +40,7 @@
     group: "{{ user }}"
   notify: "Restart compose-{{ service_name }}"
   vars:
-    user_id: user_facts.uid
+    user_id: "{{ user_facts.uid }}"
 
 - name: Create systemd unit file
   ansible.builtin.template:
