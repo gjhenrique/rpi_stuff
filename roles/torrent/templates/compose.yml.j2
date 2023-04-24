@@ -129,12 +129,14 @@ services:
     image: docker.io/wiserain/flexget:3.5.30
     <<: *vpn_config
     restart: on-failure
+    entrypoint: bash -c "apk add ffmpeg && /init"
     environment:
       PUID: "{{ user_id }}"
       PGID: "{{ torrent_user_gid_owner }}"
       TZ: "Europe/Berlin"
     volumes:
-      - /home/torrent/media/torrents:/downloads
+      # Same volume for torrents and final media
+      # If you put as two different volumes, then Linux treats as two different FSes and moves the entire file
       - /home/torrent/media:/media
       - /home/torrent/flexget/config:/config
     # Throttle ffmpeg extracting subtitles

@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+import os
+import shutil
+import exifread
+from datetime import datetime
+import sys
+
+source_dir = sys.argv[1]
+destination_dir = sys.argv[2]
+move = sys.argv[3]
+
+# loop through the files in the source directory
+for root, dirs, files in os.walk(source_dir):
+    for file in files:
+        # get the full path of the file
+        file_path = os.path.join(root, file)
+
+
+        # get the date from the parent directory name
+        date_str = os.path.basename(os.path.dirname(file_path))
+        try:
+            date = datetime.strptime(date_str, '%Y-%m')
+        except ValueError:
+            continue
+
+        dest_path = os.path.join(destination_dir, str(date.year), str(date.month).zfill(2))
+
+        if move == "true":
+          try:
+              print("Moving " + file_path + " to " + os.path.join(dest_path, file))
+              os.makedirs(dest_path, exist_ok=True)
+              shutil.move(file_path, os.path.join(dest_path, file))
+          except Exception as e:
+              print("Not moving: " + file_path)
+        else:
+          print("Would move " + file_path + " to " + os.path.join(dest_path, file))
