@@ -13,6 +13,8 @@ share_container_volumes:
     uid: 1100
 share_photoprism_originals_directory: /home/share/shares/pictures
 share_running_in_rpi: true
+# Consider donating to https://github.com/sponsors/photoprism
+share_photoprism_sponsor: true
 
 mount_paths:
   - mount_path: /mnt/external

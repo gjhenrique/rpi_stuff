@@ -40,6 +40,7 @@
     dest: /home/torrent/flexget/config/config.yml
     owner: torrent
     mode: '0644'
+  notify: "Restart torrent"
 
 - name: Copy subtitle extractor file
   ansible.builtin.copy:
@@ -47,6 +48,7 @@
     dest: /home/torrent/flexget/config/extract-subtitles.sh
     owner: torrent
     mode: '0644'
+  notify: "Restart torrent"
 
 - name: Copy flexget vars file
   ansible.builtin.template:
@@ -55,3 +57,4 @@
     mode: '0644'
     owner: torrent
   no_log: true
+  notify: "Restart torrent"

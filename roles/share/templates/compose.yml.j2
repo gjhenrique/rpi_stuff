@@ -21,7 +21,7 @@ services:
       {% endfor %}
 
   photoprism:
-    image: docker.io/photoprism/photoprism:221118-jammy
+    image: docker.io/photoprism/photoprism:preview-ubuntu
     ports:
       - "127.0.0.1:2342:2342"
     environment:
@@ -36,10 +36,14 @@ services:
       # RPi is not powerful enough
       PHOTOPRISM_DISABLE_TENSORFLOW: "true"
       PHOTOPRISM_DISABLE_RAW: "true"
-      {% if share_running_in_rpi -%}
-      PHOTOPRISM_FFMPEG_ENCODER: "raspberry"
+
+      {% if share_running_in_rpi and share_photoprism_sponsor -%}
+      PHOTOPRISM_SPONSOR: "true"
       {% endif %}
 
+      {% if share_running_in_rpi and share_photoprism_sponsor -%}
+      PHOTOPRISM_FFMPEG_ENCODER: "raspberry"
+      {% endif %}
 
     {% if share_running_in_rpi -%}
     devices:

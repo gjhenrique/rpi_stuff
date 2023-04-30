@@ -33,7 +33,7 @@ tasks:
     all_series: true
     trakt_lookup: true
     set:
-      torrent_path: "{? torrent.torrent_tv_path ?}"
+      torrent_path: "{? torrent.transmission_tv_path ?}"
       notification_message: "🧲: {{ trakt_series_name }} - s{{ trakt_season|pad(2) }}e{{ trakt_episode | pad(2) }}"
     template:
       - torrent
@@ -129,6 +129,14 @@ tasks:
           - bash "{? media.extract_subtitles_path ?}" "{{location}}"
 
 schedules:
-  - tasks: '*'
+  - tasks:
+      - download-rss
+      - delete-transmission
     interval:
       hours: 1
+  - tasks:
+      - move-series
+      - move-movies
+      - extract-subtitles
+    interval:
+      minutes: 10

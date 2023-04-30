@@ -1,6 +1,6 @@
 ---
-- name: "Restart caddy"
+- name: "Restart torrent"
   ansible.builtin.systemd:
-    name: "compose-caddy"
+    name: "compose-torrent"
     daemon_reload: true
     state: restarted
