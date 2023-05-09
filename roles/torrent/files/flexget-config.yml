@@ -6,7 +6,6 @@ templates:
     transmission:
       host: "{? transmission.ip ?}"
       port: 9091
-      ratio: 1
       path: "{{ torrent_path }}"
       username: "{? transmission.username ?}"
       password: "{? transmission.password ?}"
