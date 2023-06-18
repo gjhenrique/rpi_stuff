@@ -115,7 +115,7 @@ services:
 
   # https://docs.linuxserver.io/images/docker-jackett
   jackett:
-    image: lscr.io/linuxserver/jackett:0.20.4132
+    image: lscr.io/linuxserver/jackett:0.21.245
     <<: *vpn_config
     restart: on-failure
     environment:
@@ -144,7 +144,7 @@ services:
 
 
   telegram-bot:
-    image: docker.io/gjhenrique/telegram-bot-torrents:v0.4.4
+    image: docker.io/gjhenrique/telegram-bot-torrents:v0.5.0
     <<: *vpn_config
     restart: on-failure
     environment:
