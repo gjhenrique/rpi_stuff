@@ -1,0 +1,23 @@
+- name: Ensure dependencies are installed.
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+
+- name: Add Docker repository.
+  apt_repository:
+    repo: "{{ docker_apt_repository }}"
+    state: present
+    update_cache: true
+  when: docker_add_repo | bool
+
+- name: Ensure dependencies are installed.
+  apt:
+    name:
+      - docker
+      - docker-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose
+
