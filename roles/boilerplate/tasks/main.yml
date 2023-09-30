@@ -2,20 +2,8 @@
 - include_tasks: setup-debian.yml
   when: ansible_os_family == 'Debian'
 
-# - name: Install packages
-#   community.general.pacman:
-#     name:
-#       - python
-#       - python-pip
-#       - podman
-#       - htop
-#       - python-setuptools
-#       # podman-compose is unmaitained
-#       - docker-compose
-#       # Using docker for some stuff
-#       - docker
-#     update_cache: true
-#     state: present
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Archlinux'
 
 - name: Enable docker service
   ansible.builtin.systemd:
