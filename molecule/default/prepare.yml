@@ -8,6 +8,11 @@
         name: mount
         uid: 1200
 
+    - name: Make sure python3 is installed
+      ansible.builtin.package:
+        name: python3
+        state: present
+
     - name: Create directory for mount tests
       ansible.builtin.file:
         path: '/tmp/dir1/dir2'

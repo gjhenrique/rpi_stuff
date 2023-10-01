@@ -1,5 +1,6 @@
-ansible==7.3.0
-ansible-lint==6.14.4
-molecule[ansible,lint]==3.6.0
-molecule-vagrant==2.0.0
+ansible==8.4.0
+ansible-lint==6.19.0
+molecule==5.1.0
+molecule-plugins[ec2]==23.5.0
 passlib
+boto3
