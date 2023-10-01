@@ -1,19 +1,4 @@
 ---
-- name: Add hosts
-  hosts: all
-  become: true
-  tasks:
-    - name: Add host to /etc/hosts
-      ansible.builtin.lineinfile:
-        path: /etc/hosts
-        line: "{{ ansible_host }} {{ item }}.example.com"
-        state: present
-      with_items:
-        - syncthing
-        - torrent
-        - jackett
-        - files
-
 - name: Syncthing
   hosts: all
   tags: syncthing

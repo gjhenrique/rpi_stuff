@@ -8,11 +8,6 @@
         name: mount
         uid: 1200
 
-    - name: Make sure python3 is installed
-      ansible.builtin.package:
-        name: python3
-        state: present
-
     - name: Create directory for mount tests
       ansible.builtin.file:
         path: '/tmp/dir1/dir2'
@@ -24,3 +19,12 @@
         path: '/tmp/dir1/dir2/file'
         mode: '0644'
         state: touch
+
+    - name: Add fake entries to /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - "127.0.0.1 syncthing.example.com"
+        - "127.0.0.1 torrents.example.com"
+        - "127.0.0.1 jackett.example.com"

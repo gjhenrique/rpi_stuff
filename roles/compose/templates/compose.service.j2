@@ -8,9 +8,8 @@ NetworkNamespacePath={{ network_namespace_path }}
 BindPaths={{ namespace_dns_path }}:/etc/resolv.conf
 {% endif %}
 Type=simple
-{# EnvironmentFile=/etc/default/{{ service_name }} #}
-ExecStart=/usr/bin/docker-compose -f compose-{{ service_name }}.yml up
-ExecStop=/usr/bin/docker-compose -f compose-{{ service_name }}.yml down
+ExecStart=/usr/bin/docker compose -f compose-{{ service_name }}.yml up
+ExecStop=/usr/bin/docker compose -f compose-{{ service_name }}.yml down
 WorkingDirectory=/home/{{ user }}
 TimeoutStartSec=0
 {% if run_as_root != true %}
