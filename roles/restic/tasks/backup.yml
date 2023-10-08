@@ -1,0 +1,40 @@
+- name: Copy configuration file
+  ansible.builtin.template:
+    src: restic.conf.j2
+    dest: /etc/restic/restic-{{ restic_backup_name  }}.conf
+    mode: "0600"
+
+# Inspired by ansible.restic
+- name: Initialize a repository (if needed)
+  ansible.builtin.shell: |
+    set -a
+    source /etc/restic/restic-{{ restic_backup_name  }}.conf
+    restic init
+  register: restic_init
+  changed_when: "'created restic repository' in restic_init.stdout"
+  args:
+    executable: /usr/bin/bash
+  failed_when:
+    - restic_init.rc != 0
+    - not 'config file already exists' in restic_init.stderr
+
+- name: Copy timer file
+  ansible.builtin.template:
+    src: restic-backup.timer.j2
+    dest: /lib/systemd/system/restic-{{ restic_backup_name  }}.timer
+    mode: "0644"
+  notify: "Restart backup-{{ restic_backup_name }}"
+
+- name: Copy service file
+  ansible.builtin.template:
+    src: restic-backup.service.j2
+    dest: /lib/systemd/system/restic-{{ restic_backup_name  }}.service
+    mode: "0644"
+  notify: "Restart backup-{{ restic_backup_name }}"
+
+- name: Enable backup timer
+  ansible.builtin.systemd:
+    name: "restic-{{ restic_backup_name }}.timer"
+    state: started
+    daemon_reload: true
+    enabled: true

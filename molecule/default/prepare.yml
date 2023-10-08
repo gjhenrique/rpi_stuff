@@ -28,3 +28,9 @@
         - "127.0.0.1 syncthing.example.com"
         - "127.0.0.1 torrents.example.com"
         - "127.0.0.1 jackett.example.com"
+
+    - name: Create directory for local backups with restic
+      ansible.builtin.file:
+        path: {{ restic_repository_prefix }}
+        state: directory
+        mode: '0755'

@@ -1,0 +1,8 @@
+[Unit]
+Description={{ restic_backup_name }}
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/restic/restic-{{ restic_backup_name }}.conf
+IOSchedulingClass=idle
+ExecStart=restic backup {{ restic_backup_args }}

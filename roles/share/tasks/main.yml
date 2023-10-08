@@ -26,3 +26,12 @@
     subdomain_host: 127.0.0.1
     subdomain_port: 2342
     state: present
+
+- name: Include backup role
+  ansible.builtin.include_role:
+    name: restic
+    tasks_from: backup
+  vars:
+    restic_backup_name: photos
+    restic_backup_args: "/home/syncthing/data"
+    restic_schedule: "*-*-* 4:00:00"

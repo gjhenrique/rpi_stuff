@@ -1,0 +1,11 @@
+---
+- name: Get the current version of restic
+  ansible.builtin.shell: restic version | awk '{print $2}'
+  register: restic_version_command
+  changed_when: false
+  ignore_errors: true
+
+# Easier to get the binary from the docker image than doing the architecture logic via github releases
+- name: Get restic binary from image
+  ansible.builtin.shell: podman cp $(podman create docker.io/restic/restic:{{ restic_version }}):/usr/bin/restic /usr/local/bin/restic
+  when: restic_version_command.stdout != restic_version
