@@ -1,0 +1,9 @@
+[Unit]
+Description={{ restic_backup_name }} backup timer
+
+[Timer]
+OnCalendar={{ restic_schedule }}
+Unit=restic-{{ restic_backup_name }}.service
+
+[Install]
+WantedBy=timers.target

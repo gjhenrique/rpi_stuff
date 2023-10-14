@@ -7,6 +7,8 @@
   roles:
     - role: boilerplate
       tags: boilerplate
+    - role: restic
+      tags: restic
     - role: caddy
       tags: caddy
     - role: syncthing

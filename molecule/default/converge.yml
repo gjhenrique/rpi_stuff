@@ -6,6 +6,8 @@
   roles:
     - role: boilerplate
       tags: boilerplate
+    - role: restic
+      tags: restic
     - role: caddy
       tags: caddy
     - role: syncthing
@@ -63,6 +65,9 @@
     torrent_custom_vpn_client_public_key: RTbiiT8rNnMmu+Y56xyyfB5eIC4gFow1g4/R/MRJiQE=
 
     torrent_custom_vpn_preshared_key: 4KluUTo6CNcEeytQ53LlrHs0vZwr4Z4iWISmXdSWzbA=
+
+    restic_password: hellohello
+    restic_repository_prefix: /srv/backup
 
     share_users:
       user1:
