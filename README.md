@@ -1,7 +1,6 @@
 # rpi_stuff
 
-![Github CI](https://github.com/gjhenrique/rpi_stuff/actions/workflows/local-test.yml/badge.svg)
-![Ansible Galaxy](https://img.shields.io/badge/dynamic/json?style=flat&label=galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/gjhenrique/rpi_stuff/&query=latest_version.version)
+<!-- ![Github CI](https://github.com/gjhenrique/rpi_stuff/actions/workflows/local-test.yml/badge.svg) -->
 
 Collection of opinionated Ansible roles to automate some stuff I use in my day-to-day in a Raspberry Pi 4B.
 
