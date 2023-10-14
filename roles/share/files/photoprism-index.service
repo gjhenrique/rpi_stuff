@@ -1,0 +1,10 @@
+[Unit]
+Description=Index photoprism files
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker compose -f compose-share.yml exec -T photoprism photoprism index
+WorkingDirectory=/home/share
+
+[Install]
+WantedBy=multi-user.target

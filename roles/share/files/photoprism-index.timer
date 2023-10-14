@@ -1,0 +1,9 @@
+[Unit]
+Description=Schedules photoprism index
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Unit=photoprism-index.service
+
+[Install]
+WantedBy=timers.target
