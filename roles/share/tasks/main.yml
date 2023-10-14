@@ -34,4 +34,4 @@
   vars:
     restic_backup_name: photos
     restic_backup_args: "/home/syncthing/data"
-    restic_schedule: "*-*-* 4:00:00"
+    restic_schedule: "*-*-* 2:00:00"

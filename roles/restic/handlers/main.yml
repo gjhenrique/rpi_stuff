@@ -1,6 +1,6 @@
 ---
 - name: "Restart backup-{{ restic_backup_name }}"
   ansible.builtin.systemd:
-    name: "compose-{{ restic_backup_name }}"
+    name: "restic-{{ restic_backup_name }}.timer"
     daemon_reload: true
     state: restarted

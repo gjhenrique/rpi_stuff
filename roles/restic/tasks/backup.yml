@@ -17,6 +17,7 @@
   failed_when:
     - restic_init.rc != 0
     - not 'config file already exists' in restic_init.stderr
+    - not 'config already initialized' in restic_init.stderr
 
 - name: Copy timer file
   ansible.builtin.template:
@@ -30,7 +31,6 @@
     src: restic-backup.service.j2
     dest: /lib/systemd/system/restic-{{ restic_backup_name  }}.service
     mode: "0644"
-  notify: "Restart backup-{{ restic_backup_name }}"
 
 - name: Enable backup timer
   ansible.builtin.systemd:

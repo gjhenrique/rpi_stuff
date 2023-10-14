@@ -31,6 +31,7 @@
 
     - name: Create directory for local backups with restic
       ansible.builtin.file:
-        path: {{ restic_repository_prefix }}
+        # Sync with restic_repository_prefix value from converge.yml
+        path: "/srv/backup"
         state: directory
         mode: '0755'
