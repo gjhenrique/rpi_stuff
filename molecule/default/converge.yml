@@ -20,6 +20,8 @@
       tags: emby
     - role: share
       tags: share
+    - role: cups
+      tags: cups
     - role: mount
       tags: mount
 

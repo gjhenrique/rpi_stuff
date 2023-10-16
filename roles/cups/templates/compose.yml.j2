@@ -1,0 +1,9 @@
+---
+services:
+  cups:
+    image: ghcr.io/anujdatar/cups
+    volumes:
+      - /var/run/dbus:/var/run/dbus
+      - /home/cups/config:/etc/cups
+    ports:
+      - "127.0.0.1:631:631"
