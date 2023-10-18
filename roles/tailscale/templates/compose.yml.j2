@@ -1,0 +1,10 @@
+---
+services:
+  tailscale:
+    image: docker.io/tailscale/tailscale:v1.50.1
+    network_mode: host
+    volumes:
+      - /home/tailscale/state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - TS_AUTHKEY={{ tailscale_auth_key }}

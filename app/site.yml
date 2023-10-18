@@ -23,3 +23,5 @@
       tags: share
     - role: mount
       tags: mount
+    - role: tailscale
+      tags: tailscale

@@ -1,0 +1,9 @@
+---
+- name: Include compose role
+  ansible.builtin.include_role:
+    name: compose
+  vars:
+    service_name: tailscale
+    user: tailscale
+    run_as_root: true
+    run_in_docker: true
