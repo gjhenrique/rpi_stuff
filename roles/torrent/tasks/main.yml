@@ -25,8 +25,6 @@
   vars:
     service_name: torrent
     user: torrent
-    run_as_root: true
-    run_in_docker: true
 
 - name: Add transmission ingress
   ansible.builtin.include_role:

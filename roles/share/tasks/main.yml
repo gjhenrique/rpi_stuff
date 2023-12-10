@@ -12,9 +12,6 @@
   vars:
     service_name: share
     user: "{{ share_user }}"
-    # I had some issues with uid mapping on rootless podman and samba
-    run_in_docker: true
-    run_as_root: true
 
 - name: Add photoprism ingress
   ansible.builtin.include_role:

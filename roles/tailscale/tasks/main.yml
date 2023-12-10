@@ -5,5 +5,3 @@
   vars:
     service_name: tailscale
     user: tailscale
-    run_as_root: true
-    run_in_docker: true
