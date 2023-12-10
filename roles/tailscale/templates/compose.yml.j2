@@ -1,8 +1,11 @@
 ---
 services:
   tailscale:
-    image: docker.io/tailscale/tailscale:v1.50.1
+    image: docker.io/tailscale/tailscale:v1.54.1
     network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
     volumes:
       - /home/tailscale/state:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
