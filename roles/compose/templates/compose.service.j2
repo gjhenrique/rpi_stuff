@@ -1,6 +1,6 @@
 [Unit]
 Description=Compose service for {{ service_name }}
-After=network-online.target
+After=network-online.target systemd-resolved.service
 
 [Service]
 Type=simple

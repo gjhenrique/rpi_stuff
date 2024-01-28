@@ -12,3 +12,4 @@ services:
     environment:
       - TS_AUTHKEY={{ tailscale_auth_key }}
       - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--ssh
