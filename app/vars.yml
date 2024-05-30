@@ -19,7 +19,8 @@ share_photoprism_sponsor: true
 mount_paths:
   - mount_path: /mnt/external
     mount_from: /dev/sda1
-    type: btrfs
+    type: ext4
+    options: discard
   - mount_path: /home/torrent/media
     mount_from: /mnt/external/media
     depends: /mnt/external
