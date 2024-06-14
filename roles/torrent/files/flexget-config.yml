@@ -138,4 +138,4 @@ schedules:
       - move-movies
       - extract-subtitles
     interval:
-      minutes: 10
+      minutes: 5

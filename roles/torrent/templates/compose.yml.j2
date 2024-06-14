@@ -126,7 +126,7 @@ services:
 
   # https://hub.docker.com/r/wiserain/flexget
   flexget:
-    image: docker.io/wiserain/flexget:3.9.12
+    image: docker.io/wiserain/flexget:3.11.36
     <<: *vpn_config
     restart: on-failure
     entrypoint: bash -c "apk add ffmpeg && /init"
