@@ -1,7 +1,7 @@
 ---
 services:
   jellyfin:
-    image: lscr.io/linuxserver/jellyfin:version-10.8.9-1
+    image: lscr.io/linuxserver/jellyfin:10.9.6
     environment:
       PUID: 0
       PGID: 0
@@ -9,11 +9,7 @@ services:
     volumes:
       - /home/{{ jellyfin_user }}/jellyfin:/config
       - /home/{{ jellyfin_user }}/media:/media
-    ports:
-      - 8096:8096
-      - 8920:8920
-      - 7359:7359/udp
-      - 1900:1900/udp
+    network_mode: "service:tailscale"
     restart: unless-stopped
     # In case of transcoding, we don't wreak havoc the server
     cpus: 1

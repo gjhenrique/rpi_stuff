@@ -12,10 +12,6 @@
     state: present
     gid: "{{ torrent_user_gid_owner }}"
 
-- name: Include mock wireguard files inside tests
-  ansible.builtin.include_tasks: mock-wireguard-server.yml
-  when: molecule_file is defined
-
 - name: Include flexget bootstrap
   ansible.builtin.include_tasks: flexget.yml
 
@@ -25,31 +21,14 @@
   vars:
     service_name: torrent
     user: torrent
-
-- name: Add transmission ingress
-  ansible.builtin.include_role:
-    name: caddy
-    tasks_from: subdomains
-  vars:
-    subdomain_name: torrents
-    subdomain_host: 127.0.0.1
-    subdomain_port: 9091
-    state: present
-    auth_user: "{{ torrent_transmission_user }}"
-    auth_password: "{{ torrent_transmission_password }}"
-
-- name: Add jacket ingress
-  ansible.builtin.include_role:
-    name: caddy
-    tasks_from: subdomains
-  vars:
-    subdomain_name: jackett
-    subdomain_host: 127.0.0.1
-    subdomain_port: 9117
-    state: present
+    tailscale:
+      enabled: "{{ torrent_tailscale_enabled }}"
+      hostname: "{{ torrent_tailscale_hostname }}"
+      tag: "{{ torrent_tailscale_tag }}"
+      exit_node: "{{ torrent_tailscale_exit_node }}"
 
 - name: Manual task to include telegram token in Flexget database
-  include: telegram-flexget-fix.yml
+  ansible.builtin.include_tasks: telegram-flexget-fix.yml
   when: add_telegram_to_flexget | default(False)
   tags:
     - never

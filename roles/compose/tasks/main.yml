@@ -2,33 +2,9 @@
 - name: Create user
   ansible.builtin.include_tasks: create-user.yml
 
-- name: Check if user is already enabled
-  ansible.builtin.command: loginctl show-user "{{ user }}" -p Linger
-  register: user_enabled
-  changed_when: false
-  ignore_errors: true
-
-- name: Enable user systemd units if not already enabled
-  ansible.builtin.command: loginctl enable-linger {{ user }}
-  when: "'Linger=yes' not in user_enabled.stdout"
-
-- name: Enable podman socket for user
-  become_user: "{{ user }}"
-  ansible.builtin.systemd:
-    name: "podman.socket"
-    scope: user
-    state: started
-    enabled: true
-  environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ user_facts.uid }}"
-  when: run_as_root is false
-
-- name: Enable podman socket for root
-  ansible.builtin.systemd:
-    name: "podman.socket"
-    state: started
-    enabled: true
-  when: run_as_root is true
+- name: Include tailscale roles
+  ansible.builtin.include_tasks: tailscale.yml
+  when: tailscale.enabled == true
 
 - name: Copy compose file
   ansible.builtin.template:
@@ -47,8 +23,6 @@
     src: compose.service.j2
     dest: "/etc/systemd/system/compose-{{ service_name }}.service"
     mode: "0644"
-  vars:
-    uid: "{{ user_facts.uid }}"
   notify: "Restart compose-{{ service_name }}"
 
 - name: Enable and start compose service

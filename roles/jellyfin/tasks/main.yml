@@ -5,3 +5,13 @@
   vars:
     service_name: jellyfin
     user: "{{ jellyfin_user }}"
+    tailscale:
+      enabled: "{{ jellyfin_tailscale_enabled }}"
+      hostname: "{{ jellyfin_tailscale_hostname }}"
+      tag: "{{ jellyfin_tailscale_tag }}"
+      ports:
+        # Access it inside the local network because of TV access
+        - 8096:8096
+        - 8920:8920
+        - 7359:7359/udp
+        - 1900:1900/udp

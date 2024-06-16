@@ -2,14 +2,12 @@
 services:
   samba:
     image: ghcr.io/servercontainers/samba:smbd-only-latest
-    ports:
-      - 445:445
+    network_mode: "service:tailscale"
     environment:
       {% for user, values in share_users.items() -%}
       ACCOUNT_{{ user }}: {{ values.password }}
       UID_{{ user }}: {{ values.uid }}
       {% endfor %}
-
 
       {% for key, value in share_samba_volumes.items() -%}
       SAMBA_VOLUME_CONFIG_{{ key }}: "{{ value }}"
@@ -22,13 +20,10 @@ services:
 
   photoprism:
     image: docker.io/photoprism/photoprism:preview
-    ports:
-      - "127.0.0.1:2342:2342"
     environment:
       PHOTOPRISM_ADMIN_USER: "{{ share_photoprism_user }}"
       PHOTOPRISM_ADMIN_PASSWORD: "{{ share_photoprism_password }}"
       PHOTOPRISM_AUTH_MODE: "password"
-      PHOTOPRISM_SITE_URL: "https://files.{{ caddy_domain }}/"
 
       # Do not touch the samba files
       PHOTOPRISM_DISABLE_CHOWN: "true"
@@ -50,6 +45,7 @@ services:
      - "/dev/video11:/dev/video11" # Video4Linux Video Encode Device (h264_v4l2m2m)
     {% endif %}
 
+    network_mode: "service:tailscale"
     working_dir: "/photoprism"
     cpus: 2
     volumes:
