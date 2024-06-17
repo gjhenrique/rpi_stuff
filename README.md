@@ -24,27 +24,27 @@ services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:1.23.2
     volumes:
-	- /home/syncthing/config:/config
-	- /home/syncthing/data:/data
+      - /home/syncthing/config:/config
+      - /home/syncthing/data:/data
 ```
 
 1. Invoke the compose role to enable and start a new compose. This role creates a new user called `syncthing`, hence the `/home/syncthing/` reference on the step above.
 ``` yaml
 - name: Add caddy ingress
   ansible.builtin.include_role:
-	name: compose
+    name: compose
   vars:
-	service_name: syncthing
-	user: syncthing
+    service_name: syncthing
+    user: syncthing
 ```
 
 1. (Optional 1): Add the service to your tailnet by adding these vars. The service will join your tailnet and it's accessible outside of your home. It's also possible to control who can reach this service with the Tailscale ACL.
 
-``` diff
-	tailscale:
-	  enabled: true
-	  hostname: syncthing
-	  tag: "tag:syncthing"
+``` yaml
+    tailscale:
+      enabled: true
+      hostname: syncthing
+      tag: "tag:syncthing"
 ```
 
 Now it's possible to access the syncthing service with Tailscale, like `syncthing:8384`. If you don't wanna use Tailscale, you can use the `ports` option on your compose file.
@@ -54,13 +54,13 @@ Now it's possible to access the syncthing service with Tailscale, like `syncthin
 ``` yaml
 - name: Run backup role
   ansible.builtin.include_role:
-	name: restic
-	tasks_from: backup
+    name: restic
+    tasks_from: backup
   vars:
-	restic_backup_name: syncthing
-	restic_backup_args: "/home/syncthing/data"
-	restic_forget_args: "--keep-last 7"
-	restic_schedule: "*-*-* 4:00:00"
+    restic_backup_name: syncthing
+    restic_backup_args: "/home/syncthing/data"
+    restic_forget_args: "--keep-last 7"
+    restic_schedule: "*-*-* 4:00:00"
 ```
 
 1. Profit?
