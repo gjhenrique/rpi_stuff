@@ -1,15 +1,10 @@
 ---
 torrent_user_gid_owner: "1500"
 
-torrent_subnet: "10.44.44.0/24"
-
 torrent_transmission_username: 'admin'
 torrent_transmission_password: 'admin'
 
-torrent_wireguard_private_key: "private_key"
-torrent_wireguard_ip: "10.44.44.1"
-torrent_wireguard_city: "Frankfurt"
-
-torrent_vpn_disabled: false
-# This should be used only for tests
-torrent_vpn_server: false
+torrent_tailscale_enabled: true
+torrent_tailscale_hostname: "torrent"
+torrent_tailscale_tag: "tag:torrent"
+torrent_tailscale_exit_node: true

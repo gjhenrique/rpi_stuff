@@ -5,19 +5,12 @@
   vars:
     service_name: syncthing
     user: syncthing
-
-- name: Add caddy ingress
-  ansible.builtin.include_role:
-    name: caddy
-    tasks_from: subdomains
-  vars:
-    subdomain_name: syncthing
-    subdomain_host: 127.0.0.1
-    subdomain_port: 8384
-    state: present
-    auth_user: "{{ syncthing_http_user }}"
-    auth_password: "{{ syncthing_http_password }}"
-    send_host_header: true
+    tailscale:
+      enabled: "{{ syncthing_tailscale_enabled }}"
+      hostname: "{{ syncthing_tailscale_hostname }}"
+      tag: "{{ syncthing_tailscale_tag }}"
+      mounts:
+        - /home/syncthing/data:/syncthing_data
 
 - name: Run backup role
   ansible.builtin.include_role:

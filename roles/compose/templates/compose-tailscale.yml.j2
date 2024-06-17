@@ -1,0 +1,37 @@
+networks:
+  tailscale:
+    driver: bridge
+
+services:
+  tailscale:
+    image: "docker.io/tailscale/tailscale:{{ tailscale_version }}"
+    networks:
+      - tailscale
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_HOSTNAME: "{{ tailscale.hostname }}"
+      TS_AUTHKEY: "{{ tailscale_authkey }}"
+      TS_USERSPACE: false
+      {% if tailscale.exit_node | default(false) -%}
+      TS_EXTRA_ARGS: "--exit-node={{ tailscale_exit_node_ip }} --exit-node-allow-lan-access=true --ssh"
+      {% else -%}
+      TS_EXTRA_ARGS: --ssh
+      {% endif %}
+
+    {% if tailscale.ports is defined -%}
+    ports:
+      {% for port in tailscale.ports  -%}
+      - {{ port }}
+      {% endfor %}
+    {% endif %}
+
+    volumes:
+      - /dev/net/tun:/dev/net/tun
+      - /home/{{ user }}/tailscale/{{ service_name }}:/var/lib/tailscale
+      {% for mount_point in tailscale.mounts | default([]) -%}
+      - {{ mount_point }}
+      {% endfor %}
+

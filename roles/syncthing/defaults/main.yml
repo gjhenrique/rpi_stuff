@@ -1,0 +1,4 @@
+---
+syncthing_tailscale_enabled: true
+syncthing_tailscale_hostname: syncthing
+syncthing_tailscale_tag: "tag:syncthing"

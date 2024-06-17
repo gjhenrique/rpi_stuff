@@ -9,8 +9,6 @@
       tags: boilerplate
     - role: restic
       tags: restic
-    - role: caddy
-      tags: caddy
     - role: syncthing
       tags: syncthing
     - role: torrent
@@ -23,5 +21,3 @@
       tags: share
     - role: mount
       tags: mount
-    - role: tailscale
-      tags: tailscale

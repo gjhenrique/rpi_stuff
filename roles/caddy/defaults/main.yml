@@ -1,4 +1,0 @@
----
-
-caddy_use_staging_ca: false
-caddy_enable_cert_verification: false

@@ -2,12 +2,8 @@
 services:
   # https://docs.linuxserver.io/images/docker-syncthing
   syncthing:
-    image: lscr.io/linuxserver/syncthing:1.23.2
-    ports:
-      - "127.0.0.1:8384:8384"
-      - 22001:22000/tcp
-      - 22002:22000/udp
-      - 21028:21027/udp
+    image: lscr.io/linuxserver/syncthing:1.27.8
+    network_mode: "service:tailscale"
     environment:
       PUID: 0
       PGID: 0

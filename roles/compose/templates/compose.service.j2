@@ -4,8 +4,13 @@ After=network-online.target systemd-resolved.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/docker compose -f compose-{{ service_name }}.yml up
-ExecStop=/usr/bin/docker compose -f compose-{{ service_name }}.yml down
+{% if tailscale.enabled %}
+ExecStart=/usr/bin/docker compose -p {{ service_name }} -f compose-{{ service_name }}-tailscale.yml -f compose-{{ service_name }}.yml up
+ExecStop=/usr/bin/docker compose -p {{ service_name }} -f compose-{{ service_name }}-tailscale.yml -f compose-{{ service_name }}.yml down
+{% else %}
+ExecStart=/usr/bin/docker compose -p {{ service_name }} -f compose-{{ service_name }}.yml up
+ExecStop=/usr/bin/docker compose -p {{ service_name }} -f compose-{{ service_name }}.yml down
+{% endif %}
 WorkingDirectory=/home/{{ user }}
 TimeoutStartSec=0
 

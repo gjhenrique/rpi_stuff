@@ -1,2 +1,5 @@
 ---
 compose_file_name: "compose.yml.j2"
+tailscale_version: v1.66.4
+tailscale:
+  enabled: false
