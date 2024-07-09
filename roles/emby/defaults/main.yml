@@ -1,2 +1,6 @@
 ---
 emby_user: emby
+
+emby_tailscale_enabled: true
+emby_tailscale_hostname: "emby"
+emby_tailscale_tag: "tag:emby"

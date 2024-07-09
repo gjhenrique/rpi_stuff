@@ -11,10 +11,10 @@
       tags: restic
     - role: syncthing
       tags: syncthing
-    - role: torrent
-      tags: torrent
-    - role: jellyfin
-      tags: jellyfin
+#    - role: torrent
+#      tags: torrent
+#    - role: jellyfin
+#      tags: jellyfin
     - role: emby
       tags: emby
     - role: share
