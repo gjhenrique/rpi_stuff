@@ -10,7 +10,7 @@ share_samba_volumes:
 share_container_volumes:
   - host_path: /home/share/shares/pictures
     container_path: /shares/pictures
-    uid: 1100
+    uid: 1000
 share_photoprism_originals_directory: /home/share/shares/pictures
 share_running_in_rpi: true
 # Consider donating to https://github.com/sponsors/photoprism
@@ -30,6 +30,6 @@ mount_paths:
   - mount_path: /home/share/shares/pictures
     mount_from: /mnt/external/shares
     depends: /mnt/external
-    user: 1100
+    user: 1000
     type: None
     options: bind
