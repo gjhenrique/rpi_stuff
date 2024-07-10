@@ -4,10 +4,13 @@ emby_user: "torrent"
 
 #torrent_vpn_type: "mullvad"
 
+add_telegram_to_flexget: false
+enable_flexget: false
+
 share_samba_volumes:
   pictures: "[Pictures]; path=/shares/pictures; valid users= pedro; guest ok = no; read only = no; browseable = yes;"
   ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv pedro; guest ok = no; read only = yes; browseable = yes;"
-#  media: "[Media]; path=/media; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
+  media: "[Media]; path=/shares/; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
 share_container_volumes:
   - host_path: /home/share/shares/pictures
     container_path: /shares/pictures
@@ -18,7 +21,7 @@ share_container_volumes:
 share_photoprism_originals_directory: /home/share/shares/pictures
 share_running_in_rpi: true
 # Consider donating to https://github.com/sponsors/photoprism
-share_photoprism_sponsor: true
+share_photoprism_sponsor: false
 share_tailscale_enabled: true
 
 tailscale_version: stable
@@ -38,5 +41,11 @@ mount_paths:
     mount_from: /mnt/external/shares
     depends: /mnt/external
     user: 1000
+    type: None
+    options: bind
+  - mount_path: /home/share/shares/media
+    mount_from: /home/torrent/media
+    depends: /mnt/external
+    user: 1002
     type: None
     options: bind

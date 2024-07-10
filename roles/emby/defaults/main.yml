@@ -4,3 +4,6 @@ emby_user: emby
 emby_tailscale_enabled: true
 emby_tailscale_hostname: "emby"
 emby_tailscale_tag: "tag:emby"
+
+emby_user_id: 1002
+emby_group_id: 1002

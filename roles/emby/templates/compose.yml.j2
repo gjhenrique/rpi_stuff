@@ -2,17 +2,14 @@
 services:
   emby:
     image: lscr.io/linuxserver/emby:version-4.7.11.0
+    network_mode: "service:tailscale"
     environment:
-      PUID: 0
-      PGID: 0
+      PUID: {{ emby_user_id }}
+      PGID: {{ emby_group_id }}
       TZ: "Europe/Berlin"
     volumes:
       - /home/{{ emby_user }}/emby:/config
       - /home/{{ emby_user }}/media:/media
-    ports:
-      - 8097:8096
-      - 8921:8920
-      - 7360:7359/udp
-      - 1901:1900/udp
     restart: unless-stopped
-    cpus: 1
+    # Avoid transcoding to wreak havoc the server
+    cpus: 2

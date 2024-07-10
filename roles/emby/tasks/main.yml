@@ -5,3 +5,13 @@
   vars:
     service_name: emby
     user: "{{ emby_user }}"
+    tailscale:
+      enabled: "{{ emby_tailscale_enabled }}"
+      hostname: "{{ emby_tailscale_hostname }}"
+      tag: "{{ emby_tailscale_tag }}"
+      ports:
+        # Access it inside the local network because of TV access
+        - 8096:8096
+        - 8920:8920
+        - 7359:7359/udp
+        - 1900:1900/udp

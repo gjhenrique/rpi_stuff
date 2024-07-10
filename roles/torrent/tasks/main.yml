@@ -13,6 +13,7 @@
     gid: "{{ torrent_user_gid_owner }}"
 
 - name: Include flexget bootstrap
+  when: enable_flexget | default(False)
   ansible.builtin.include_tasks: flexget.yml
 
 - name: Include compose role
