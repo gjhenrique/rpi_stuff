@@ -1,3 +1,14 @@
+## Exposed ports
+
+| Service | Port         | Description    |
+|---------|--------------|----------------|
+| 9117    | Jackett      | Indexer        |
+| 9091    | Transmission | Torrent client |
+| 7878    | Radarr       | Movie manager  |
+| 8989    | Sonarr       | TV Show manager|
+
+
+
 ## Manual steps
 1. Visit [vars.yml](../../app/vars.yml) to enable the features you would like to include
 

@@ -28,7 +28,39 @@ services:
     volumes:
       - /home/torrent/jackett:/config
 
-  {% if enable_flexget %}
+{% if torrent_enable_sonaar %}
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    <<: *network_config
+    container_name: sonarr
+    environment:
+      PUID: "{{ user_id }}"
+      PGID: "{{ torrent_user_gid_owner }}"
+      TZ: Europe/Berlin
+    volumes:
+      - /home/torrent/sonarr/data:/config
+      - /home/torrent/media:/tv
+      - /home/torrent/media/torrents:/downloads
+    restart: unless-stopped
+{% endif %}
+
+{% if torrent_enable_radarr %}
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    <<: *network_config
+    container_name: radarr
+    environment:
+      PUID: "{{ user_id }}"
+      PGID: "{{ torrent_user_gid_owner }}"
+      TZ: Europe/Berlin
+    volumes:
+      - /home/torrent/radarr/data:/config
+      - /home/torrent/media:/movies
+      - /home/torrent/media/torrents:/downloads
+    restart: unless-stopped
+{% endif %}
+
+  {% if torrent_enable_flexget %}
   # # https://hub.docker.com/r/wiserain/flexget
   flexget:
     image: docker.io/wiserain/flexget:3.11.36
