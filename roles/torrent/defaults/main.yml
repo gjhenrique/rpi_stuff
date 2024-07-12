@@ -8,3 +8,7 @@ torrent_tailscale_enabled: true
 torrent_tailscale_hostname: "torrent"
 torrent_tailscale_tag: "tag:torrent"
 torrent_tailscale_exit_node: true
+
+torrent_enable_flexget: false
+torrent_enable_radarr: true
+torrent_enable_sonaar: true

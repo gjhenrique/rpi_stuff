@@ -13,7 +13,22 @@
     gid: "{{ torrent_user_gid_owner }}"
 
 - name: Include flexget bootstrap
+  when: torrent_enable_flexget | default(False)
   ansible.builtin.include_tasks: flexget.yml
+
+- name: Create Radaar directory
+  ansible.builtin.file:
+    path: /home/torrent/radarr
+    state: directory
+    owner: torrent
+    mode: '0755'
+
+- name: Create Sonaar directory
+  ansible.builtin.file:
+    path: /home/torrent/sonarr
+    state: directory
+    owner: torrent
+    mode: '0755'
 
 - name: Include compose role
   ansible.builtin.include_role:
@@ -42,6 +57,6 @@
     tasks_from: backup
   vars:
     restic_backup_name: torrents
-    restic_backup_args: "/home/torrent/flexget/config /home/torrent/jackett /home/torrent/transmission/config"
+    restic_backup_args: "/home/torrent/flexget/config /home/torrent/jackett /home/torrent/transmission/config /home/torrent/radarr /home/torrent/sonarr"
     restic_forget_args: "--keep-last 2"
     restic_schedule: "*-*-* 5:00:00"
