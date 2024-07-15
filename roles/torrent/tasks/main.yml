@@ -46,7 +46,7 @@
 
 - name: Manual task to include telegram token in Flexget database
   ansible.builtin.include_tasks: telegram-flexget-fix.yml
-  when: add_telegram_to_flexget | default(False)
+  when: torrent_enable_telegram_bot | default(False)
   tags:
     - never
     - telegram-flexget-fix

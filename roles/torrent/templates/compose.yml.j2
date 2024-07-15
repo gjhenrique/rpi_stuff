@@ -80,7 +80,7 @@ services:
     cpu_count: 1
 {% endif %}
 
-{% if add_telegram_to_flexget %}
+{% if torrent_enable_telegram_bot %}
   telegram-bot:
     image: docker.io/gjhenrique/telegram-bot-torrents:v0.5.2
     <<: *network_config
