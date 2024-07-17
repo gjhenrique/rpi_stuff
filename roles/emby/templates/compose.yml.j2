@@ -10,9 +10,9 @@ services:
     volumes:
       - /home/{{ emby_user }}/emby:/config
       - /home/{{ emby_user }}/media:/media
-  {% for host_path, container_path in emby_extra_mounts.items() %}
+{% for host_path, container_path in emby_extra_mounts.items() %}
       - {{ host_path }}:{{ container_path }}
-  {% endfor %}
+{% endfor %}
     restart: unless-stopped
     # Avoid transcoding to wreak havoc the server
     cpus: 2
