@@ -1,7 +1,7 @@
 ---
 services:
   emby:
-    image: lscr.io/linuxserver/emby:version-4.7.11.0
+    image: lscr.io/linuxserver/emby:latest
     network_mode: "service:tailscale"
     environment:
       PUID: {{ emby_user_id }}
@@ -10,6 +10,9 @@ services:
     volumes:
       - /home/{{ emby_user }}/emby:/config
       - /home/{{ emby_user }}/media:/media
+  {% for host_path, container_path in emby_extra_mounts.items() %}
+      - {{ host_path }}:{{ container_path }}
+  {% endfor %}
     restart: unless-stopped
     # Avoid transcoding to wreak havoc the server
     cpus: 2

@@ -7,3 +7,5 @@ emby_tailscale_tag: "tag:emby"
 
 emby_user_id: 1002
 emby_group_id: 1002
+
+emby_extra_mounts: {}
