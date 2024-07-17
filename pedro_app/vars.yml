@@ -1,6 +1,8 @@
 ---
 jellyfin_user: "torrent"
 emby_user: "torrent"
+emby_extra_mounts:
+  "/home/torrent/more_media": "/more_media"
 
 #torrent_vpn_type: "mullvad"
 
@@ -12,13 +14,17 @@ torrent_enable_sonaar: true
 share_samba_volumes:
   pictures: "[Pictures]; path=/shares/pictures; valid users= pedro; guest ok = no; read only = no; browseable = yes;"
   ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv pedro; guest ok = no; read only = yes; browseable = yes;"
-  media: "[Media]; path=/shares/media; valid users= torrent; guest ok = no; read only = no; browseable = yes;"
+  media: "[Media]; path=/shares/media; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
+  extra_media: "[Extra Media]; path=/shares/more_media; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
 share_container_volumes:
   - host_path: /home/share/shares/pictures
     container_path: /shares/pictures
     uid: 1000
   - host_path: /home/share/shares/media
     container_path: /shares/media
+    uid: 1002
+  - host_path: /home/share/shares/more_media
+    container_path: /shares/more_media
     uid: 1002
 share_photoprism_originals_directory: /home/share/shares/pictures
 share_running_in_rpi: true
@@ -48,6 +54,23 @@ mount_paths:
   - mount_path: /home/share/shares/media
     mount_from: /mnt/external/media
     depends: /mnt/external
+    user: 1002
+    type: None
+    options: bind
+  # NTFS HDD - Media and other files
+  - mount_path: /mnt/media
+    mount_from: /dev/sdb1
+    type: ntfs3
+    options: rw,uid=1000,gid=1002,umask=0002
+  - mount_path: /home/torrent/more_media
+    mount_from: /mnt/media
+    depends: /mnt/media
+    user: 1002
+    type: None
+    options: bind
+  - mount_path: /home/share/shares/more_media
+    mount_from: /mnt/media
+    depends: /mnt/media
     user: 1002
     type: None
     options: bind

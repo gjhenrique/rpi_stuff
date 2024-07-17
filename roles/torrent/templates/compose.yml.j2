@@ -40,6 +40,7 @@ services:
     volumes:
       - /home/torrent/sonarr/data:/config
       - /home/torrent/media:/tv
+      - /home/torrent/more_media:/more_media
       - /home/torrent/media/torrents:/downloads
     restart: unless-stopped
 {% endif %}
@@ -56,6 +57,7 @@ services:
     volumes:
       - /home/torrent/radarr/data:/config
       - /home/torrent/media:/movies
+      - /home/torrent/more_media:/more_media
       - /home/torrent/media/torrents:/downloads
     restart: unless-stopped
 {% endif %}
