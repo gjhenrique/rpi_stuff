@@ -7,6 +7,8 @@
   roles:
     - role: boilerplate
       tags: boilerplate
+    - role: observability
+      tags: observability
     - role: restic
       tags: restic
     - role: syncthing

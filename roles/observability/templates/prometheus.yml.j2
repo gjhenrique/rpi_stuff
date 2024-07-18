@@ -1,0 +1,26 @@
+---
+global:
+  scrape_interval: 15s
+  scrape_timeout: 14s
+
+runtime:
+  gogc: 100
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'docker_stats_exporter'
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:9487'] # Replace with the correct port if different
+
+  - job_name: 'node_exporter'
+    honor_labels: true
+    static_configs:
+      - targets: ['{{ docker_host_ip }}:9100'] # Use 'host.docker.internal' for Docker Desktop or the host's IP address
+
+  - job_name: 'docker_runtime_metrics'
+    static_configs:
+      - targets: ['{{ docker_host_ip }}:9323']

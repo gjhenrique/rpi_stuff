@@ -1,0 +1,15 @@
+---
+## Secrets
+grafana_admin_password: admin
+
+## Non-secret variables
+observability_user: observability
+
+# Docker tag for Prometheus
+observability_prometheus_version: v2.53.1
+observability_grafana_version: 11.1.0
+
+# Tailscale integration, see your metrics through the Tailscale network
+#observability_tailscale_tag: "observability"
+observability_tailscale_enabled: true
+observability_tailscale_hostname: observability
