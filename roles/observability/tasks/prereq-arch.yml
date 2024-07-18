@@ -1,0 +1,11 @@
+---
+# install prometheus-node-exporter, jq, curl from pacman
+- name: Install prerequisites
+  community.general.pacman:
+    name:
+      - prometheus-node-exporter
+      - jq
+      - curl
+    update_cache: true
+    state: present
+  tags: prereq

@@ -6,11 +6,18 @@ emby_extra_mounts:
 
 #torrent_vpn_type: "mullvad"
 
+# Configure Observability
+observability_tailscale_enabled: true
+observability_tailscale_hostname: "pedro-observability"
+observability_tailscale_tag: "tag:pedro-observability"
+
+# Configure automation
 add_telegram_to_flexget: false
 torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
 
+# Configure media and shares
 share_samba_volumes:
   pictures: "[Pictures]; path=/shares/pictures; valid users= pedro; guest ok = no; read only = no; browseable = yes;"
   ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv pedro; guest ok = no; read only = yes; browseable = yes;"

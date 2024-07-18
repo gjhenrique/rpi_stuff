@@ -1,0 +1,14 @@
+---
+# install prerequisites for debian
+# prometheus-node-exporter
+# jq for parsing json
+# and curl for testing
+- name: Install prerequisites
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - prometheus-node-exporter
+    - jq
+    - curl
+  tags: prereq

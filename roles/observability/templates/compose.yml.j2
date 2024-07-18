@@ -1,0 +1,42 @@
+---
+x-config: &network_config
+  network_mode: "service:tailscale"
+
+services:
+  prometheus:
+    image: "prom/prometheus:{{ observability_prometheus_version }}"
+    <<: *network_config
+    volumes:
+      - /home/observability/prometheus/data:/prometheus
+      - /home/observability/prometheus/config:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  grafana:
+    image: "grafana/grafana:{{ observability_grafana_version }}"
+    <<: *network_config
+    volumes:
+      - /home/observability/grafana/data:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_password }}"
+      GF_ALERTING_ENABLED: false
+      GF_UNIFIED_ALERTING_ENABLED: false
+      GF_PANELS_DISABLE_SANITIZE_HTML: false
+    restart: unless-stopped
+    cpus: 1
+    depends_on:
+      - prometheus
+
+  docker_stats_exporter:
+    image: wywywywy/docker_stats_exporter:latest
+    <<: *network_config
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
