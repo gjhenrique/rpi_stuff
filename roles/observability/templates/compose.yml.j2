@@ -12,6 +12,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
       - '--enable-feature=memory-snapshot-on-shutdown'
       - '--enable-feature=auto-gomaxprocs'
       - '--enable-feature=native-histograms'
@@ -36,10 +37,23 @@ services:
     cpus: 1
     depends_on:
       - prometheus
-
+  # Exporters
   docker_stats_exporter:
     image: wywywywy/docker_stats_exporter:latest
     <<: *network_config
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+
+  {% if observability_enable_adguard_exporter %}
+
+  adguard_exporter:
+    image: "ghcr.io/henrywhitaker3/adguard-exporter:latest"
+    <<: *network_config
+    environment:
+      ADGUARD_SERVERS: "{{ observability_adguard_url }}"
+      ADGUARD_USERNAMES: "{{ observability_adguard_username }}"
+      ADGUARD_PASSWORDS: "{{ observability_adguard_password }}"
+    restart: unless-stopped
+
+  {% endif %}

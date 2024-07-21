@@ -10,6 +10,8 @@ emby_extra_mounts:
 observability_tailscale_enabled: true
 observability_tailscale_hostname: "pedro-observability"
 observability_tailscale_tag: "tag:pedro-observability"
+observability_enable_adguard_exporter: true
+observability_adguard_url: "http://172.17.0.1:8080"
 
 # Configure automation
 add_telegram_to_flexget: false
