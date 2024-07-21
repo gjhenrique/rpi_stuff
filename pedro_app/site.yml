@@ -19,7 +19,7 @@
 #      tags: jellyfin
     - role: emby
       tags: emby
-    - role: share
-      tags: share
     - role: mount
       tags: mount
+    - role: share
+      tags: share

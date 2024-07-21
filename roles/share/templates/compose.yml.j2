@@ -50,4 +50,4 @@ services:
     cpus: 2
     volumes:
       - "{{ share_photoprism_originals_directory }}:/photoprism/originals"
-      - "/home/{{ share_user }}/photoprism/storage:/photoprism/storage"
+      - "{{ share_photoprism_storage }}:/photoprism/storage"

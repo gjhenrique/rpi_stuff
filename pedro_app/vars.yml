@@ -58,6 +58,13 @@ mount_paths:
     user: 1000
     type: None
     options: bind
+  # Photoprism storage
+  - mount_path: /home/share/shares/photoprism_storage
+    mount_from: /mnt/external/data/photoprism
+    depends: /mnt/external
+    user: 1003
+    type: None
+    options: bind
   - mount_path: /home/share/shares/media
     mount_from: /mnt/external/media
     depends: /mnt/external
@@ -81,3 +88,6 @@ mount_paths:
     user: 1002
     type: None
     options: bind
+
+# Configure Photoprism
+share_photoprism_storage: /home/share/shares/photoprism_storage
