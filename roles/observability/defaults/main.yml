@@ -18,3 +18,8 @@ observability_enable_adguard_exporter: false
 observability_adguard_url: "http://172.17.0.1:8080"
 observability_adguard_username: "admin"
 observability_adguard_password: "secret"
+
+observability_photoprism_monitoring_enabled: false
+observability_photoprism_client_id: "photoprism"
+observability_photoprism_client_secret: "secret"
+observability_photoprism_host: "1"

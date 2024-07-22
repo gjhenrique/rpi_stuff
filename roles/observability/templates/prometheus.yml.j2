@@ -32,3 +32,20 @@ scrape_configs:
       - targets: [ 'localhost:9618' ]
 
   {% endif %}
+
+  {% if observability_photoprism_monitoring_enabled %}
+
+  - job_name: 'photoprism'
+    metrics_path: "/api/v1/metrics"
+    honor_labels: true
+    oauth2:
+      client_id: "{{ observability_photoprism_client_id }}"
+      client_secret: "{{ observability_photoprism_client_secret }}"
+      token_url: "http://{{ observability_photoprism_host }}:2342/api/v1/oauth/token"
+      scopes: ["metrics"]
+      endpoint_params:
+        grant_type: "client_credentials"
+    static_configs:
+      - targets: ['{{ observability_photoprism_host }}:2342']
+
+  {% endif %}

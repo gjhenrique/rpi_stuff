@@ -19,6 +19,8 @@
       ports:
         # Share photos in the local network
         - 445:445
+        # Photoprism Web UI in local network
+        - 2342:2342
 
 - name: Include backup role
   ansible.builtin.include_role:
