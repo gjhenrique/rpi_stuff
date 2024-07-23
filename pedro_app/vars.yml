@@ -43,7 +43,7 @@ share_running_in_rpi: true
 share_photoprism_sponsor: false
 share_tailscale_enabled: true
 
-tailscale_version: stable
+tailscale_version: v1.70.0
 
 mount_paths:
   - mount_path: /mnt/external
