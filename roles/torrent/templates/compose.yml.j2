@@ -24,7 +24,7 @@ services:
 
   # # https://docs.linuxserver.io/images/docker-jackett
   jackett:
-    image: docker.io/linuxserver/jackett:0.22.339
+    image: docker.io/linuxserver/jackett:0.22.362
     <<: *network_config
     restart: on-failure
     environment:
@@ -60,7 +60,7 @@ services:
 
 {% if torrent_enable_radarr %}
   radarr:
-    image: lscr.io/linuxserver/radarr:5.7.0
+    image: lscr.io/linuxserver/radarr:5.8.3
     <<: *network_config
     container_name: radarr
     environment:

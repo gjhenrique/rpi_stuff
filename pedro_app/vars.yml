@@ -42,6 +42,7 @@ share_running_in_rpi: true
 # Consider donating to https://github.com/sponsors/photoprism
 share_photoprism_sponsor: false
 share_tailscale_enabled: true
+share_photoprism_cpus: 2
 
 tailscale_version: v1.70.0
 

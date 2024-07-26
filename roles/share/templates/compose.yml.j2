@@ -47,7 +47,7 @@ services:
 
     network_mode: "service:tailscale"
     working_dir: "/photoprism"
-    cpus: 2
+    cpus: {{ share_photoprism_cpus }}
     volumes:
       - "{{ share_photoprism_originals_directory }}:/photoprism/originals"
       - "{{ share_photoprism_storage }}:/photoprism/storage"

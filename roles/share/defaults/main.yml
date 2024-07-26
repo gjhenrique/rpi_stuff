@@ -11,3 +11,5 @@ share_tailscale_hostname: "share"
 share_tailscale_tag: "tag:share"
 
 share_photoprism_storage: /home/share/shares/photoprism_storage
+
+share_photoprism_cpus: 2
