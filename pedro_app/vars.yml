@@ -14,6 +14,7 @@ observability_enable_adguard_exporter: true
 observability_adguard_url: "http://172.17.0.1:8080"
 observability_photoprism_monitoring_enabled: true
 observability_photoprism_host: "172.17.0.1"
+observability_grafana_cloud_enable: true
 
 # Configure automation
 add_telegram_to_flexget: false

@@ -3,6 +3,14 @@ global:
   scrape_interval: 15s
   scrape_timeout: 14s
 
+{% if observability_grafana_cloud_enable %}
+remote_write:
+  - url: {{ observability_grafana_cloud_url }}
+    basic_auth:
+      username: {{ observability_grafana_cloud_username }}
+      password: {{ observability_grafana_cloud_password }}
+{% endif %}
+
 runtime:
   gogc: 100
 
