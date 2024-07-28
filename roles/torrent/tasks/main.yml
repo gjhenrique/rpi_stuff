@@ -30,6 +30,14 @@
     owner: torrent
     mode: '0755'
 
+- name: Create Kavita directory
+  ansible.builtin.file:
+    path: /home/torrent/kavita
+    state: directory
+    owner: torrent
+    mode: '0755'
+
+
 - name: Include compose role
   ansible.builtin.include_role:
     name: compose
@@ -57,6 +65,6 @@
     tasks_from: backup
   vars:
     restic_backup_name: torrents
-    restic_backup_args: "/home/torrent/flexget/config /home/torrent/jackett /home/torrent/transmission/config /home/torrent/sonaar /home/torrent/radaar"
+    restic_backup_args: "/home/torrent/flexget/config /home/torrent/jackett /home/torrent/transmission/config /home/torrent/sonaar /home/torrent/radaar /home/torrent/kavita"
     restic_forget_args: "--keep-last 2"
     restic_schedule: "*-*-* 5:00:00"

@@ -21,6 +21,7 @@ add_telegram_to_flexget: false
 torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
+torrent_enable_kavita: true
 
 # Configure media and shares
 share_samba_volumes:

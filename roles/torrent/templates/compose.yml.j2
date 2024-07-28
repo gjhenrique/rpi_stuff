@@ -40,7 +40,7 @@ services:
 
 {% if torrent_enable_sonaar %}
   sonarr:
-    image: lscr.io/linuxserver/sonarr:4.0.8
+    image: docker.io/linuxserver/sonarr:4.0.8
     <<: *network_config
     container_name: sonarr
     environment:
@@ -60,7 +60,7 @@ services:
 
 {% if torrent_enable_radarr %}
   radarr:
-    image: lscr.io/linuxserver/radarr:5.8.3
+    image: docker.io/linuxserver/radarr:5.8.3
     <<: *network_config
     container_name: radarr
     environment:
@@ -76,6 +76,26 @@ services:
     depends_on:
       - transmission
       - jackett
+{% endif %}
+
+{% if torrent_enable_kavita %}
+    # https://docs.linuxserver.io/images/docker-kavita
+  kavita:
+      image: docker.io/linuxserver/kavita:0.8.2
+      <<: *network_config
+      restart: on-failure
+      environment:
+        PUID: "{{ user_id }}"
+        PGID: "{{ torrent_user_gid_owner }}"
+        TZ: "Europe/Berlin"
+      volumes:
+        - /home/torrent/kavita/config:/config
+        - /home/torrent/media/Literature:/data
+        - /home/torrent/media/torrents:/downloads
+      depends_on:
+        - transmission
+        - jackett
+
 {% endif %}
 
   {% if torrent_enable_flexget %}

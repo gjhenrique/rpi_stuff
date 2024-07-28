@@ -11,3 +11,4 @@ torrent_tailscale_exit_node: true
 
 torrent_enable_sonaar: false
 torrent_enable_radarr: false
+torrent_enable_kavita: false
