@@ -46,7 +46,7 @@ share_photoprism_sponsor: false
 share_tailscale_enabled: true
 share_photoprism_cpus: 2
 
-tailscale_version: v1.70.0
+tailscale_version: v1.74.1
 
 mount_paths:
   - mount_path: /mnt/external

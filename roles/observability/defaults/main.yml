@@ -6,8 +6,8 @@ grafana_admin_password: admin
 observability_user: observability
 
 # Docker tag for Prometheus
-observability_prometheus_version: v2.53.1
-observability_grafana_version: 11.1.0
+observability_prometheus_version: v3.0.0-beta.0
+observability_grafana_version: 11.2.0
 
 # Tailscale integration, see your metrics through the Tailscale network
 #observability_tailscale_tag: "observability"
