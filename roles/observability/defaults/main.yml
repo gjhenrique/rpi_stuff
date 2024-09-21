@@ -1,6 +1,8 @@
 ---
 ## Secrets
 grafana_admin_password: admin
+observability_qingping_api_key: "key"
+observability_qingping_api_secret: "secret"
 
 ## Non-secret variables
 observability_user: observability
@@ -23,3 +25,5 @@ observability_photoprism_monitoring_enabled: false
 observability_photoprism_client_id: "photoprism"
 observability_photoprism_client_secret: "secret"
 observability_photoprism_host: "1"
+
+observability_qingping_enabled: false

@@ -61,3 +61,14 @@ scrape_configs:
       - targets: ['{{ observability_photoprism_host }}:2342']
 
   {% endif %}
+
+
+  {% if observability_qingping_enabled %}
+
+  - job_name: 'qingping'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    static_configs:
+    - targets: ['localhost:10803']
+
+  {% endif %}

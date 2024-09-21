@@ -57,3 +57,21 @@ services:
     restart: unless-stopped
 
   {% endif %}
+
+  {% if observability_qingping_enabled %}
+
+  qingping_exporter:
+    image: ghcr.io/pedro-stanaka/qingping_exporter/exporter:v0.2.1
+    <<: *network_config
+    container_name: qingping_exporter
+    environment:
+      QINGPING_APP_KEY: {{ observability_qingping_api_key }}
+      QINGPING_APP_SECRET: {{ observability_qingping_api_secret }}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:10803/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  {% endif %}
