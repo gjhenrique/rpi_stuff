@@ -2,7 +2,7 @@ groups:
 - name: node_exporter_alerts
   rules:
   - alert: Node down
-    expr: up{job="monitoring-pi"} == 0
+    expr: up{job="node_exporter"} == 0
     for: 2m
     labels:
       severity: warning
