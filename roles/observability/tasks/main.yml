@@ -28,6 +28,14 @@
     group: "0"
     mode: '0775'
 
+- name: Create Prometheus rules directory
+  ansible.builtin.file:
+    path: /home/{{ observability_user }}/prometheus/config/rules
+    state: directory
+    owner: "{{ observability_user }}"
+    group: "0"
+    mode: '0775'
+
 - name: Create Grafana data directory
   ansible.builtin.file:
     path: "/home/{{ observability_user }}/grafana/data"

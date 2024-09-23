@@ -13,6 +13,7 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.enable-lifecycle'
+      - '--storage.tsdb.retention.time={{ observability_prometheus_retention }}'
       - '--enable-feature=memory-snapshot-on-shutdown'
       - '--enable-feature=auto-gomaxprocs'
       - '--enable-feature=native-histograms'
@@ -61,7 +62,7 @@ services:
   {% if observability_qingping_enabled %}
 
   qingping_exporter:
-    image: ghcr.io/pedro-stanaka/qingping_exporter/exporter:v0.2.1
+    image: ghcr.io/pedro-stanaka/qingping_exporter/exporter:v0.2.2
     <<: *network_config
     container_name: qingping_exporter
     environment:

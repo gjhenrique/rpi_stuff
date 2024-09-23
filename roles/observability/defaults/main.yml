@@ -16,6 +16,8 @@ observability_grafana_version: 11.2.0
 observability_tailscale_enabled: true
 observability_tailscale_hostname: observability
 
+observability_prometheus_retention: 15d
+
 observability_enable_adguard_exporter: false
 observability_adguard_url: "http://172.17.0.1:8080"
 observability_adguard_username: "admin"

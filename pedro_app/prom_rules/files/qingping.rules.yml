@@ -1,0 +1,13 @@
+groups:
+  - name: qingping_exporter_alerts
+    rules:
+      - alert: DeviceHasStaleData
+        expr: time() - max(device_last_data_timestamp) by (device_mac) > 3600
+        for: 10m
+        labels:
+            severity: warning
+        annotations:
+          summary: The device with MAC address {{ $labels.device_mac }} has not sent data in the last hour.
+          description: |
+            The device with MAC address {{ $labels.device_mac }} has not sent data in the last hour. 
+            This could be due to a network issue or the device being offline.

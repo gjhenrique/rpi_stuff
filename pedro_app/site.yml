@@ -4,6 +4,9 @@
   vars_files:
     - secrets.yml
     - vars.yml
+  tasks:
+    - name: Copy rule files
+      include_tasks: prom_rules/tasks/main.yml
   roles:
     - role: boilerplate
       tags: boilerplate

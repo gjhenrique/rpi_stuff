@@ -1,0 +1,10 @@
+
+
+## Copy rule files to the Prometheus rules directory
+
+- name: Copy all files from the files directory to the target directory
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /home/{{ observability_user }}/prometheus/config/rules/
+  with_fileglob:
+    - files/*.rules.yml
