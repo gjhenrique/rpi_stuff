@@ -11,3 +11,16 @@ groups:
           description: |
             The device with MAC address {{ $labels.device_mac }} has not sent data in the last hour. 
             This could be due to a network issue or the device being offline.
+      - alert: ClientTooManyErrors
+        expr: |
+          sum(increase(qingping_http_client_request_total{code!~"2.."}[5m])) by (instance)
+          /
+          sum(increase(qingping_http_client_request_total[5m])) by (instance) * 100 > 5
+        for: 10m
+        labels:
+            severity: warning
+        annotations:
+          summary: The client {{ $labels.instance }} has a high error rate.
+          description: |
+              The client {{ $labels.instance }} has a high error rate. 
+              This could be due to network issues or the client being overloaded.

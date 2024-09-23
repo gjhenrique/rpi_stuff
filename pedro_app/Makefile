@@ -1,3 +1,6 @@
+deps:
+	brew install ansible ansible-lint prometheus
+
 run:
 	ansible-playbook site.yml --become-password-file ~/.pwd-file
 
@@ -6,5 +9,18 @@ decrypt:
 
 encrypt:
 	ansible-vault encrypt secrets.yml
+
+validate:
+	# TODO: fix linting issues for ansible
+	#ansible-lint site.yml
+	promtool check rules prom_rules/files/*.rules.yml
+
+## Avoid running the whole playbook, just sync the rules
+sync-rules:
+	rsync -avpz prom_rules/files/*.rules.yml observability@mediasrv:/home/observability/prometheus/rules/
+	# send a reload signal to the prometheus server
+	curl -X POST http://mediasrv:9090/-/reload
+
+
 
 .PHONY: decrypt encrypt run
