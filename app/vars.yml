@@ -7,10 +7,15 @@ torrent_vpn_type: "mullvad"
 share_samba_volumes:
   pictures: "[Pictures]; path=/shares/pictures; valid users= guilherme; guest ok = no; read only = no; browseable = yes;"
   ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv; guest ok = no; read only = yes; browseable = yes;"
+  media: "[Media]; path=/shares/media; valid users= torrent; guest ok = no; read only = no; browseable = yes;"
 share_container_volumes:
   - host_path: /home/share/shares/pictures
     container_path: /shares/pictures
     uid: 1100
+  - host_path: /home/torrent/media
+    container_path: /shares/media
+    # Match this user with the torrent user
+    uid: 1003
 share_photoprism_originals_directory: /home/share/shares/pictures
 share_running_in_rpi: true
 # Consider donating to https://github.com/sponsors/photoprism
