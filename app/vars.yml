@@ -4,6 +4,8 @@ emby_user: "torrent"
 
 torrent_vpn_type: "mullvad"
 
+torrent_enable_flexget: true
+
 share_samba_volumes:
   pictures: "[Pictures]; path=/shares/pictures; valid users= guilherme; guest ok = no; read only = no; browseable = yes;"
   ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv; guest ok = no; read only = yes; browseable = yes;"
