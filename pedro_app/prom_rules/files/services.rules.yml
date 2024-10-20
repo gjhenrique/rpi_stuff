@@ -1,0 +1,47 @@
+groups:
+  - name: basic_service_checks
+    rules:
+      - alert: Photoprism is down
+        expr: up{job="photoprism"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          component: server
+        annotations:
+          summary: Photoprism is down
+          description: |
+            Photoprism is down on {{ $labels.instance }}.
+            **Resolution:** Investigate the cause of the failure and restart the service.
+      - alert: Alertmanager is down
+        expr: up{job="alertmanager"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          component: server
+        annotations:
+          summary: Alertmanager is down
+          description: |
+            Alertmanager is down on {{ $labels.instance }}.
+            **Resolution:** Investigate the cause of the failure and restart the service.
+      - alert: Transmission is down
+        expr: absent(dockerstats_cpu_usage_ratio{name=~".*transmission.*"}) == 1
+        for: 5m
+        labels:
+          severity: critical
+          component: server
+        annotations:
+          summary: Transmission is down
+          description: |
+            Transmission is down on {{ $labels.instance }}.
+            **Resolution:** Investigate the cause of the failure and restart the service.
+      - alert: Sonarr is down
+        expr: absent(dockerstats_cpu_usage_ratio{name=~".*sonarr.*"}) == 1
+        for: 5m
+        labels:
+          severity: critical
+          component: server
+        annotations:
+          summary: Sonarr is down
+          description: |
+            Sonarr is down on {{ $labels.instance }}.
+            **Resolution:** Investigate the cause of the failure and restart the service.

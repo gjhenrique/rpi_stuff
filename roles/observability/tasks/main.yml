@@ -44,6 +44,30 @@
     group: "0"
     mode: '0777'
 
+- name: Create Alertmanager data directory
+  ansible.builtin.file:
+    path: "/home/{{ observability_user }}/alertmanager/data"
+    state: directory
+    owner: "{{ observability_user }}"
+    group: "0"
+    mode: '0777'
+
+- name: Create Alertmanager config directory
+  ansible.builtin.file:
+    path: /home/{{ observability_user }}/alertmanager/config
+    state: directory
+    owner: "{{ observability_user }}"
+    group: "0"
+    mode: '0777'
+
+- name: Create Alertmanager templates directory
+  ansible.builtin.file:
+    path: /home/{{ observability_user }}/alertmanager/config/templates
+    state: directory
+    owner: "{{ observability_user }}"
+    group: "0"
+    mode: '0777'
+
 - name: Get docker host IP address
   ansible.builtin.shell: ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+'
   register: docker_bridge_ip
@@ -56,6 +80,22 @@
   ansible.builtin.template:
     src: prometheus.yml.j2
     dest: /home/{{ observability_user }}/prometheus/config/prometheus.yml
+    owner: "{{ observability_user }}"
+    group: "0"
+    mode: '0744'
+
+- name: Create and template alertmanager.yml
+  ansible.builtin.template:
+    src: alertmanager.yml.j2
+    dest: /home/{{ observability_user }}/alertmanager/config/alertmanager.yml
+    owner: "{{ observability_user }}"
+    group: "0"
+    mode: '0744'
+
+- name: Copy telegram template for alert manager
+  ansible.builtin.copy:
+    src: telegram.tmpl
+    dest: /home/{{ observability_user }}/alertmanager/config/templates/telegram.tmpl
     owner: "{{ observability_user }}"
     group: "0"
     mode: '0744'
@@ -104,6 +144,17 @@
         - 9090:9090
         # Grafana
         - 3000:3000
+
+- name: Run backup role
+  ansible.builtin.include_role:
+    name: restic
+    tasks_from: backup
+  vars:
+    restic_backup_name: observability
+    restic_backup_args: "/home/{{ observability_user }}/prometheus /home/{{ observability_user }}/grafana /home/{{ observability_user }}/alertmanager"
+    restic_forget_args: "--keep-last 2"
+    restic_schedule: "*-*-* 5:00:00"
+
 
 - name: Restart docker service
   when: daemon_json_result.changed

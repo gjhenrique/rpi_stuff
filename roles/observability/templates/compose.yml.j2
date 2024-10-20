@@ -19,7 +19,7 @@ services:
       - '--enable-feature=native-histograms'
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:9090/-/healthy"]
+      test: [ "CMD", "wget", "--spider", "http://localhost:9090/-/healthy" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -38,6 +38,7 @@ services:
     cpus: 1
     depends_on:
       - prometheus
+
   # Exporters
   docker_stats_exporter:
     image: wywywywy/docker_stats_exporter:latest
@@ -45,6 +46,26 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+
+  {% if observability_enable_alertmanager %}
+
+  alertmanager:
+    image: "prom/alertmanager:{{ observability_alertmanager_version }}"
+    <<: *network_config
+    volumes:
+      - /home/observability/alertmanager/data:/alertmanager
+      - /home/observability/alertmanager/config:/etc/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "http://localhost:9093/-/healthy" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  {% endif %}
 
   {% if observability_enable_adguard_exporter %}
 
@@ -70,9 +91,21 @@ services:
       QINGPING_APP_SECRET: {{ observability_qingping_api_secret }}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:10803/-/healthy"]
+      test: [ "CMD", "wget", "--spider", "http://localhost:10803/-/healthy" ]
       interval: 30s
       timeout: 10s
       retries: 3
+
+  # Get weather data from OpenWeatherMap
+  weather_exporter:
+    image: billykwooten/openweather-exporter:latest
+    <<: *network_config
+    container_name: weather_exporter
+    restart: always
+    environment:
+      - OW_CITY={{ o11y_weather_city }}
+      - OW_APIKEY={{ o11y_openweathermap_api_key }}
+      - OW_ENABLE_POL=true
+      - OW_DEGREES_UNIT=C
 
   {% endif %}

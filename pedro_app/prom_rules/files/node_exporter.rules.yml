@@ -108,8 +108,8 @@ groups:
       description: Filesystem is predicted to run out of inodes within the next 24 hours at current write rate\n  VALUE = {{ $value }}
 
   - alert: HostUnusualDiskReadLatency
-    expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 0.1 and rate(node_disk_reads_completed_total[1m]) > 0
-    for: 2m
+    expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 0.1 and rate(node_disk_reads_completed_total{device!="mmcblk0"}[1m]) > 0
+    for: 8m
     labels:
       severity: warning
     annotations:
@@ -146,14 +146,15 @@ groups:
   # 1000 context switches is an arbitrary number.
   # Alert threshold depends on nature of application.
   # Please read: https://github.com/samber/awesome-prometheus-alerts/issues/58
-  - alert: HostContextSwitching
-    expr: (rate(node_context_switches_total[5m])) / (count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) > 1500
-    for: 0m
-    labels:
-      severity: warning
-    annotations:
-      summary: Host context switching (instance {{ $labels.instance }})
-      description: Context switching is growing on node (> 1000 / s)\n  VALUE = {{ $value }}
+    # Disabled - too much noise and cant really react to it
+    #  - alert: HostContextSwitching
+    #    expr: (rate(node_context_switches_total[5m])) / (count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) > 2000
+    #    for: 5m
+    #    labels:
+    #      severity: warning
+    #    annotations:
+    #      summary: Host context switching (instance {{ $labels.instance }})
+    #      description: Context switching is growing on node (> 2000 / s)\n  VALUE = {{ $value }}
 
   - alert: HostSwapIsFillingUp
     expr: (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100 > 80

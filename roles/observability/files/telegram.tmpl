@@ -1,0 +1,24 @@
+{{ define "telegram.tanaka.html" }}
+{{ if gt (len .Alerts.Firing) 0 }}
+🚨 <b>Alerts Firing</b> 🚨
+{{ template "telegram.alerts" .Alerts.Firing }}
+{{ end }}
+
+{{ if gt (len .Alerts.Resolved) 0 }}
+✅ <b>Alerts Resolved</b> ✅
+{{ template "telegram.alerts" .Alerts.Resolved }}
+{{ end }}
+{{ end }}
+
+{{ define "telegram.alerts" }}
+{{ range . }}
+<b>{{ .Labels.alertname }}</b>
+📝 <i>{{ .Annotations.summary }}</i>
+🏷 Labels:
+{{ range .Labels.SortedPairs }}  • <code>{{ .Name }}</code>: <code>{{ .Value }}</code>
+{{ end }}
+{{ if .Annotations.description }}📖 Description: {{ .Annotations.description }}{{ end }}
+⏰ {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+
+{{ end }}
+{{ end }}
