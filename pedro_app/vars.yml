@@ -17,6 +17,8 @@ observability_photoprism_host: "172.17.0.1"
 observability_grafana_cloud_enable: true
 observability_qingping_enabled: true
 observability_prometheus_retention: "390d"
+observability_enable_alertmanager: true
+
 
 # Configure automation
 add_telegram_to_flexget: false
@@ -24,6 +26,7 @@ torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
 torrent_enable_kavita: true
+sonarr_version: 4.0.9
 
 # Configure media and shares
 share_samba_volumes:

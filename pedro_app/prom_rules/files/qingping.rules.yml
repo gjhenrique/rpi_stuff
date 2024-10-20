@@ -2,15 +2,21 @@ groups:
   - name: qingping_exporter_alerts
     rules:
       - alert: DeviceHasStaleData
-        expr: time() - max(device_last_data_timestamp) by (device_mac) > 3600
+        expr: |
+          (time() - max by (device_mac) (device_last_data_timestamp)) / 60
+            * on (device_mac)
+            group_left(device_name, product_name)
+            air_monitor_device_info > 20
         for: 10m
         labels:
             severity: warning
+            component: home
         annotations:
-          summary: The device with MAC address {{ $labels.device_mac }} has not sent data in the last hour.
+          summary: The device with MAC address {{ $labels.device_mac }} has not sent data in the last 30 minutes.
           description: |
-            The device with MAC address {{ $labels.device_mac }} has not sent data in the last hour. 
+            The device {{ $labels.device_name }} has not sent data in the last 30 minutes.
             This could be due to a network issue or the device being offline.
+            **Resolution:** Check if the device is powered, turn it on or restart it.
       - alert: ClientTooManyErrors
         expr: |
           sum(increase(qingping_http_client_request_total{code!~"2.."}[5m])) by (instance)
@@ -19,8 +25,26 @@ groups:
         for: 10m
         labels:
             severity: warning
+            component: server
         annotations:
           summary: The client {{ $labels.instance }} has a high error rate.
           description: |
-              The client {{ $labels.instance }} has a high error rate. 
+            The client {{ $labels.instance }} has a high error rate.
               This could be due to network issues or the client being overloaded.
+      - alert: OpenWindows_Co2High
+        expr: |
+          air_monitor_co2
+            * on (device_mac)
+            group_left(device_name, product_name)
+            air_monitor_device_info > 1200
+        for: 10m
+        labels:
+          severity: warning
+          component: home
+        annotations:
+          summary: High CO2 levels detected in {{ $labels.device_name }}
+          description: |
+            CO2 levels have exceeded 1200 ppm for more than 10 minutes in {{ $labels.device_name }}.
+            Current CO2 level: {{ $value }} ppm
+            This may indicate poor air quality and ventilation.
+            **Resolution:** Open the windows and let the room ventilate.

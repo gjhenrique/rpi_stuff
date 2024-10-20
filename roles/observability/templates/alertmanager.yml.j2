@@ -1,0 +1,58 @@
+---
+## Alert Manager Configuration
+global:
+  resolve_timeout: 5m
+  telegram_api_url: 'https://api.telegram.org'
+
+receivers:
+  - name: home-alerts
+    telegram_configs:
+      - bot_token: '{{ o11y_telegram_bot_token }}'
+        chat_id: {{ o11y_telegram_chat_id_group }}
+        parse_mode: 'HTML'
+
+  - name: server-alerts
+    telegram_configs:
+      - bot_token: '{{ o11y_telegram_bot_token }}'
+        chat_id: {{ o11y_telegram_chat_id_dm_admin }}
+        parse_mode: 'HTML'
+        message: {% raw -%}'{{ template "telegram.tanaka.html" . }}'{% endraw -%}
+
+
+  - name: null-receiver
+    # This receiver does nothing, effectively silencing the alerts
+
+route:
+  group_by: [ 'alertname', 'component' ]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: server-alerts  # Default receiver
+  routes:
+    - match:
+        component: server
+      receiver: server-alerts
+      mute_time_intervals:
+        - outside_active_hours
+    - match:
+        component: home
+        severity: warning
+      receiver: home-alerts
+      mute_time_intervals:
+        - outside_active_hours
+    - receiver: server-alerts
+
+time_intervals:
+  - name: outside_active_hours
+    time_intervals:
+      - weekdays: [ 'monday:friday' ]
+        location: 'Europe/Berlin'
+        times:
+          - start_time: '22:00'
+            end_time: '23:59'
+          - start_time: '00:00'
+            end_time: '08:00'
+      - weekdays: [ 'saturday', 'sunday' ]
+
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
