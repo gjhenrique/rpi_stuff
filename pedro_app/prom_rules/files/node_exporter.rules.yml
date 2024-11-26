@@ -49,7 +49,7 @@ groups:
 
   - alert: HostUnusualDiskReadRate
     expr: sum by (instance) (rate(node_disk_read_bytes_total[2m])) / 1024 / 1024 > 50
-    for: 5m
+    for: 10m
     labels:
       severity: warning
     annotations:

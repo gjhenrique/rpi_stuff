@@ -10,6 +10,7 @@ receivers:
       - bot_token: '{{ o11y_telegram_bot_token }}'
         chat_id: {{ o11y_telegram_chat_id_group }}
         parse_mode: 'HTML'
+        message: {% raw -%}'{{ template "telegram.tanaka.html" . }}'{% endraw -%}
 
   - name: server-alerts
     telegram_configs:

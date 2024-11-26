@@ -24,7 +24,7 @@ services:
 
   # # https://docs.linuxserver.io/images/docker-jackett
   jackett:
-    image: docker.io/linuxserver/jackett:0.22.362
+    image: docker.io/linuxserver/jackett:0.22.1009
     <<: *network_config
     restart: on-failure
     environment:
@@ -60,7 +60,7 @@ services:
 
 {% if torrent_enable_radarr %}
   radarr:
-    image: docker.io/linuxserver/radarr:5.8.3
+    image: docker.io/linuxserver/radarr:5.15.1
     <<: *network_config
     container_name: radarr
     environment:
@@ -81,7 +81,7 @@ services:
 {% if torrent_enable_kavita %}
     # https://docs.linuxserver.io/images/docker-kavita
   kavita:
-      image: docker.io/linuxserver/kavita:0.8.2
+      image: docker.io/linuxserver/kavita:0.8.4
       <<: *network_config
       restart: on-failure
       environment:
