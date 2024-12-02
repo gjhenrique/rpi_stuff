@@ -41,6 +41,15 @@ tasks:
   move-series:
     priority: 2
     disable: [seen, seen_info_hash, retry_failed]
+    regexp:
+      from: title
+      reject:
+        - (s|d)ub(s|bed)
+        - trailer
+        - screener
+        - (s|S)ample
+        - Featurettes
+        - Interview
     filesystem:
       path: "{? torrent.torrent_tv_path ?}"
       recursive: true
