@@ -6,7 +6,7 @@
   "shell": {
     "scripts": {
       "play": "cd app && ansible-playbook --tags=$1 site.yml",
-      "play-all": "cd app && ansible-playbook --tags=$1 site.yml",
+      "play-all": "cd app && ansible-playbook site.yml",
     }
   }
 }
