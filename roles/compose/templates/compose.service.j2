@@ -1,6 +1,7 @@
 [Unit]
 Description=Compose service for {{ service_name }}
-After=network-online.target systemd-resolved.service
+After=docker.service network-online.target systemd-resolved.service
+Requires=docker.service
 
 [Service]
 Type=simple
