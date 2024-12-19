@@ -12,10 +12,6 @@
     mode: "0644"
     state: touch
 
-- name: Install requests package
-  ansible.builtin.pip:
-    name: requests
-
 - name: Wait for user input
   ansible.builtin.pause:
     prompt: "Send a message to the chat like \"/search Movie\" before continuing"
