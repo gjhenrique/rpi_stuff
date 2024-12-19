@@ -44,12 +44,12 @@
       mounts:
         - /home/torrent/media:/media
 
-- name: Manual task to include telegram token in Flexget database
-  ansible.builtin.include_tasks: telegram-flexget-fix.yml
-  when: torrent_enable_telegram_bot
-  tags:
-    - never
-    - telegram-flexget-fix
+# - name: Manual task to include telegram token in Flexget database
+#   ansible.builtin.include_tasks: telegram-flexget-fix.yml
+#   when: torrent_enable_telegram_bot
+#   tags:
+#     - never
+#     - telegram-flexget-fix
 
 - name: Run backup role
   ansible.builtin.include_role:
