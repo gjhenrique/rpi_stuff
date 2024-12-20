@@ -1,0 +1,7 @@
+---
+paperless_tailscale_enabled: true
+paperless_tailscale_hostname: paperless
+paperless_tailscale_tag: "tag:paperless"
+
+paperless_admin_user: "admin"
+paperless_admin_password: "admin"

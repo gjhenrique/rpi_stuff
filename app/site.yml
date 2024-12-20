@@ -21,3 +21,6 @@
       tags: share
     - role: mount
       tags: mount
+    - role: paperless
+      tags: paperless
+
