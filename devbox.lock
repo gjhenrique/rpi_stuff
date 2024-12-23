@@ -128,6 +128,54 @@
           "store_path": "/nix/store/yxn7dxk1xkj0gddrr89jzcjap50pp4iq-python3.12-ansible-core-2.17.6"
         }
       }
+    },
+    "git-crypt@0.7.0": {
+      "last_modified": "2024-12-03T12:40:06Z",
+      "resolved": "github:NixOS/nixpkgs/566e53c2ad750c84f6d31f9ccb9d00f823165550#git-crypt",
+      "source": "devbox-search",
+      "version": "0.7.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/r49hhwfzv59xv97wjzxwfndpblgrh4jp-git-crypt-0.7.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/r49hhwfzv59xv97wjzxwfndpblgrh4jp-git-crypt-0.7.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ggvfp4ganjvffzy3rr2i60sv8i4dra9k-git-crypt-0.7.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ggvfp4ganjvffzy3rr2i60sv8i4dra9k-git-crypt-0.7.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/58r6pacqgm8ikcncj75p48va24cc8p3m-git-crypt-0.7.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/58r6pacqgm8ikcncj75p48va24cc8p3m-git-crypt-0.7.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/0pm5nmm6y12zlk8bgb9yx1zq6ij9hdvq-git-crypt-0.7.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/0pm5nmm6y12zlk8bgb9yx1zq6ij9hdvq-git-crypt-0.7.0"
+        }
+      }
     }
   }
 }
