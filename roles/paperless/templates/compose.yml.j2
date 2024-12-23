@@ -17,7 +17,6 @@ services:
       - /home/paperless/documents/consume:/usr/src/paperless/consume
     environment:
       PAPERLESS_URL: "{{ paperless_url }}"
-      PAPERLESS_PORT: "{{ paperless_port }}"
       PAPERLESS_REDIS: redis://localhost:6379
       PAPERLESS_OCR_LANGUAGES: "deu eng"
       PAPERLESS_ADMIN_USER: "{{ paperless_admin_user }}"

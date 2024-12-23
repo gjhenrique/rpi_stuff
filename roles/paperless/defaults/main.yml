@@ -7,4 +7,3 @@ paperless_admin_user: "admin"
 paperless_admin_password: "admin"
 
 paperless_url: ""
-paperless_port: "8000"
