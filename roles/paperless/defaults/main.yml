@@ -5,3 +5,6 @@ paperless_tailscale_tag: "tag:paperless"
 
 paperless_admin_user: "admin"
 paperless_admin_password: "admin"
+
+paperless_url: ""
+paperless_port: "8000"
