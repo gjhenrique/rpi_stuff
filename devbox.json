@@ -8,8 +8,6 @@
     "scripts": {
       "play": "cd app && ansible-playbook --tags=$1 site.yml",
       "play-all": "cd app && ansible-playbook site.yml",
-      "encrypt": "cd app && ansible-vault encrypt secrets.yml",
-      "decrypt": "cd app && ansible-vault decrypt secrets.yml",
     }
   }
 }

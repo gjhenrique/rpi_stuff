@@ -116,6 +116,6 @@ Jellyfin doesn't provide a feature-complete Android TV app as [Emby](https://emb
 The ansible variables for all roles are not documented yet. For now, running and seeing where it breaks a required variable is the only alternative.
 
 ## Related
-- [My usage of these roles](./app): Playbook pointing to these roles and encrypting secrets with `ansible-vault`. Feel free to use it
+- [My usage of these roles](./app): Playbook pointing to these roles and encrypting secrets with `git-crypt`. Feel free to use it
 - [Torrent role](./roles/torrent): Manual steps required to have a functioning infrastructure
 - [telegram-bot-torrents](https://github.com/gjhenrique/telegram-bot-torrents): Telegram bot to search torrents in Jackett and to upload them to Transmission
