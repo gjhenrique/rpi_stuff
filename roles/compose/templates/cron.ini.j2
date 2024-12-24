@@ -1,0 +1,9 @@
+[job-run "backup"]
+schedule = @every 1h
+image = cupcakearmy/autorestic:{{ autorestic_version }}
+command = sh -c 'autorestic --verbose -c /etc/autorestic.yml cron'
+volume = /etc/autorestic/autorestic-{{ backup_name }}.yml:/etc/autorestic.yml:ro
+volume = /etc/autorestic/autorestic-{{ backup_name }}.lock.yml:/etc/.autorestic.lock.yml:rw
+{% for path in backup.directories %}
+volume = {{ path }}:{{ path }}:ro
+{% endfor %}

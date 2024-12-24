@@ -5,19 +5,14 @@
   vars:
     service_name: syncthing
     user: syncthing
+    backup:
+      enabled: true
+      directories:
+        - /home/syncthing/config
+      schedule: "0 4 * * *"
     tailscale:
       enabled: "{{ syncthing_tailscale_enabled }}"
       hostname: "{{ syncthing_tailscale_hostname }}"
       tag: "{{ syncthing_tailscale_tag }}"
       mounts:
-        - /home/syncthing/data:/syncthing_data
-
-- name: Run backup role
-  ansible.builtin.include_role:
-    name: restic
-    tasks_from: backup
-  vars:
-    restic_backup_name: syncthing
-    restic_backup_args: "/home/syncthing/data"
-    restic_forget_args: "--keep-last 7"
-    restic_schedule: "*-*-* 4:00:00"
+        - /home/syncthing/config:/syncthing_data

@@ -36,6 +36,15 @@
   vars:
     service_name: torrent
     user: torrent
+    backup:
+      enabled: true
+      directories:
+        - /home/torrent/flexget/config
+        - /home/torrent/jackett
+        - /home/torrent/transmission/config
+        - /home/torrent/radarr
+        - /home/torrent/sonarr
+      schedule: "0 5 * * *"
     tailscale:
       enabled: "{{ torrent_tailscale_enabled }}"
       hostname: "{{ torrent_tailscale_hostname }}"
@@ -50,13 +59,3 @@
 #   tags:
 #     - never
 #     - telegram-flexget-fix
-
-- name: Run backup role
-  ansible.builtin.include_role:
-    name: restic
-    tasks_from: backup
-  vars:
-    restic_backup_name: torrents
-    restic_backup_args: "/home/torrent/flexget/config /home/torrent/jackett /home/torrent/transmission/config /home/torrent/radarr /home/torrent/sonarr"
-    restic_forget_args: "--keep-last 2"
-    restic_schedule: "*-*-* 5:00:00"

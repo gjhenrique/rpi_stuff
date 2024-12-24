@@ -5,6 +5,11 @@
   vars:
     service_name: paperless
     user: paperless
+    backup:
+      enabled: true
+      schedule: "0 2 * * *"
+      directories:
+        - /home/paperless/documents
     tailscale:
       enabled: "{{ paperless_tailscale_enabled }}"
       hostname: "{{ paperless_tailscale_hostname }}"
@@ -13,13 +18,3 @@
         "/": "http://127.0.0.1:8000"
       mounts:
         - /home/paperless/documents:/documents
-
-- name: Run backup role
-  ansible.builtin.include_role:
-    name: restic
-    tasks_from: backup
-  vars:
-    restic_backup_name: paperless
-    restic_backup_args: "/home/paperless/documents"
-    restic_forget_args: "--keep-last 7"
-    restic_schedule: "*-*-* 2:00:00"

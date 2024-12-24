@@ -49,18 +49,14 @@ services:
 
 Now it's possible to access the syncthing service with Tailscale, like `syncthing:8384`. If you don't wanna use Tailscale, you can use the `ports` option on your compose file.
 
-1. (Optional 2): Backup the files daily. The [restic](./roles/restic) to create a periodic job that syncs your data daily to the configured restic remote, like s3, B2 or another machine.
+1. (Optional 2): Backup the files daily. Include the backup vars to sync your data daily to a remote environment
 
 ``` yaml
-- name: Run backup role
-  ansible.builtin.include_role:
-    name: restic
-    tasks_from: backup
-  vars:
-    restic_backup_name: syncthing
-    restic_backup_args: "/home/syncthing/data"
-    restic_forget_args: "--keep-last 7"
-    restic_schedule: "*-*-* 4:00:00"
+    backup:
+      enabled: true
+      directories:
+        - /home/syncthing/config
+      schedule: "0 4 * * *"
 ```
 
 1. Profit?

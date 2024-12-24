@@ -12,6 +12,13 @@
   vars:
     service_name: share
     user: "{{ share_user }}"
+    backup:
+      enabled: true
+      name: photos
+      directories:
+        - /home/share/shares/pictures
+        - /home/share/photoprism/storage
+      schedule: "0 3 * * *"
     tailscale:
       enabled: "{{ share_tailscale_enabled }}"
       hostname: "{{ share_tailscale_hostname }}"
@@ -22,15 +29,6 @@
       ports:
         # Share photos in the local network
         - 445:445
-
-- name: Include backup role
-  ansible.builtin.include_role:
-    name: restic
-    tasks_from: backup
-  vars:
-    restic_backup_name: photos
-    restic_backup_args: "/home/share/shares/pictures /home/share/photoprism/storage"
-    restic_schedule: "*-*-* 2:00:00"
 
 - name: Copy photoprism index service
   ansible.builtin.copy:

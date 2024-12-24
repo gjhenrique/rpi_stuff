@@ -7,8 +7,6 @@
   roles:
     - role: boilerplate
       tags: boilerplate
-    - role: restic
-      tags: restic
     - role: syncthing
       tags: syncthing
     - role: torrent

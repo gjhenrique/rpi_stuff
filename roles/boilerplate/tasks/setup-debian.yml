@@ -24,21 +24,15 @@
 - name: Ensure dependencies are installed.
   ansible.builtin.apt:
     name:
-      # make become work
-      - acl
-
       # container part
       - docker-ce
       - docker-ce-cli
       - containerd.io
       - docker-buildx-plugin
       - docker-compose-plugin
-      - podman
 
       # misc
       - htop
-      - python3
-      - python3-pip
     update_cache: true
     state: present
 

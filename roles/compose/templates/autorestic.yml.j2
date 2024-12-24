@@ -1,0 +1,26 @@
+version: 2
+
+locations:
+  backup:
+    from:
+{% for path in backup.directories %}
+      - {{ path }}
+{% endfor %}
+    to: remote
+    forget: prune
+    cron: "{{ backup.schedule }}"
+    options:
+      forget:
+        keep-last: 3
+        # Every container has a new hostname, so forget assumes it's from a different machine
+        # Ofelia apparently doesn't have a way to set a fixed hostname
+        group-by: 'path'
+
+backends:
+  remote:
+    type: s3
+    path: "{{ restic_repository_prefix }}/{{ backup_name }}"
+    key: "{{ restic_password }}"
+    env:
+      AWS_ACCESS_KEY_ID: "{{ restic_aws_key_id }}"
+      AWS_SECRET_ACCESS_KEY: "{{ restic_aws_secret_key }}"

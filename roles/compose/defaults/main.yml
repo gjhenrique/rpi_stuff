@@ -3,3 +3,5 @@ compose_file_name: "compose.yml.j2"
 tailscale_version: v1.78.3
 tailscale:
   enabled: false
+
+autorestic_version: 1.8.3

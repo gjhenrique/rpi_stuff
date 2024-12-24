@@ -2,9 +2,13 @@
 - name: Create user
   ansible.builtin.include_tasks: create-user.yml
 
-- name: Include tailscale roles
+- name: Include tailscale tasks
   ansible.builtin.include_tasks: tailscale.yml
-  when: tailscale.enabled == true
+  when: tailscale is defined and tailscale.enabled == true
+
+- name: Include backup tasks
+  ansible.builtin.include_tasks: backup.yml
+  when: backup is defined and backup.enabled == true
 
 - name: Copy compose file
   ansible.builtin.template:
