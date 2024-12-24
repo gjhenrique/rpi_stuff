@@ -9,6 +9,8 @@
       enabled: "{{ paperless_tailscale_enabled }}"
       hostname: "{{ paperless_tailscale_hostname }}"
       tag: "{{ paperless_tailscale_tag }}"
+      https:
+        "/": "http://127.0.0.1:8000"
       mounts:
         - /home/paperless/documents:/documents
 

@@ -41,6 +41,14 @@
   set_fact:
     authkey: "{{ authkey_response.json.key }}"
 
+- name: Configure Tailscale HTTPS serve
+  ansible.builtin.template:
+    src: tailscale-serve.json.j2
+    dest: /home/{{ user }}/tailscale-serve.json
+    mode: '0644'
+  when: tailscale.https is defined
+  notify: "Restart compose-{{ service_name }}"
+
 - name: Create compose file
   ansible.builtin.template:
     src: compose-tailscale.yml.j2

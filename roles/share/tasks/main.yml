@@ -16,6 +16,9 @@
       enabled: "{{ share_tailscale_enabled }}"
       hostname: "{{ share_tailscale_hostname }}"
       tag: "{{ share_tailscale_tag }}"
+      # Put it in https, so photoprism can become a PWA
+      https:
+        "/": "http://localhost:2342"
       ports:
         # Share photos in the local network
         - 445:445
