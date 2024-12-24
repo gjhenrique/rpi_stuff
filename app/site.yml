@@ -17,8 +17,8 @@
       tags: emby
     - role: share
       tags: share
-    - role: mount
-      tags: mount
     - role: paperless
       tags: paperless
+    - role: mount
+      tags: mount
 

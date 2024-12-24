@@ -55,4 +55,4 @@
     group: "{{ user }}"
   vars:
     backup_volumes: "{{ json_array }}"
-  notify: "Restart compose-{{ backup_name }}"
+  notify: "Restart compose-{{ service_name }}"
