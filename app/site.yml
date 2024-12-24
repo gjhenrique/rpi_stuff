@@ -19,6 +19,8 @@
       tags: share
     - role: paperless
       tags: paperless
+    - role: netdata
+      tags: netdata
     - role: mount
       tags: mount
 
