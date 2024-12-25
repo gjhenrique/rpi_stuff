@@ -10,11 +10,18 @@
     "scripts": {
       "play": "cd app && ansible-playbook --tags=$1 site.yml",
       "play-all": "cd app && ansible-playbook site.yml",
+      // restic wrapper
+      // e.g. rw paperless snapshots
       "rw": [
-	"secret_env() { yq '.$1' app/secrets.yml; echo '.$1'; }",
-	"export A=$(source_restic 'restic_password')",
-	"echo $A",
-	"echo 'vsf'"
+	"source_restic() { yq \".$1\" app/secrets.yml; }",
+
+	"export RESTIC_PASSWORD=$(source_restic 'restic_password')",
+	"export RESTIC_REPOSITORY=\"s3:$(source_restic 'restic_repository_prefix')/$1\"",
+	"export AWS_ACCESS_KEY_ID=$(source_restic 'restic_aws_key_id')",
+	"export AWS_SECRET_ACCESS_KEY=$(source_restic 'restic_aws_secret_key')",
+
+	"shift",
+	"restic \"${@}\"",
       ]
     }
   }
