@@ -37,9 +37,6 @@
 
     torrent_cage_non_enforcing: false
 
-    torrent_flexget_rss: "https://rss.com"
-    torrent_flexget_telegram_receiver: "Torrents"
-
     jellyfin_user: "jellyfintest"
 
     caddy_domain: example.com

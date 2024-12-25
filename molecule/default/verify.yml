@@ -110,20 +110,6 @@
         container: torrent-vpn-1
         command: /bin/sh -c "ip rule delete priority 10 from all lookup main"
 
-    - name: Check the configuration from flexget is correct
-      community.docker.docker_container_exec:
-        container: torrent-flexget-1
-        command: /bin/sh -c "flexget check"
-
-    - name: Register flexget db stat
-      ansible.builtin.stat:
-        path: /home/torrent/flexget/config/db-config.sqlite
-      register: flexget_db_result
-
-    - name: Check if flex database exists
-      ansible.builtin.assert:
-        that: flexget_db_result.stat.exists
-
     - name: "Transmission GUI with authentication"
       ansible.builtin.uri:
         url: "https://torrents.example.com"

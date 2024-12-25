@@ -4,7 +4,6 @@ Roles from the common [rpi_stuff](https://github.com/gjhenrique/rpi_stuff):
 - syncthing
 - mount external HDD to media directory
 - jellyfin
-- torrent role with bot, flexget, wireguard, etc.
 - photoprism and share with samba
 
 ## Install

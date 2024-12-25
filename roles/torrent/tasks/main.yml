@@ -6,29 +6,25 @@
   vars:
     user: torrent
 
-- name: Add vpn group
-  ansible.builtin.group:
-    name: vpn
-    state: present
-    gid: "{{ torrent_user_gid_owner }}"
-
-- name: Include flexget bootstrap
-  when: torrent_enable_flexget | default(False)
-  ansible.builtin.include_tasks: flexget.yml
-
-- name: Create Radaar directory
+- name: Create media directories
   ansible.builtin.file:
-    path: /home/torrent/radarr
+    path: "/home/torrent/media/{{ item }}"
     state: directory
     owner: torrent
     mode: '0755'
+  loop:
+    - torrents/TV
+    - torrents/Movies
+    - TV
+    - Movies
 
-- name: Create Sonaar directory
-  ansible.builtin.file:
-    path: /home/torrent/sonarr
-    state: directory
+- name: Copy subtitle extractor file
+  ansible.builtin.copy:
+    src: extract-subtitles.sh
+    dest: /home/torrent/media/extract-subtitles.sh
     owner: torrent
     mode: '0755'
+  notify: "Restart torrent - local"
 
 - name: Include compose role
   ansible.builtin.include_role:
@@ -39,7 +35,6 @@
     backup:
       enabled: true
       directories:
-        - /home/torrent/flexget/config
         - /home/torrent/jackett
         - /home/torrent/transmission/config
         - /home/torrent/radarr
@@ -52,10 +47,3 @@
       exit_node: "{{ torrent_tailscale_exit_node }}"
       mounts:
         - /home/torrent/media:/media
-
-# - name: Manual task to include telegram token in Flexget database
-#   ansible.builtin.include_tasks: telegram-flexget-fix.yml
-#   when: torrent_enable_telegram_bot
-#   tags:
-#     - never
-#     - telegram-flexget-fix

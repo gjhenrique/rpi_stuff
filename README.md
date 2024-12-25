@@ -81,7 +81,6 @@ Here are some set of features:
 - [Jackett](https://github.com/Jackett/Jackett) to search torrents in hundreds of torrent indexers. Access it with `https://torent:9117`.
 - [Transmission](https://transmissionbt.com/) to manage the torrents. Access it with `http://torrents:9091`.
 - [Telegram bot](https://github.com/gjhenrique/telegram-bot-torrents/) to search torrents from Jackett and send them to Transmission
-- [flexget](https://flexget.com/) to download new TV Shows with an RSS URL, rename movies and TV shows to a consistent format, and remove torrents when they're finished.
 
 ### [Jellyfin](./roles/jellyfin)
 Plex is the most popular streaming service today, so it would be the safest choice.

@@ -7,6 +7,8 @@
   roles:
     - role: boilerplate
       tags: boilerplate
+    - role: mount
+      tags: mount
     - role: syncthing
       tags: syncthing
     - role: torrent
@@ -21,6 +23,3 @@
       tags: paperless
     - role: netdata
       tags: netdata
-    - role: mount
-      tags: mount
-
