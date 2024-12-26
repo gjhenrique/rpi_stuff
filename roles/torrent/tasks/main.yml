@@ -45,5 +45,10 @@
       hostname: "{{ torrent_tailscale_hostname }}"
       tag: "{{ torrent_tailscale_tag }}"
       exit_node: "{{ torrent_tailscale_exit_node }}"
+      https:
+        "/sonarr": "http://127.0.0.1:8989/sonarr"
+        "/radarr": "http://127.0.0.1:7878/radarr"
+        "/jackett": "http://127.0.0.1:9117/jackett"
+        "/transmission": "http://127.0.0.1:9091/transmission"
       mounts:
         - /home/torrent/media:/media
