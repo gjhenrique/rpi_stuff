@@ -18,7 +18,7 @@
     {
       "matchManagers": ["docker-compose"],
       "matchPackageNames": [
-        "lscr.io/linuxserver/emby",
+        "lscr.io/linuxserver/emby"
       ],
       "allowedVersions": "/^[0-9]{2}\\.[0-9]+\\.[0-9]+$/"
     }
