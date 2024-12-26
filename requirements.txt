@@ -1,4 +1,4 @@
-ansible==8.4.0
+ansible==8.5.0
 ansible-lint==6.19.0
 molecule==5.1.0
 molecule-plugins[ec2]==23.5.0
