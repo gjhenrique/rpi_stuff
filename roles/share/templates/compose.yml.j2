@@ -20,6 +20,13 @@ services:
 
   photoprism:
     image: docker.io/photoprism/photoprism:preview
+    network_mode: "service:tailscale"
+    working_dir: "/photoprism"
+    cpus: 2
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.indes-job.schedule: "30 3 * * * "
+      ofelia.job-exec.indes-job.command: "photoprism index"
     environment:
       PHOTOPRISM_ADMIN_USER: "{{ share_photoprism_user }}"
       PHOTOPRISM_ADMIN_PASSWORD: "{{ share_photoprism_password }}"
@@ -45,9 +52,14 @@ services:
      - "/dev/video11:/dev/video11" # Video4Linux Video Encode Device (h264_v4l2m2m)
     {% endif %}
 
-    network_mode: "service:tailscale"
-    working_dir: "/photoprism"
-    cpus: 2
     volumes:
       - "{{ share_photoprism_originals_directory }}:/photoprism/originals"
       - "/home/{{ share_user }}/photoprism/storage:/photoprism/storage"
+
+  ofelia:
+    image: mcuadros/ofelia:0.3.13
+    depends_on:
+      - photoprism
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: daemon --docker

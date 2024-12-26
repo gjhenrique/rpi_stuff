@@ -1,5 +1,0 @@
-- name: "Restart photoprism-index"
-  ansible.builtin.systemd:
-    name: "photoprism-index.timer"
-    daemon_reload: true
-    state: restarted

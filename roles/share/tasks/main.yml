@@ -29,25 +29,3 @@
       ports:
         # Share photos in the local network
         - 445:445
-
-- name: Copy photoprism index service
-  ansible.builtin.copy:
-    src: photoprism-index.service
-    dest: /etc/systemd/system/photoprism-index.service
-    mode: '0644'
-
-- name: Copy photoprism index timer
-  ansible.builtin.copy:
-    src: photoprism-index.timer
-    dest: /etc/systemd/system/photoprism-index.timer
-    mode: '0644'
-  notify: "Restart photoprism-index"
-
-- name: Enable index timer
-  ansible.builtin.systemd:
-    name: "photoprism-index.timer"
-    state: started
-    daemon_reload: true
-    enabled: true
-
-
