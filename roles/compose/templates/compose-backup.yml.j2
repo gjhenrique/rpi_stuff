@@ -1,6 +1,6 @@
 services:
   backup:
-    image: mcuadros/ofelia:0.3.13
+    image: docker.io/mcuadros/ofelia:0.3.13
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/autorestic/cron-{{ backup_name }}.ini:/etc/ofelia/config.ini

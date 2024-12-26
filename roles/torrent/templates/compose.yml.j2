@@ -2,7 +2,7 @@
 services:
   # https://docs.linuxserver.io/images/docker-transmission
   transmission:
-    image: docker.io/linuxserver/transmission:4.0.6
+    image: lscr.io/linuxserver/transmission:4.0.6
     network_mode: "service:tailscale"
     restart: on-failure
     environment:
@@ -16,7 +16,7 @@ services:
 
   # # https://docs.linuxserver.io/images/docker-jackett
   jackett:
-    image: docker.io/linuxserver/jackett:0.22.1128
+    image: lscr.io/linuxserver/jackett:0.22.1128
     network_mode: "service:tailscale"
     restart: on-failure
     environment:

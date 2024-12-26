@@ -19,7 +19,7 @@ services:
       {% endfor %}
 
   photoprism:
-    image: docker.io/photoprism/photoprism:preview
+    image: docker.io/photoprism/photoprism:240915
     network_mode: "service:tailscale"
     working_dir: "/photoprism"
     cpus: 2
@@ -57,7 +57,7 @@ services:
       - "/home/{{ share_user }}/photoprism/storage:/photoprism/storage"
 
   ofelia:
-    image: mcuadros/ofelia:0.3.13
+    image: docker.io/mcuadros/ofelia:0.3.13
     depends_on:
       - photoprism
     volumes:
