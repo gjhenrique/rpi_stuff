@@ -18,14 +18,6 @@
     - TV
     - Movies
 
-- name: Copy subtitle extractor file
-  ansible.builtin.copy:
-    src: extract-subtitles.sh
-    dest: /home/torrent/media/extract-subtitles.sh
-    owner: torrent
-    mode: '0755'
-  notify: "Restart torrent - local"
-
 - name: Include compose role
   ansible.builtin.include_role:
     name: compose

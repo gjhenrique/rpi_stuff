@@ -28,7 +28,6 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:4.0.11
     network_mode: "service:tailscale"
-    entrypoint: bash -c "apk add ffmpeg && /init"
     environment:
       PUID: "{{ user_id }}"
       PGID: "{{ user_id }}"
@@ -40,7 +39,6 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:5.16.3
     network_mode: "service:tailscale"
-    entrypoint: bash -c "apk add ffmpeg && /init"
     environment:
       PUID: "{{ user_id }}"
       PGID: "{{ user_id }}"
