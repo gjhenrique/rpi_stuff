@@ -23,7 +23,6 @@
     name: compose
   vars:
     service_name: torrent
-    user: torrent
     backup:
       enabled: true
       directories:

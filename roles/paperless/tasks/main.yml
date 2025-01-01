@@ -4,7 +4,6 @@
     name: compose
   vars:
     service_name: paperless
-    user: paperless
     backup:
       enabled: true
       schedule: "0 2 * * *"

@@ -1,5 +1,9 @@
 ---
+- name: Set resolved user
+  ansible.builtin.set_fact:
+    resolved_user: "{{ user | default(service_name) }}"
+
 - name: Create user
   ansible.builtin.user:
-    name: "{{ user }}"
+    name: "{{ resolved_user }}"
   register: user_facts

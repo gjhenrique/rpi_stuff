@@ -21,5 +21,7 @@
       tags: share
     - role: paperless
       tags: paperless
+    - role: actual
+      tags: actual
     - role: netdata
       tags: netdata

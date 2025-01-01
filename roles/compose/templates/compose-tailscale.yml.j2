@@ -35,9 +35,9 @@ services:
 
     volumes:
       - /dev/net/tun:/dev/net/tun
-      - /home/{{ user }}/tailscale/{{ service_name }}:/var/lib/tailscale
+      - /home/{{ resolved_user }}/tailscale/{{ service_name }}:/var/lib/tailscale
       {% if tailscale.https is defined -%}
-      - /home/{{ user }}/tailscale-serve.json:/var/lib/tailscale-serve.json
+      - /home/{{ resolved_user }}/tailscale-serve.json:/var/lib/tailscale-serve.json
       {% endif -%}
       {% for mount_point in tailscale.mounts | default([]) -%}
       - {{ mount_point }}

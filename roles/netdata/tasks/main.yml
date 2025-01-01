@@ -4,4 +4,3 @@
     name: compose
   vars:
     service_name: netdata
-    user: netdata

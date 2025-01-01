@@ -24,7 +24,7 @@ ExecStop=/usr/bin/docker compose -p {{ service_name }}
     {%- endif %}
 {%- endif %}
     -f compose-{{ service_name }}.yml down
-WorkingDirectory=/home/{{ user }}
+WorkingDirectory=/home/{{ resolved_user }}
 TimeoutStartSec=0
 
 [Install]

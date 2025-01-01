@@ -4,7 +4,6 @@
     name: compose
   vars:
     service_name: syncthing
-    user: syncthing
     backup:
       enabled: true
       directories:

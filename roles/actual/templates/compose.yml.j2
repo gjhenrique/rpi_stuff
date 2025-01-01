@@ -1,0 +1,6 @@
+services:
+  actual_server:
+    image: docker.io/actualbudget/actual-server:24.12.0
+    network_mode: "service:tailscale"
+    volumes:
+      - /home/actual/data:/data

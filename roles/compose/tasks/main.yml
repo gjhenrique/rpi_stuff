@@ -14,10 +14,10 @@
   ansible.builtin.template:
     # TODO: Maybe use lookup here?
     src: "{{ ansible_parent_role_paths[0] }}/templates/{{ compose_file_name }}"
-    dest: "/home/{{ user }}/compose-{{ service_name }}.yml"
+    dest: "/home/{{ resolved_user }}/compose-{{ service_name }}.yml"
     mode: "0644"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ resolved_user }}"
+    group: "{{ resolved_user }}"
   notify: "Restart compose-{{ service_name }}"
   vars:
     user_id: "{{ user_facts.uid }}"

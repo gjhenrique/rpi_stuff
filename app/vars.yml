@@ -36,6 +36,12 @@ mount_paths:
     user: torrent
     type: None
     options: bind
+  - mount_path: /home/share/photoprism/storage
+    mount_from: /mnt/external/photoprism
+    depends: /mnt/external
+    user: share
+    type: None
+    options: bind
   - mount_path: /home/share/shares/pictures
     mount_from: /mnt/external/shares
     depends: /mnt/external
