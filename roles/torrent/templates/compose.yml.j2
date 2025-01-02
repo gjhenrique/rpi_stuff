@@ -5,7 +5,7 @@ x-config: &network_config
 services:
   # https://docs.linuxserver.io/images/docker-transmission
   transmission:
-    image: docker.io/linuxserver/transmission:4.0.6
+    image: "docker.io/linuxserver/transmission:{{ transmission_version }}"
     <<: *network_config
     restart: on-failure
     environment:
@@ -24,7 +24,7 @@ services:
 
   # # https://docs.linuxserver.io/images/docker-jackett
   jackett:
-    image: docker.io/linuxserver/jackett:0.22.1009
+    image: "docker.io/linuxserver/jackett:{{ jackett_version }}"
     <<: *network_config
     restart: on-failure
     environment:
@@ -39,6 +39,7 @@ services:
       retries: 5
 
 {% if torrent_enable_sonaar %}
+
   sonarr:
     image: "docker.io/linuxserver/sonarr:{{ sonarr_version }}"
     <<: *network_config
@@ -56,11 +57,13 @@ services:
     depends_on:
       - transmission
       - jackett
+
 {% endif %}
 
 {% if torrent_enable_radarr %}
+
   radarr:
-    image: docker.io/linuxserver/radarr:5.15.1
+    image: docker.io/linuxserver/radarr:{{ radarr_version }}
     <<: *network_config
     container_name: radarr
     environment:
@@ -76,12 +79,13 @@ services:
     depends_on:
       - transmission
       - jackett
+
 {% endif %}
 
 {% if torrent_enable_kavita %}
-    # https://docs.linuxserver.io/images/docker-kavita
+  # https://docs.linuxserver.io/images/docker-kavita
   kavita:
-      image: docker.io/linuxserver/kavita:0.8.4
+      image: "docker.io/linuxserver/kavita:{{ kavita_version }}"
       <<: *network_config
       restart: on-failure
       environment:
@@ -97,39 +101,3 @@ services:
         - jackett
 
 {% endif %}
-
-  {% if torrent_enable_flexget %}
-  # # https://hub.docker.com/r/wiserain/flexget
-  flexget:
-    image: docker.io/wiserain/flexget:3.11.36
-    <<: *network_config
-    restart: on-failure
-    entrypoint: bash -c "apk add ffmpeg && /init"
-    environment:
-      PUID: "{{ user_id }}"
-      PGID: "{{ torrent_user_gid_owner }}"
-      TZ: "Europe/Berlin"
-    volumes:
-      # Same volume for torrents and final media
-      # If you put as two different volumes, then Linux treats as two different FSes and moves the entire file
-      - /home/torrent/media:/media
-      - /home/torrent/flexget/config:/config
-    # Throttle ffmpeg extracting subtitles
-    cpu_count: 1
-  {% endif %}
-
-  {% if add_telegram_to_flexget %}
-  telegram-bot:
-    image: docker.io/gjhenrique/telegram-bot-torrents:v0.5.2
-    <<: *network_config
-    restart: on-failure
-    environment:
-      TRANSMISSION_TV_PATH: "/downloads/TV"
-      TRANSMISSION_MOVIE_PATH: "/downloads/Movies"
-      TRANSMISSION_URL: http://localhost:9091
-      TRANSMISSION_CREDENTIALS: "{{ torrent_transmission_user }}:{{ torrent_transmission_password }}"
-      JACKETT_DATA_DIR: /jackett/Jackett
-      TELEGRAM_BOT_TOKEN: "{{ torrent_telegram_token }}"
-    volumes:
-      - /home/torrent/jackett:/jackett
-  {% endif %}

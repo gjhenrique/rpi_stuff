@@ -9,3 +9,5 @@ emby_user_id: 1002
 emby_group_id: 1002
 
 emby_extra_mounts: {}
+
+emby_version: "latest"

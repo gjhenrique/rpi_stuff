@@ -1,5 +1,6 @@
 ---
 jellyfin_user: "torrent"
+emby_version: "4.8.10"
 emby_user: "torrent"
 emby_extra_mounts:
   "/home/torrent/more_media": "/more_media"
@@ -26,7 +27,11 @@ torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
 torrent_enable_kavita: true
-sonarr_version: 4.0.9
+radarr_version: 5.16.3
+sonarr_version: 4.0.11
+kavita_version: v0.8.4.2-ls60
+jackkett_version: 0.22.1182
+transmission_version: 4.0.6
 
 # Configure media and shares
 share_samba_volumes:
