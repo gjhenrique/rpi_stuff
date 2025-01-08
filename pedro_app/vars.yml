@@ -20,17 +20,16 @@ observability_qingping_enabled: true
 observability_prometheus_retention: "390d"
 observability_enable_alertmanager: true
 
-
 # Configure automation
 add_telegram_to_flexget: false
 torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
 torrent_enable_kavita: true
-radarr_version: 5.16.3
-sonarr_version: 4.0.11
+radarr_version: 5.17.2.9580-ls253
+sonarr_version: 4.0.12
 kavita_version: v0.8.4.2-ls60
-jackkett_version: 0.22.1182
+jackett_version: 0.22.1182
 transmission_version: 4.0.6
 
 # Configure media and shares

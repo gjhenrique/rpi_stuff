@@ -106,29 +106,6 @@
     groups: docker
     append: yes
 
-- name: Check if /etc/docker/daemon.json exists
-  ansible.builtin.stat:
-    path: /etc/docker/daemon.json
-  register: daemon_json
-
-- name: Create /etc/docker directory if it does not exist
-  ansible.builtin.file:
-    path: /etc/docker
-    state: directory
-    mode: '0755'
-  when: not daemon_json.stat.exists
-
-- name: Create /etc/docker/daemon.json with content if it does not exist
-  ansible.builtin.copy:
-    dest: /etc/docker/daemon.json
-    content: |
-      {
-        "metrics-addr": "0.0.0.0:9323"
-      }
-    mode: '0644'
-  when: not daemon_json.stat.exists
-  register: daemon_json_result
-
 - name: Include compose role for observability
   ansible.builtin.include_role:
     name: compose
@@ -154,11 +131,3 @@
     restic_backup_args: "/home/{{ observability_user }}/prometheus /home/{{ observability_user }}/grafana /home/{{ observability_user }}/alertmanager"
     restic_forget_args: "--keep-last 2"
     restic_schedule: "*-*-* 5:00:00"
-
-
-- name: Restart docker service
-  when: daemon_json_result.changed
-  ansible.builtin.systemd:
-    name: docker
-    state: restarted
-    enabled: true
