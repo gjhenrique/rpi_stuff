@@ -31,7 +31,7 @@ observability_photoprism_host: "1"
 observability_qingping_enabled: false
 
 observability_enable_alertmanager: false
-observability_alertmanager_version: v0.27.0
+observability_alertmanager_version: v0.28.0
 
 # Secret
 o11y_telegram_bot_token: "token"

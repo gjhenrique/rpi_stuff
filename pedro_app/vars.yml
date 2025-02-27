@@ -19,6 +19,8 @@ observability_grafana_cloud_enable: true
 observability_qingping_enabled: true
 observability_prometheus_retention: "390d"
 observability_enable_alertmanager: true
+observability_prometheus_version: v3.2.1
+observability_grafana_version: 11.5.2
 
 # Configure automation
 add_telegram_to_flexget: false
@@ -26,10 +28,10 @@ torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
 torrent_enable_kavita: true
-radarr_version: 5.17.2.9580-ls253
-sonarr_version: 4.0.12
+radarr_version: 5.19.3
+sonarr_version: 4.0.13
 kavita_version: v0.8.4.2-ls60
-jackett_version: 0.22.1182
+jackett_version: 0.22.1461
 transmission_version: 4.0.6
 
 # Configure media and shares
@@ -55,7 +57,7 @@ share_photoprism_sponsor: false
 share_tailscale_enabled: true
 share_photoprism_cpus: 2
 
-tailscale_version: v1.76.6
+tailscale_version: v1.80
 
 mount_paths:
   - mount_path: /mnt/external
