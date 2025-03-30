@@ -4,7 +4,7 @@
     "ansible@2.18.3",
     "git-crypt@0.7.0",
     "restic@0.17.3",
-    "yq-go@4.44.6",
+    "yq-go@4.45.1",
   ],
   "shell": {
     "scripts": {
