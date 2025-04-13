@@ -1,0 +1,52 @@
+groups:
+  - name: instagram_bot_alerts
+    rules:
+      # Memory Usage Alerts
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes{job="telegram_bot_scheduler"} / 1024 / 1024 > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Bot is using more than 100MB of RAM (current value: {{ $value }}MB)"
+
+      # Service Status
+      - alert: BotDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Bot service is down"
+          description: "The Instagram bot service is not responding"
+
+      # GC Collection Monitoring
+      - alert: HighGCCollectionRate
+        expr: rate(python_gc_collections_total{generation="1"}[5m]) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High garbage collection rate"
+          description: "Generation 1 GC collections are happening frequently"
+
+      # Process Resource Monitoring
+      - alert: HighOpenFileDescriptors
+        expr: process_open_fds / process_max_fds > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High number of open file descriptors"
+          description: "More than 80% of available file descriptors are in use"
+
+      # CPU Usage
+      - alert: HighCPUUsage
+        expr: rate(process_cpu_seconds_total[5m]) > 0.8
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "Bot is using more than 80% CPU over 5 minutes"

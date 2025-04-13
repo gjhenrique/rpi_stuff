@@ -55,6 +55,11 @@ scrape_configs:
     static_configs:
       - targets: ['{{ docker_host_ip }}:9323']
 
+  - job_name: 'telegram_bot_scheduler'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['{{ docker_host_ip }}:8000']
+
   {% if observability_enable_adguard_exporter %}
 
   - job_name: "adguard_exporter"
