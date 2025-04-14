@@ -19,7 +19,7 @@ validate:
 
 ## Avoid running the whole playbook, just sync the rules
 sync-rules:
-	rsync -avpz prom_rules/files/*.rules.yml observability@mediasrv:/home/observability/prometheus/config/rules/
+	rsync -avpz --delete prom_rules/files/*.rules.yml observability@mediasrv:/home/observability/prometheus/config/rules/
 	# send a reload signal to the prometheus server
 	curl -X POST http://mediasrv:9090/-/reload
 
