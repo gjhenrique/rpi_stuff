@@ -3,7 +3,7 @@
     "ansible-lint@24.12.2",
     "ansible@2.18.3",
     "git-crypt@0.7.0",
-    "restic@0.17.3",
+    "restic@0.18.0",
     "yq-go@4.45.1",
   ],
   "shell": {
