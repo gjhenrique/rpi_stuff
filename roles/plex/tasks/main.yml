@@ -1,0 +1,22 @@
+---
+- name: Include compose role
+  ansible.builtin.include_role:
+    name: compose
+  vars:
+    service_name: plex
+    user: "{{ plex_user }}"
+    tailscale:
+      enabled: "{{ plex_tailscale_enabled }}"
+      hostname: "{{ plex_tailscale_hostname }}"
+      tag: "{{ plex_tailscale_tag }}"
+      ports:
+        # Access it inside the local network because of TV access
+        - 32400:32400
+        # Plex GDM (G'day Mate) discovery protocol
+        - 32410:32410/udp
+        - 32412:32412/udp
+        - 32413:32413/udp
+        - 32414:32414/udp
+        # # Plex DLNA
+        # - 1900:1900/udp
+        # - 32469:32469

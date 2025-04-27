@@ -6,6 +6,9 @@ deploy:
 
 run: deploy sync-rules
 
+ssh:
+	ssh pedro@mediasrv
+
 decrypt:
 	ansible-vault decrypt secrets.yml
 

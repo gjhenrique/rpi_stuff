@@ -5,6 +5,11 @@ emby_user: "torrent"
 emby_extra_mounts:
   "/home/torrent/more_media": "/more_media"
 
+plex_version: "1.41.6"
+plex_user: "torrent"
+plex_extra_mounts:
+  "/home/torrent/more_media": "/more_media"
+
 #torrent_vpn_type: "mullvad"
 
 # Configure Observability

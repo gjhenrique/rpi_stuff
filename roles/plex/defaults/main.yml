@@ -1,0 +1,16 @@
+---
+# Plex user and group settings
+plex_user: plex
+plex_group: plex
+plex_user_id: 1002
+plex_group_id: 1002
+
+plex_tailscale_enabled: true
+plex_tailscale_hostname: "plex"
+plex_tailscale_tag: "tag:plex"
+
+# Plex version
+plex_version: latest
+
+# Additional volume mounts
+plex_extra_mounts: {}

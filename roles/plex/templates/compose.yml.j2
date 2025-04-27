@@ -1,0 +1,20 @@
+---
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:{{ plex_version }}
+    network_mode: "service:tailscale"
+    environment:
+      PUID: {{ plex_user_id }}
+      PGID: {{ plex_group_id }}
+      TZ: "Europe/Berlin"
+      VERSION: "docker"
+      PLEX_CLAIM: "{{ plex_claim | default('') }}"
+    volumes:
+      - /home/{{ plex_user }}/plex:/config
+      - /home/{{ plex_user }}/media:/media
+{% for host_path, container_path in plex_extra_mounts.items() %}
+      - {{ host_path }}:{{ container_path }}
+{% endfor %}
+    restart: unless-stopped
+    # Limit CPU usage to prevent overload
+    cpus: 2

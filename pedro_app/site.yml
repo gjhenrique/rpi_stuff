@@ -18,8 +18,8 @@
       tags: syncthing
     - role: torrent
       tags: torrent
-#    - role: jellyfin
-#      tags: jellyfin
+    - role: plex
+      tags: plex
     - role: emby
       tags: emby
     - role: mount
