@@ -24,7 +24,7 @@ observability_grafana_cloud_enable: true
 observability_qingping_enabled: true
 observability_prometheus_retention: "390d"
 observability_enable_alertmanager: true
-observability_prometheus_version: v3.2.1
+observability_prometheus_version: v3.4.1
 observability_grafana_version: 11.5.2
 
 # Configure automation
@@ -33,11 +33,11 @@ torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
 torrent_enable_kavita: true
-radarr_version: 5.21.1
+radarr_version: 5.26.1-develop
 sonarr_version: 4.0.14
-kavita_version: v0.8.4.2-ls60
-jackett_version: 0.22.1461
-transmission_version: 4.0.6
+kavita_version: v0.8.6.2-ls76
+jackett_version: 0.22.2002
+transmission_version: 4.0.6-r4-ls295
 
 # Configure media and shares
 share_samba_volumes:
@@ -62,7 +62,7 @@ share_photoprism_sponsor: false
 share_tailscale_enabled: true
 share_photoprism_cpus: 2
 
-tailscale_version: v1.82
+tailscale_version: v1.84
 
 mount_paths:
   - mount_path: /mnt/external
