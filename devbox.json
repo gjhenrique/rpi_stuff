@@ -1,6 +1,6 @@
 {
   "packages": [
-    "ansible-lint@24.12.2",
+    "ansible-lint@25.5.0",
     "ansible@2.18.6",
     "git-crypt@0.7.0",
     "restic@0.18.0",
