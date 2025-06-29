@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   radarr:
-    image: lscr.io/linuxserver/radarr:5.21.1
+    image: lscr.io/linuxserver/radarr:5.26.2
     network_mode: "service:tailscale"
     environment:
       PUID: "{{ user_id }}"
