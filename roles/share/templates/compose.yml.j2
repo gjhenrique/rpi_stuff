@@ -19,7 +19,7 @@ services:
       {% endfor %}
 
   photoprism:
-    image: docker.io/photoprism/photoprism:240915
+    image: docker.io/photoprism/photoprism:20220121
     network_mode: "service:tailscale"
     working_dir: "/photoprism"
     cpus: 2
