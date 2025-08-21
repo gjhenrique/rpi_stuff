@@ -2,7 +2,7 @@ deps:
 	brew install ansible ansible-lint prometheus
 
 deploy:
-	ansible-playbook site.yml --become-password-file ~/.pwd-file
+	ansible-playbook site.yml --become-password-file ~/.pwd-file -v
 
 run: deploy sync-rules
 

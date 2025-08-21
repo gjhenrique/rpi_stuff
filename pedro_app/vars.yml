@@ -27,6 +27,10 @@ observability_enable_alertmanager: true
 observability_prometheus_version: v3.4.1
 observability_grafana_version: 11.5.2
 
+# Actual Budget - Config
+actual_tailscale_tag: "tag:pedro-actual"
+actual_tailscale_hostname: "pedro-actual"
+
 # Configure automation
 add_telegram_to_flexget: false
 torrent_enable_flexget: false

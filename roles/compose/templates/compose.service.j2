@@ -1,6 +1,7 @@
 [Unit]
 Description=Compose service for {{ service_name }}
-After=network-online.target systemd-resolved.service
+After=docker.service network-online.target systemd-resolved.service
+Requires=docker.service
 
 [Service]
 Type=simple
@@ -11,7 +12,7 @@ ExecStop=/usr/bin/docker compose -p {{ service_name }} -f compose-{{ service_nam
 ExecStart=/usr/bin/docker compose -p {{ service_name }} -f compose-{{ service_name }}.yml up
 ExecStop=/usr/bin/docker compose -p {{ service_name }} -f compose-{{ service_name }}.yml down
 {% endif %}
-WorkingDirectory=/home/{{ user }}
+WorkingDirectory=/home/{{ resolved_user }}
 TimeoutStartSec=0
 
 [Install]

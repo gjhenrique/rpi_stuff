@@ -1,0 +1,18 @@
+{
+  "TCP": {
+    "443": {
+      "HTTPS": true
+    }
+  },
+  "Web": {
+    "{{ tailscale.hostname }}.{{ tailscale_domain }}:443": {
+      "Handlers": {
+        {% for path, target in tailscale.https.items() %}
+        "{{ path }}": {
+          "Proxy": "{{ target }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      }
+    }
+  }
+}

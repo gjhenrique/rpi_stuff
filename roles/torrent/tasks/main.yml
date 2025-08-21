@@ -51,6 +51,12 @@
       exit_node: "{{ torrent_tailscale_exit_node }}"
       mounts:
         - /home/torrent/media:/media
+      https:
+        "/sonarr": "http://127.0.0.1:8989"
+        "/radarr": "http://127.0.0.1:7878"
+        "/jackett": "http://127.0.0.1:9117"
+        "/kavita": "http://127.0.0.1:5000"
+        "/transmission": "http://127.0.0.1:9091"
 
 - name: Manual task to include telegram token in Flexget database
   ansible.builtin.include_tasks: telegram-flexget-fix.yml
