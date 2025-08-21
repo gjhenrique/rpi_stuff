@@ -1,4 +1,4 @@
-FROM docker.io/ubuntu:focal
+FROM docker.io/ubuntu:noble
 
 RUN apt-get update && apt-get install -y python3 systemd iproute2
 
