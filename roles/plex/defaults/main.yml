@@ -10,6 +10,7 @@ plex_tailscale_hostname: "plex"
 plex_tailscale_tag: "tag:plex"
 
 # Plex version
+# renovate: datasource=docker depName=lscr.io/linuxserver/plex
 plex_version: latest
 
 # Additional volume mounts

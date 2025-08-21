@@ -1,6 +1,7 @@
 ---
 services:
   samba:
+    # renovate: datasource=docker depName=ghcr.io/servercontainers/samba
     image: ghcr.io/servercontainers/samba:smbd-only-latest
     network_mode: "service:tailscale"
     environment:
@@ -19,6 +20,7 @@ services:
       {% endfor %}
 
   photoprism:
+    # renovate: datasource=docker depName=docker.io/photoprism/photoprism
     image: docker.io/photoprism/photoprism:preview
     environment:
       PHOTOPRISM_ADMIN_USER: "{{ share_photoprism_user }}"
