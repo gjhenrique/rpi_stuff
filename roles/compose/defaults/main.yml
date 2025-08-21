@@ -1,5 +1,6 @@
 ---
 compose_file_name: "compose.yml.j2"
+# renovate: datasource=docker depName=tailscale/tailscale
 tailscale_version: v1.66.4
 tailscale_domain: "tailscale.net"
 tailscale:

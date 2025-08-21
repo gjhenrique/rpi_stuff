@@ -1,0 +1,26 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "docker-compose": {
+    "fileMatch": ["(^|/)compose.*\\.yml\\.j2$"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["docker-compose"],
+      "matchPackageNames": [
+        "lscr.io/linuxserver/jellyfin",
+        "lscr.io/linuxserver/transmission"
+      ],
+      "allowedVersions": "<2000"
+    },
+    {
+      "matchManagers": ["docker-compose"],
+      "matchPackageNames": [
+        "lscr.io/linuxserver/emby"
+      ],
+      "allowedVersions": "/^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$/"
+    }
+  ]
+}
