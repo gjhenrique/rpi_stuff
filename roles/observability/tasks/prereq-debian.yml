@@ -3,6 +3,7 @@
 # prometheus-node-exporter
 # jq for parsing json
 # and curl for testing
+# smartmontools for HDD monitoring
 - name: Install prerequisites
   ansible.builtin.apt:
     name: "{{ item }}"
@@ -11,4 +12,5 @@
     - prometheus-node-exporter
     - jq
     - curl
+    - smartmontools
   tags: prereq

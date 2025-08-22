@@ -1,0 +1,48 @@
+---
+# Example configuration for HDD monitoring with smartctl exporter
+# Copy this file and modify it according to your setup
+
+# Enable HDD monitoring
+observability_enable_hdd_monitoring: true
+
+# Port for smartctl exporter (must not conflict with existing ports)
+# Default ports in use:
+# - 9090: Prometheus
+# - 3000: Grafana
+# - 9487: Docker stats exporter
+# - 9100: Node exporter
+# - 9323: Docker runtime metrics
+# - 8000: Telegram bot scheduler
+# - 9618: AdGuard exporter
+# - 10803: Qingping exporter
+# - 9091: Weather exporter
+# - 9093: Alertmanager
+observability_smartctl_exporter_port: 9633
+
+# Configure HDD devices to monitor
+# Each device should have:
+# - device: The device path (e.g., /dev/sda, /dev/nvme0n1)
+# - mount_point: Where the device is mounted
+# - description: Human-readable description of the device
+observability_hdd_devices:
+  - device: "/dev/sda"
+    mount_point: "/mnt/storage1"
+    description: "Main storage drive (2TB WD Red)"
+
+  - device: "/dev/sdb"
+    mount_point: "/mnt/backup"
+    description: "Backup drive (1TB WD Blue)"
+
+  - device: "/dev/sdc"
+    mount_point: "/mnt/media"
+    description: "Media drive (4TB WD Purple)"
+
+  - device: "/dev/nvme0n1"
+    mount_point: "/"
+    description: "System SSD (500GB Samsung 970 EVO)"
+
+# Example for a system with only one HDD:
+# observability_hdd_devices:
+#   - device: "/dev/sda"
+#     mount_point: "/mnt/storage"
+#     description: "Main storage drive"

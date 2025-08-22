@@ -1,0 +1,237 @@
+# Drive Health Monitoring Alert Rules
+#
+# IMPORTANT: SSD S.M.A.R.T. attributes work differently than HDD attributes:
+# - For SSDs: Higher 'value' = Better health (e.g., Media_Wearout_Indicator: 1 = 100% life, 0 = 0% life)
+# - For HDDs: Higher 'value' = Better health (e.g., Reallocated_Sector_Ct: 0 = no errors, >0 = errors)
+# - Temperature: Use 'value' field, not 'raw' field (SSD raw values may appear unusual)
+#
+groups:
+- name: hdd_monitoring_alerts
+  rules:
+  # Smartctl Exporter Down
+  - alert: SmartctlExporterDown
+    expr: up{job="smartctl_exporter"} == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      title: "Smartctl Exporter is down"
+      description: "Failed to scrape smartctl_exporter on {{ $labels.instance }} for more than 2 minutes. Drive monitoring is unavailable."
+
+  # Critical S.M.A.R.T. Attributes
+  - alert: DriveCriticalSMARTAttribute
+    expr: smartctl_device_attribute{attribute_value_type="value"} < smartctl_device_attribute{attribute_value_type="thresh"}
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      title: "Drive Critical S.M.A.R.T. Attribute - {{ $labels.device }}"
+      description: "S.M.A.R.T. attribute {{ $labels.attribute_name }} (ID: {{ $labels.attribute_id }}) on device {{ $labels.device }} has fallen below threshold.\nCurrent: {{ $value }}, Threshold: {{ $labels.thresh }}"
+
+  # High Error Rate Attributes
+  - alert: DriveHighErrorRate
+    expr: smartctl_device_attribute{attribute_name=~".*Error_Rate|.*Error_Cnt|.*Uncorrectable", attribute_value_type="raw"} > 0
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      title: "Drive High Error Rate - {{ $labels.device }}"
+      description: "S.M.A.R.T. attribute {{ $labels.attribute_name }} on device {{ $labels.device }} shows errors.\nRaw Value: {{ $value }}"
+
+  # Reallocated Sectors
+  - alert: DriveReallocatedSectors
+    expr: smartctl_device_attribute{attribute_name="Reallocated_Sector_Ct", attribute_value_type="raw"} > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      title: "Drive Reallocated Sectors - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} has {{ $value }} reallocated sectors, indicating potential hardware failure."
+
+  # Current Pending Sectors
+  - alert: DriveCurrentPendingSectors
+    expr: smartctl_device_attribute{attribute_name="Current_Pending_Sector", attribute_value_type="raw"} > 0
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      title: "Drive Current Pending Sectors - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} has {{ $value }} pending sectors that may become reallocated."
+
+  # Offline Uncorrectable Sectors
+  - alert: DriveOfflineUncorrectableSectors
+    expr: smartctl_device_attribute{attribute_name="Offline_Uncorrectable", attribute_value_type="raw"} > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      title: "Drive Offline Uncorrectable Sectors - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} has {{ $value }} offline uncorrectable sectors, indicating severe hardware issues."
+
+  # Temperature Monitoring (DISABLED - SSDs have unreliable temperature reporting, HDDs show incorrect values)
+  # Note: Temperature monitoring disabled due to unreliable S.M.A.R.T. data interpretation
+  # - alert: DriveHighTemperature
+  #   expr: smartctl_device_attribute{attribute_name="Temperature_Celsius", attribute_value_type="raw"} > 50 and smartctl_device_attribute{device=~"sdb|sdc|sdd|sd[a-z]", attribute_name="Temperature_Celsius", attribute_value_type="raw"} > 0
+  #   for: 5m
+  #   labels:
+  #     severity: warning
+  #   annotations:
+  #     title: "HDD High Temperature - {{ $labels.device }}"
+  #     description: "HDD {{ $labels.device }} temperature is {{ $value }}°C, which is above normal operating range."
+
+  # Spin Retry Count (HDD specific)
+  - alert: HDDSpinRetryCount
+    expr: smartctl_device_attribute{attribute_name="Spin_Retry_Count", attribute_value_type="raw"} > 0
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      title: "HDD Spin Retry Count - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} has {{ $value }} spin retry attempts, indicating potential motor issues."
+
+  # Seek Error Rate (HDD specific)
+  - alert: HDDSeekErrorRate
+    expr: smartctl_device_attribute{attribute_name="Seek_Error_Rate", attribute_value_type="raw"} > 0
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      title: "HDD Seek Error Rate - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} has {{ $value }} seek errors, indicating potential head positioning issues."
+
+  # Power-On Hours (wear monitoring)
+  - alert: DriveHighPowerOnHours
+    expr: smartctl_device_attribute{attribute_name="Power_On_Hours", attribute_value_type="raw"} > 50000
+    for: 1h
+    labels:
+      severity: info
+    annotations:
+      title: "Drive High Power-On Hours - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} has been running for {{ $value }} hours. Consider monitoring more closely for signs of aging."
+
+  # Device Not Found
+  - alert: DriveDeviceNotFound
+    expr: smartctl_device{device=~"sda|sdb"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      title: "Drive Device Not Found - {{ $labels.device }}"
+      description: "The monitored drive device {{ $labels.device }} is no longer accessible. Check if the drive has failed or been disconnected."
+
+  # === SSD-SPECIFIC ALERTS ===
+
+  # SSD Wear Leveling Count (critical for SSDs)
+  - alert: SSDWearLevelingCritical
+    expr: smartctl_device_attribute{attribute_name="Wear_Leveling_Count", attribute_value_type="value"} < 10
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      title: "SSD Wear Leveling Critical - {{ $labels.device }}"
+      description: "SSD {{ $labels.device }} wear leveling count is critically low ({{ $value }}), indicating severe wear and potential imminent failure."
+
+  # SSD Life Left Warning
+  - alert: SSDLifeLeftWarning
+    expr: smartctl_device_attribute{attribute_name="SSD_Life_Left", attribute_value_type="value"} < 20
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      title: "SSD Life Left Warning - {{ $labels.device }}"
+      description: "SSD {{ $labels.device }} has only {{ $value }}% life remaining. Consider replacement soon."
+
+  # SSD Media Wearout Indicator (FIXED: 1 = 100% life, 0 = 0% life)
+  - alert: SSDMediaWearoutWarning
+    expr: smartctl_device_attribute{attribute_name="Media_Wearout_Indicator", attribute_value_type="value"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      title: "SSD Media Wearout Warning - {{ $labels.device }}"
+      description: "SSD {{ $labels.device }} media wearout indicator has reached 0, indicating the drive has reached end-of-life and should be replaced immediately."
+
+  # SSD Available Reserved Space
+  - alert: SSDLowReservedSpace
+    expr: smartctl_device_attribute{attribute_name="Available_Reservd_Space", attribute_value_type="value"} < 5
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      title: "SSD Low Reserved Space - {{ $labels.device }}"
+      description: "SSD {{ $labels.device }} has only {{ $value }}% reserved space remaining, which may impact performance and longevity."
+
+  # === PREDICTIVE ALERTS USING LINEAR INTERPOLATION ===
+
+  # Predict when HDD will reach critical temperature threshold (DISABLED - unreliable temperature data)
+  # Note: Temperature monitoring disabled due to unreliable S.M.A.R.T. data interpretation
+  # - alert: DriveTemperatureTrendWarning
+  #   expr: predict_linear(smartctl_device_attribute{attribute_name="Temperature_Celsius", attribute_value_type="raw"}[1h], 3600) > 60 and smartctl_device_attribute{device=~"sdb|sdc|sdd|sd[a-z]", attribute_name="Temperature_Celsius", attribute_value_type="raw"} > 0
+  #   for: 10m
+  #   labels:
+  #     severity: warning
+  #   annotations:
+  #     title: "HDD Temperature Trend Warning - {{ $labels.device }}"
+  #     description: "HDD {{ $labels.device }} temperature is trending toward critical levels. Predicted to reach {{ $value }}°C within 1 hour."
+
+  # Predict when SSD wear leveling will reach critical threshold
+  - alert: SSDWearLevelingTrendWarning
+    expr: predict_linear(smartctl_device_attribute{attribute_name="Wear_Leveling_Count", attribute_value_type="value"}[6h], 86400) < 20
+    for: 1h
+    labels:
+      severity: warning
+    annotations:
+      title: "SSD Wear Leveling Trend Warning - {{ $labels.device }}"
+      description: "SSD {{ $labels.device }} wear leveling is deteriorating rapidly. Predicted to reach critical levels within 24 hours."
+
+  # Predict when drive will run out of power-on hours (aging prediction)
+  - alert: DriveAgingPrediction
+    expr: predict_linear(smartctl_device_attribute{attribute_name="Power_On_Hours", attribute_value_type="raw"}[24h], 2592000) > 100000
+    for: 6h
+    labels:
+      severity: info
+    annotations:
+      title: "Drive Aging Prediction - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} is predicted to reach 100,000 power-on hours within 30 days. Consider monitoring more closely."
+
+  # Predict when error rates will become critical
+  - alert: DriveErrorRateTrendWarning
+    expr: predict_linear(smartctl_device_attribute{attribute_name=~".*Error_Rate|.*Error_Cnt", attribute_value_type="raw"}[2h], 7200) > 100
+    for: 30m
+    labels:
+      severity: warning
+    annotations:
+      title: "Drive Error Rate Trend Warning - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} error rates are increasing rapidly. Predicted to reach critical levels within 2 hours."
+
+  # Predict when SSD life will reach critical threshold
+  - alert: SSDLifePrediction
+    expr: predict_linear(smartctl_device_attribute{attribute_name="SSD_Life_Left", attribute_value_type="value"}[12h], 604800) < 10
+    for: 2h
+    labels:
+      severity: warning
+    annotations:
+      title: "SSD Life Prediction - {{ $labels.device }}"
+      description: "SSD {{ $labels.device }} is predicted to reach critical life threshold (10%) within 7 days. Plan for replacement."
+
+  # === PERFORMANCE MONITORING ALERTS ===
+
+  # High data transfer rates that may indicate excessive wear
+  - alert: DriveHighDataTransferRate
+    expr: rate(smartctl_device_attribute{attribute_name=~"Data_Units_.*", attribute_value_type="raw"}[1h]) > 1000
+    for: 30m
+    labels:
+      severity: warning
+    annotations:
+      title: "Drive High Data Transfer Rate - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} is experiencing unusually high data transfer rates ({{ $value }} units/hour), which may accelerate wear."
+
+  # Sudden increase in error rates
+  - alert: DriveErrorRateSpike
+    expr: increase(smartctl_device_attribute{attribute_name=~".*Error_Rate|.*Error_Cnt", attribute_value_type="raw"}[5m]) > 10
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      title: "Drive Error Rate Spike - {{ $labels.device }}"
+      description: "Device {{ $labels.device }} has experienced a sudden spike in error rates ({{ $value }} errors in 5 minutes)."
