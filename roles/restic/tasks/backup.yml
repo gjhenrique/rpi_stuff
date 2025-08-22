@@ -1,3 +1,5 @@
+---
+
 - name: Copy configuration file
   ansible.builtin.template:
     src: restic.conf.j2
@@ -36,5 +38,8 @@
   ansible.builtin.systemd:
     name: "restic-{{ restic_backup_name }}.timer"
     state: started
-    daemon_reload: true
     enabled: true
+  retries: 3
+  delay: 10
+  register: timer_result
+  until: timer_result is succeeded

@@ -1,8 +1,8 @@
-deps:
+setup:
 	brew install ansible ansible-lint prometheus
 
 deploy:
-	ansible-playbook site.yml --become-password-file ~/.pwd-file -v
+	ansible-playbook site.yml --become-password-file ~/.pwd-file -vv
 
 run: deploy sync-rules
 
@@ -28,4 +28,4 @@ sync-rules:
 
 
 
-.PHONY: decrypt encrypt run validate sync-rules deploy ssh
+.PHONY: decrypt encrypt run validate sync-rules deploy ssh setup

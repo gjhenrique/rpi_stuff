@@ -35,6 +35,12 @@ observability_grafana_version: 11.5.2
 actual_tailscale_tag: "tag:pedro-actual"
 actual_tailscale_hostname: "pedro-actual"
 
+# Configure Paperless
+paperless_tailscale_enabled: true
+paperless_tailscale_hostname: "pedro-paperless"
+paperless_tailscale_tag: "tag:pedro-paperless"
+paperless_url: "https://pedro-paperless.giraffa-celsius.ts.net"
+
 # Configure automation
 add_telegram_to_flexget: false
 torrent_enable_flexget: false
@@ -58,6 +64,7 @@ share_samba_volumes:
   ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv pedro; guest ok = no; read only = yes; browseable = yes;"
   media: "[Media]; path=/shares/media; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
   extra_media: "[Extra Media]; path=/shares/more_media; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
+  documents: "[Documents]; path=/shares/documents; valid users= paperless; guest ok = no; read only = no; browseable = yes;"
 share_container_volumes:
   - host_path: /home/share/shares/pictures
     container_path: /shares/pictures
@@ -68,6 +75,11 @@ share_container_volumes:
   - host_path: /home/share/shares/more_media
     container_path: /shares/more_media
     uid: 1002
+  # Folder that paperless will import documents from
+  - host_path: /mnt/external/documents/consume
+    container_path: /shares/documents
+    # Match this user with the paperless user of the *container*
+    uid: 1000
 share_photoprism_originals_directory: /home/share/shares/pictures
 share_running_in_rpi: true
 # Consider donating to https://github.com/sponsors/photoprism
@@ -93,6 +105,12 @@ mount_paths:
     mount_from: /mnt/external/shares
     depends: /mnt/external
     user: 1000
+    type: None
+    options: bind
+  - mount_path: /home/paperless/documents
+    mount_from: /mnt/external/documents
+    depends: /mnt/external
+    user: paperless
     type: None
     options: bind
   # Photoprism storage
