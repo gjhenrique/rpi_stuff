@@ -10,6 +10,8 @@
   roles:
     - role: boilerplate
       tags: boilerplate
+    - role: mount
+      tags: mount
     - role: observability
       tags: observability
     - role: restic
@@ -18,13 +20,12 @@
       tags: syncthing
     - role: torrent
       tags: torrent
-    - role: plex
-      tags: plex
     - role: emby
       tags: emby
-    - role: mount
-      tags: mount
-    - role: share
-      tags: share
+    - role: paperless
+      tags: paperless
     - role: actual
       tags: actual
+    # Leaving this for last, since it depends on folders and files created by other roles
+    - role: share
+      tags: share
