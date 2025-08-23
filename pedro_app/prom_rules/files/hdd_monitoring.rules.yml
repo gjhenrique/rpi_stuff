@@ -68,17 +68,6 @@ groups:
       title: "Drive Offline Uncorrectable Sectors - {{ $labels.device }}"
       description: "Device {{ $labels.device }} has {{ $value }} offline uncorrectable sectors, indicating severe hardware issues."
 
-  # Temperature Monitoring (DISABLED - SSDs have unreliable temperature reporting, HDDs show incorrect values)
-  # Note: Temperature monitoring disabled due to unreliable S.M.A.R.T. data interpretation
-  # - alert: DriveHighTemperature
-  #   expr: smartctl_device_attribute{attribute_name="Temperature_Celsius", attribute_value_type="raw"} > 50 and smartctl_device_attribute{device=~"sdb|sdc|sdd|sd[a-z]", attribute_name="Temperature_Celsius", attribute_value_type="raw"} > 0
-  #   for: 5m
-  #   labels:
-  #     severity: warning
-  #   annotations:
-  #     title: "HDD High Temperature - {{ $labels.device }}"
-  #     description: "HDD {{ $labels.device }} temperature is {{ $value }}°C, which is above normal operating range."
-
   # Spin Retry Count (HDD specific)
   - alert: HDDSpinRetryCount
     expr: smartctl_device_attribute{attribute_name="Spin_Retry_Count", attribute_value_type="raw"} > 0
@@ -111,7 +100,7 @@ groups:
 
   # Device Not Found
   - alert: DriveDeviceNotFound
-    expr: smartctl_device{device=~"sda|sdb"} == 0
+    expr: smartctl_device{device=~".*"} == 0
     for: 5m
     labels:
       severity: critical
@@ -141,7 +130,7 @@ groups:
       title: "SSD Life Left Warning - {{ $labels.device }}"
       description: "SSD {{ $labels.device }} has only {{ $value }}% life remaining. Consider replacement soon."
 
-  # SSD Media Wearout Indicator (FIXED: 1 = 100% life, 0 = 0% life)
+  # SSD Media Wearout Indicator (1 = 100% life, 0 = 0% life)
   - alert: SSDMediaWearoutWarning
     expr: smartctl_device_attribute{attribute_name="Media_Wearout_Indicator", attribute_value_type="value"} == 0
     for: 5m
@@ -162,17 +151,6 @@ groups:
       description: "SSD {{ $labels.device }} has only {{ $value }}% reserved space remaining, which may impact performance and longevity."
 
   # === PREDICTIVE ALERTS USING LINEAR INTERPOLATION ===
-
-  # Predict when HDD will reach critical temperature threshold (DISABLED - unreliable temperature data)
-  # Note: Temperature monitoring disabled due to unreliable S.M.A.R.T. data interpretation
-  # - alert: DriveTemperatureTrendWarning
-  #   expr: predict_linear(smartctl_device_attribute{attribute_name="Temperature_Celsius", attribute_value_type="raw"}[1h], 3600) > 60 and smartctl_device_attribute{device=~"sdb|sdc|sdd|sd[a-z]", attribute_name="Temperature_Celsius", attribute_value_type="raw"} > 0
-  #   for: 10m
-  #   labels:
-  #     severity: warning
-  #   annotations:
-  #     title: "HDD Temperature Trend Warning - {{ $labels.device }}"
-  #     description: "HDD {{ $labels.device }} temperature is trending toward critical levels. Predicted to reach {{ $value }}°C within 1 hour."
 
   # Predict when SSD wear leveling will reach critical threshold
   - alert: SSDWearLevelingTrendWarning

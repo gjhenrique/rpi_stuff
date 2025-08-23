@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Script to check HDD devices and their accessibility
 # Run this script to verify your HDD monitoring configuration
 
