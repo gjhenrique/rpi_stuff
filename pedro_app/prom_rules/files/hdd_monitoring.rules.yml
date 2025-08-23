@@ -132,13 +132,13 @@ groups:
 
   # SSD Media Wearout Indicator (1 = 100% life, 0 = 0% life)
   - alert: SSDMediaWearoutWarning
-    expr: smartctl_device_attribute{attribute_name="Media_Wearout_Indicator", attribute_value_type="value"} == 0
+    expr: smartctl_device_attribute{attribute_name="Media_Wearout_Indicator", attribute_value_type="value"} < 1
     for: 5m
     labels:
       severity: critical
     annotations:
       title: "SSD Media Wearout Warning - {{ $labels.device }}"
-      description: "SSD {{ $labels.device }} media wearout indicator has reached 0, indicating the drive has reached end-of-life and should be replaced immediately."
+      description: "SSD {{ $labels.device }} media wearout indicator has gone below 0, indicating the drive has reached end-of-life and should be replaced immediately."
 
   # SSD Available Reserved Space
   - alert: SSDLowReservedSpace
