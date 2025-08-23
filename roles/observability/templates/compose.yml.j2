@@ -4,7 +4,7 @@ x-config: &network_config
 
 services:
   prometheus:
-    image: "prom/prometheus:{{ observability_prometheus_version }}"
+    image: "prom/prometheus:v3.6.0-rc.0"
     <<: *network_config
     volumes:
       - /home/observability/prometheus/data:/prometheus
@@ -25,7 +25,7 @@ services:
       retries: 3
 
   grafana:
-    image: "grafana/grafana:{{ observability_grafana_version }}"
+    image: "grafana/grafana:11.5.2"
     <<: *network_config
     volumes:
       - /home/observability/grafana/data:/var/lib/grafana
@@ -74,7 +74,7 @@ services:
   {% if observability_enable_alertmanager %}
 
   alertmanager:
-    image: "prom/alertmanager:{{ observability_alertmanager_version }}"
+    image: "prom/alertmanager:v0.28.0"
     <<: *network_config
     volumes:
       - /home/observability/alertmanager/data:/alertmanager

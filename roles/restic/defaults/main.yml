@@ -1,2 +1,2 @@
 # renovate: datasource=docker depName=restic/restic
-restic_version: 0.16.0
+restic_version: 0.18.0

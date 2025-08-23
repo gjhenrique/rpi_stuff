@@ -12,14 +12,3 @@ torrent_tailscale_exit_node: true
 torrent_enable_sonaar: false
 torrent_enable_radarr: false
 torrent_enable_kavita: false
-
-# renovate: datasource=docker depName=docker.io/linuxserver/sonarr
-sonarr_version: 4.0.9
-# renovate: datasource=docker depName=docker.io/linuxserver/radarr
-radarr_version: 5.15.1
-# renovate: datasource=docker depName=docker.io/linuxserver/kavita
-kavita_version: 0.8.4
-# renovate: datasource=docker depName=docker.io/linuxserver/jackett
-jackett_version: 0.22.1009
-# renovate: datasource=docker depName=docker.io/linuxserver/transmission
-transmission_version: 4.0.6

@@ -1,7 +1,7 @@
 ---
 services:
   emby:
-    image: lscr.io/linuxserver/emby:{{ emby_version }}
+    image: lscr.io/linuxserver/emby:4.9.1-beta
     network_mode: "service:tailscale"
     environment:
       PUID: {{ emby_user_id }}

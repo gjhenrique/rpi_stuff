@@ -7,12 +7,6 @@ observability_qingping_api_secret: "secret"
 ## Non-secret variables
 observability_user: observability
 
-# Docker tag for Prometheus
-# renovate: datasource=docker depName=prom/prometheus
-observability_prometheus_version: v3.0.0-beta.0
-# renovate: datasource=docker depName=grafana/grafana
-observability_grafana_version: 11.2.0
-
 # Tailscale integration, see your metrics through the Tailscale network
 #observability_tailscale_tag: "observability"
 observability_tailscale_enabled: true
@@ -33,8 +27,6 @@ observability_photoprism_host: "1"
 observability_qingping_enabled: false
 
 observability_enable_alertmanager: false
-# renovate: datasource=docker depName=prom/alertmanager
-observability_alertmanager_version: v0.28.0
 
 # Secret
 o11y_telegram_bot_token: "token"
