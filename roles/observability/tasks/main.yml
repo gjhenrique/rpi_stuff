@@ -106,6 +106,17 @@
     groups: docker
     append: yes
 
+- name: Set ports for tailscale configuration
+  ansible.builtin.set_fact:
+    tailscale_ports:
+      - 9090:9090  # Prometheus
+      - 3000:3000  # Grafana
+
+- name: Add smartctl exporter port when HDD monitoring is enabled
+  ansible.builtin.set_fact:
+    tailscale_ports: "{{ tailscale_ports + [observability_smartctl_exporter_port | string + ':' + observability_smartctl_exporter_port | string] }}"
+  when: observability_enable_hdd_monitoring
+
 - name: Include compose role for observability
   ansible.builtin.include_role:
     name: compose
@@ -116,11 +127,7 @@
       enabled: "{{ observability_tailscale_enabled }}"
       hostname: "{{ observability_tailscale_hostname }}"
       tag: "{{ observability_tailscale_tag }}"
-      ports:
-        # Prometheus
-        - 9090:9090
-        # Grafana
-        - 3000:3000
+      ports: "{{ tailscale_ports }}"
 
 - name: Run backup role
   ansible.builtin.include_role:

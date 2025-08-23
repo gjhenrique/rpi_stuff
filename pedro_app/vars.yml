@@ -31,6 +31,20 @@ observability_prometheus_version: v3.4.1
 # renovate: datasource=docker depName=grafana/grafana
 observability_grafana_version: 11.5.2
 
+# HDD Monitoring with smartctl exporter
+observability_enable_hdd_monitoring: true
+# Map of HDDs to monitor with their mount points and device names
+# Monitoring both sda (SSD) and sdb (HDD) for comprehensive drive health
+observability_hdd_devices:
+  - device: "/dev/sda"
+    mount_point: "/mnt/external"
+    description: "External SSD (main storage)"
+  - device: "/dev/sdb"
+    mount_point: "/home/share/shares/more_media"
+    description: "More media HDD"
+# Port for smartctl exporter (must not conflict with existing ports)
+observability_smartctl_exporter_port: 9633
+
 # Actual Budget - Config
 actual_tailscale_tag: "tag:pedro-actual"
 actual_tailscale_hostname: "pedro-actual"

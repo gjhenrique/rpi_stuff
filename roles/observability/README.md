@@ -17,3 +17,49 @@ This role depends on the following roles:
 
 - [boilerplate](../boilerplate/README.md)
 - [compose](../compose/README.md)
+
+## HDD Monitoring
+
+This role includes support for monitoring HDD health using the smartctl exporter. To enable HDD monitoring:
+
+1. Set `observability_enable_hdd_monitoring: true` in your variables
+2. Configure the HDD devices you want to monitor in `observability_hdd_devices`
+
+### Configuration Example
+
+```yaml
+# Enable HDD monitoring
+observability_enable_hdd_monitoring: true
+
+# Configure HDD devices to monitor
+observability_hdd_devices:
+  - device: "/dev/sda"
+    mount_point: "/mnt/storage1"
+    description: "Main storage drive"
+  - device: "/dev/sdb"
+    mount_point: "/mnt/backup"
+    description: "Backup drive"
+  - device: "/dev/sdc"
+    mount_point: "/mnt/media"
+    description: "Media drive"
+
+# Customize the exporter port (default: 9633)
+observability_smartctl_exporter_port: 9633
+```
+
+### What it provides
+
+- **S.M.A.R.T. metrics**: Temperature, health status, error counts, and more
+- **Device information**: Model, serial number, firmware version
+- **Performance metrics**: Read/write performance, seek times
+- **Health alerts**: Configurable thresholds for critical metrics
+
+### Port Configuration
+
+The smartctl exporter runs on port 9633 by default. This port is automatically exposed through Tailscale when HDD monitoring is enabled.
+
+### Requirements
+
+- smartmontools is automatically installed by the role
+- The observability user must have access to `/dev/*` devices
+- HDD devices must be accessible to the container

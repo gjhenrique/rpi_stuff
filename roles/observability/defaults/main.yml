@@ -39,3 +39,18 @@ observability_alertmanager_version: v0.28.0
 # Secret
 o11y_telegram_bot_token: "token"
 o11y_weather_city: "Berlin, DE"
+
+# HDD Monitoring with smartctl exporter
+observability_enable_hdd_monitoring: false
+# Map of HDDs to monitor with their mount points and device names
+# Example:
+# observability_hdd_devices:
+#   - device: "/dev/sda"
+#     mount_point: "/mnt/storage1"
+#     description: "Main storage drive"
+#   - device: "/dev/sdb"
+#     mount_point: "/mnt/backup"
+#     description: "Backup drive"
+observability_hdd_devices: []
+# Port for smartctl exporter (must not conflict with existing ports)
+observability_smartctl_exporter_port: 9633

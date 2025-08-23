@@ -6,6 +6,7 @@
       - prometheus-node-exporter
       - jq
       - curl
+      - smartmontools
     update_cache: true
     state: present
   tags: prereq

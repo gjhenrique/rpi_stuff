@@ -44,6 +44,23 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9487'] # Replace with the correct port if different
 
+  {% if observability_enable_hdd_monitoring %}
+
+  - job_name: 'smartctl_exporter'
+    scrape_interval: 60s
+    scrape_timeout: 30s
+    honor_labels: true
+    static_configs:
+      - targets: ['localhost:{{ observability_smartctl_exporter_port }}']
+    metrics_path: /metrics
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: 'localhost:{{ observability_smartctl_exporter_port }}'
+        replacement: '{{ ansible_hostname }}:smartctl'
+
+  {% endif %}
+
   - job_name: 'node_exporter'
     honor_labels: true
     scrape_interval: 15s
