@@ -5,7 +5,7 @@ x-config: &network_config
 services:
   # https://docs.linuxserver.io/images/docker-transmission
   transmission:
-    image: "docker.io/linuxserver/transmission:{{ transmission_version }}"
+    image: "docker.io/linuxserver/transmission:4.0.6"
     <<: *network_config
     restart: on-failure
     environment:
@@ -24,7 +24,7 @@ services:
 
   # # https://docs.linuxserver.io/images/docker-jackett
   jackett:
-    image: "docker.io/linuxserver/jackett:{{ jackett_version }}"
+    image: "docker.io/linuxserver/jackett:0.22.2325"
     <<: *network_config
     restart: on-failure
     environment:
@@ -41,7 +41,7 @@ services:
 {% if torrent_enable_sonaar %}
 
   sonarr:
-    image: "docker.io/linuxserver/sonarr:{{ sonarr_version }}"
+    image: "docker.io/linuxserver/sonarr:4.0.15"
     <<: *network_config
     container_name: sonarr
     environment:
@@ -63,7 +63,7 @@ services:
 {% if torrent_enable_radarr %}
 
   radarr:
-    image: docker.io/linuxserver/radarr:{{ radarr_version }}
+    image: "docker.io/linuxserver/radarr:5.27.5-nightly"
     <<: *network_config
     container_name: radarr
     environment:
@@ -73,7 +73,7 @@ services:
     volumes:
       - /home/torrent/radarr/data:/config
       - /home/torrent/media:/movies
-      - /home/torrent/more_media:/more_media
+      - /home/torrent/media:/more_media
       - /home/torrent/media/torrents:/downloads
     restart: unless-stopped
     depends_on:
@@ -85,7 +85,7 @@ services:
 {% if torrent_enable_kavita %}
   # https://docs.linuxserver.io/images/docker-kavita
   kavita:
-      image: "docker.io/linuxserver/kavita:{{ kavita_version }}"
+      image: "docker.io/linuxserver/kavita:0.8.7"
       <<: *network_config
       restart: on-failure
       environment:

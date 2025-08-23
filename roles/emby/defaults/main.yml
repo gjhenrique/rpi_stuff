@@ -9,6 +9,3 @@ emby_user_id: 1002
 emby_group_id: 1002
 
 emby_extra_mounts: {}
-
-# renovate: datasource=docker depName=lscr.io/linuxserver/emby
-emby_version: "latest"

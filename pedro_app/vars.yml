@@ -1,13 +1,9 @@
 ---
 jellyfin_user: "torrent"
-# renovate: datasource=docker depName=lscr.io/linuxserver/emby
-emby_version: "4.8.10"
 emby_user: "torrent"
 emby_extra_mounts:
   "/home/torrent/more_media": "/more_media"
 
-# renovate: datasource=docker depName=lscr.io/linuxserver/plex
-plex_version: "1.41.6"
 plex_user: "torrent"
 plex_extra_mounts:
   "/home/torrent/more_media": "/more_media"
@@ -26,10 +22,6 @@ observability_grafana_cloud_enable: true
 observability_qingping_enabled: true
 observability_prometheus_retention: "390d"
 observability_enable_alertmanager: true
-# renovate: datasource=docker depName=prom/prometheus
-observability_prometheus_version: v3.4.1
-# renovate: datasource=docker depName=grafana/grafana
-observability_grafana_version: 11.5.2
 
 # HDD Monitoring with smartctl exporter
 observability_enable_hdd_monitoring: true
@@ -61,16 +53,6 @@ torrent_enable_flexget: false
 torrent_enable_radarr: true
 torrent_enable_sonaar: true
 torrent_enable_kavita: true
-# renovate: datasource=docker depName=docker.io/linuxserver/radarr
-radarr_version: 5.26.1-develop
-# renovate: datasource=docker depName=docker.io/linuxserver/sonarr
-sonarr_version: 4.0.14
-# renovate: datasource=docker depName=docker.io/linuxserver/kavita
-kavita_version: v0.8.6.2-ls76
-# renovate: datasource=docker depName=docker.io/linuxserver/jackett
-jackett_version: 0.22.2002
-# renovate: datasource=docker depName=docker.io/linuxserver/transmission
-transmission_version: 4.0.6-r4-ls295
 
 # Configure media and shares
 share_samba_volumes:
