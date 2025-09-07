@@ -60,7 +60,7 @@ share_samba_volumes:
   ro_pictures: "[Pictures RO]; path=/shares/pictures; valid users= tv pedro; guest ok = no; read only = yes; browseable = yes;"
   media: "[Media]; path=/shares/media; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
   extra_media: "[Extra Media]; path=/shares/more_media; valid users= torrent pedro; guest ok = no; read only = no; browseable = yes;"
-  documents: "[Documents]; path=/shares/documents; valid users= paperless; guest ok = no; read only = no; browseable = yes;"
+  documents: "[Documents]; path=/shares/documents; valid users= pedro; guest ok = no; read only = no; browseable = yes;"
 share_container_volumes:
   - host_path: /home/share/shares/pictures
     container_path: /shares/pictures

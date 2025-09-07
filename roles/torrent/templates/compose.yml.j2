@@ -73,7 +73,7 @@ services:
     volumes:
       - /home/torrent/radarr/data:/config
       - /home/torrent/media:/movies
-      - /home/torrent/media:/more_media
+      - /home/torrent/more_media:/more_media
       - /home/torrent/media/torrents:/downloads
     restart: unless-stopped
     depends_on:
