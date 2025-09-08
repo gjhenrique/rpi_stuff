@@ -90,7 +90,7 @@ groups:
 
   # Power-On Hours (wear monitoring)
   - alert: DriveHighPowerOnHours
-    expr: smartctl_device_attribute{attribute_name="Power_On_Hours", attribute_value_type="raw"} > 50000
+    expr: smartctl_device_attribute{attribute_name="Power_On_Hours", attribute_value_type="raw", device!~"sdb"} > 50000
     for: 1h
     labels:
       severity: info

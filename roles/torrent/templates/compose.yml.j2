@@ -48,6 +48,7 @@ services:
       PUID: "{{ user_id }}"
       PGID: "{{ torrent_user_gid_owner }}"
       TZ: Europe/Berlin
+    # TODO: move this to variables
     volumes:
       - /home/torrent/sonarr/data:/config
       - /home/torrent/media:/tv
