@@ -2,7 +2,7 @@
 name = "github"
 [resource_sync.config]
 repo = "gjhenrique/rpi_stuff"
-branch = "main"
+branch = "master"
 resource_path = ["komodo.toml"]
 
 [[server]]
@@ -43,7 +43,7 @@ name = "syncthing"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "syncthing/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -60,7 +60,7 @@ name = "photos"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "photos/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -80,7 +80,7 @@ name = "torrent"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "torrent/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -101,7 +101,7 @@ name = "actual"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "actual/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -119,7 +119,7 @@ name = "emby"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["emby/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -131,7 +131,7 @@ name = "netdata"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["netdata/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -143,7 +143,7 @@ name = "paperless"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "paperless/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -165,7 +165,7 @@ name = "jellyfin"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "jellyfin/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -182,7 +182,7 @@ name = "samba"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "samba/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
@@ -204,7 +204,7 @@ name = "backup"
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
-branch = "main"
+branch = "master"
 file_paths = ["tailscale/compose.yaml", "backup/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
