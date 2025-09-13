@@ -1,23 +1,12 @@
-# rpi_stuff
+# home-server
 
-<!-- ![Github CI](https://github.com/gjhenrique/rpi_stuff/actions/workflows/local-test.yml/badge.svg) -->
+Collection of an opinionated Komodo setup to automate some stuff I use in my day-to-day. This repo relies on Tailscale to provide connectivity, including out of the box HTTP and Internet support with Funnel.
 
-Collection of opinionated Ansible roles to automate some stuff I use in my day-to-day in a Raspberry Pi 4B.
+## Stack development
 
-This repo brings the following features:
-- syncthing to synchronize documents
-- secure and easy torrent download
-- jellyfin and emby for media
-- automated tests with molecule (currently broken)
-- service management in tailscale
+1. Install komodo following the instructions at `stacks/komodo`. Also configure a webhook to trigger new deploys based on procedures.
 
-## Architecture
-
-Every role needs a [Compose](https://github.com/compose-spec/compose-spec/) file as a foundation.
-
-Let's write a syncthing service with the compose foundation
-
-1. Write a compose file and put it in `<role_dir>/templates/compose.yml.j2`
+1. Write a compose file and put it in `stacks/syncthing/compose.yaml`
 
 ``` yaml
 services:
@@ -28,89 +17,29 @@ services:
       - /home/syncthing/data:/data
 ```
 
-1. Invoke the compose role to enable and start a new compose. This role creates a new user called `syncthing`, hence the `/home/syncthing/` reference on the step above.
-``` yaml
-- name: Add caddy ingress
-  ansible.builtin.include_role:
-    name: compose
-  vars:
-    service_name: syncthing
-    user: syncthing
+1. Add the service to `komodo.toml` with a Sync listening to changes. You also need to generate a new Oauth CLient keys with the tag you want to assign
+
+``` toml
+[[stack]]
+name = "syncthing"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "syncthing/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_PORT: 8384
+TS_HOSTNAME: syncthing
+TS_TAG: syncthing
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
 ```
 
-1. (Optional 1): Add the service to your tailnet by adding these vars. The service will join your tailnet and it's accessible outside of your home. It's also possible to control who can reach this service with the Tailscale ACL.
+1. When the commit hits `master`, synching is available at <IP>:8384 or `https://syncthing.<ts_name>.ts.net`. Funnel support is also possible
 
-``` yaml
-    tailscale:
-      enabled: true
-      hostname: syncthing
-      tag: "tag:syncthing"
-```
-
-Now it's possible to access the syncthing service with Tailscale, like `syncthing:8384`. If you don't wanna use Tailscale, you can use the `ports` option on your compose file.
-
-1. (Optional 2): Backup the files daily. Include the backup vars to sync your data daily to a remote environment
-
-``` yaml
-    backup:
-      enabled: true
-      directories:
-        - /home/syncthing/config
-      schedule: "0 4 * * *"
-```
 
 1. Profit?
-
-## Distro and Machine Support
-To install `docker` and `docker-compose`, this roles expect that you have a pacman-based distro, like Manjaro or Arch Linux, or apt-based distros, like Debian.
-You can skip the [boilerplate](./roles/boilerplate) if you have another distro. As long as docker and compose are installed, things should be fine.
-
-I use it on a Raspberry Pi 4B, but older versions can work also.
-Although I don't use an x86 machine, the molecule tests are running in it. So it (probably) works on x86 as well.
-
-## Roles
-
-### [Syncthing](./roles/syncthing)
-Syncs [Syncthing](https://syncthing.net). Access it with https://syncthing.<< tailscale_domain >>:8384
-
-### [Torrent](./roles/torrent)
-Collection of tools to automate Torrent related software.
-
-Here are some set of features:
-- Optionally use [mullvad exit node](https://tailscale.com/kb/1258/mullvad-exit-nodes) Tailscale functionality to not receive any fines from your Internet Service Provider
-- [Jackett](https://github.com/Jackett/Jackett) to search torrents in hundreds of torrent indexers. Access it with `https://torent:9117`.
-- [Transmission](https://transmissionbt.com/) to manage the torrents. Access it with `http://torrents:9091`.
-- [Telegram bot](https://github.com/gjhenrique/telegram-bot-torrents/) to search torrents from Jackett and send them to Transmission
-
-### [Jellyfin](./roles/jellyfin)
-Plex is the most popular streaming service today, so it would be the safest choice.
-But, at least, in my experience, the client always needs to transcode (translate the source video to a format the clients can stream) all videos in my fire stick, even though the device can play it directly.
-
-The open-source competitor [jellyfin](https://jellyfin.org/) allows the client to play the videos directly without transcoding.
-So, That moves the bottleneck to the network and the HD.
-I stream even 4k videos smoothly from the weak Raspberry Pi in my Fire Stick.
-
-If your client is not capable enough and you ever need to transcode in a Raspberry PI, even 1080p movies, you're in trouble.
-Jellyfin allegedly supports hardware transcoding via OpenMAX, but even Raspberry Pi engineers advocate for the newer V4L2 API.
-In my case, not even OpenMAX is used for transcoding via CPU kicks in, which provides a poor experience.
-If I need it in the future, it's easier to send the video to my desktop machine and transcode it with `FFmpeg` manually and send the converted video back to the Raspberry Pi.
-
-In short, avoid transcoding at all costs and invest in an adequate device that supports the most used video and audio codecs.
-
-### [Emby](./roles/emby)
-
-Jellyfin doesn't provide a feature-complete Android TV app as [Emby](https://emby.media/). The viewing experience is much smoother, though.
-
-### [Document sharing](./roles/share)
-
-- A SMB server to receive documents from clients. I use [the photosync app](https://www.photosync-app.com/home) on my Androd devices to sync photos daily.
-- [photoprism](https://www.photoprism.app/) to view photos. Google Photos is slow and laggy.
-
-### Disclaimer
-
-The ansible variables for all roles are not documented yet. For now, running and seeing where it breaks a required variable is the only alternative.
-
-## Related
-- [My usage of these roles](./app): Playbook pointing to these roles and encrypting secrets with `git-crypt`. Feel free to use it
-- [Torrent role](./roles/torrent): Manual steps required to have a functioning infrastructure
-- [telegram-bot-torrents](https://github.com/gjhenrique/telegram-bot-torrents): Telegram bot to search torrents in Jackett and to upload them to Transmission
