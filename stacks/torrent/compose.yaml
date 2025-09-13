@@ -1,0 +1,63 @@
+---
+services:
+  # https://docs.linuxserver.io/images/docker-transmission
+  transmission:
+    image: lscr.io/linuxserver/transmission:4.0.6
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    # Don't work at all when Tailscale didn't start
+    depends_on:
+      tailscale:
+        condition: service_healthy
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      USER: "${TORRENT_TRANSMISSION_USER}"
+      PASS: "${TORRENT_TRANSMISSION_PASSWORD}"
+    volumes:
+      - ${EXT_PATH}/torrent/transmission:/config
+      - ${EXT_PATH}/media/torrents:/downloads
+
+  # https://docs.linuxserver.io/images/docker-prowlarr/#usage
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:2.0.5-nightly
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    depends_on:
+      tailscale:
+        condition: service_healthy
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "Europe/Berlin"
+    volumes:
+      - ${EXT_PATH}/torrent/prowlarr:/config
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:4.0.15
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+    volumes:
+      - ${EXT_PATH}/torrent/sonarr:/config
+      - ${EXT_PATH}/media:/media
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:5.26.2
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+    volumes:
+      - ${EXT_PATH}/torrent/radarr:/config
+      - ${EXT_PATH}/media:/media
+
+  tailscale:
+    restart: unless-stopped
+    environment:
+      TS_EXTRA_ARGS: "--exit-node=${TS_EXIT_NODE_IP} --exit-node-allow-lan-access=true --ssh"
+    volumes:
+      - ${EXT_PATH}/media:/media

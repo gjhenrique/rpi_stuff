@@ -1,0 +1,45 @@
+---
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:10.10.7
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: "Europe/Berlin"
+    volumes:
+      - config:/config
+      - cache:/cache
+      - ${EXT_PATH}/media:/media
+    devices:
+      - /dev/dri:/dev/dri
+
+  # Point to Radarr/Sonarr via the Tailscale IP
+  jellyseerr:
+    image: ghcr.io/fallenbagel/jellyseerr:2.7.3
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - ${EXT_PATH}/torrent/jellyseer:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+
+  tailscale:
+    restart: unless-stopped
+    ports:
+      # Access it inside the local network because of TV access
+      - 8096:8096
+      - 8920:8920
+      - 7359:7359/udp
+      - 1900:1900/udp
+
+volumes:
+  cache:
+  config:
