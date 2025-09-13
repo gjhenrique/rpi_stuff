@@ -1,0 +1,13 @@
+---
+services:
+  # https://docs.linuxserver.io/images/docker-syncthing
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:v2.0.9-ls195
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    environment:
+      PUID: 0
+      PGID: 0
+    volumes:
+      - ${EXT_PATH}/syncthing/config:/config
+      - ${EXT_PATH}/syncthing/data:/data

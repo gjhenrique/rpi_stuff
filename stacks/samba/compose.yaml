@@ -1,0 +1,31 @@
+---
+services:
+  samba:
+    image: ghcr.io/servercontainers/samba:smbd-only-latest
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    environment:
+      UID_photos: 1100
+      UID_torrent: 1003
+      UID_paperless: 1000
+      UID_tv: 1200
+
+      ACCOUNT_photos: "${PHOTOS_PASSWORD}"
+      ACCOUNT_tv: "${TV_PASSWORD}"
+      ACCOUNT_torrent: "${TORRENT_PASSWORD}"
+      ACCOUNT_paperless: "${PAPERLESS_PASSWORD}"
+
+      SAMBA_VOLUME_CONFIG_pictures: "[Photos]; path=/shares/photos; valid users= photos; guest ok = no; read only = no; browseable = yes;"
+      SAMBA_VOLUME_CONFIG_ro_pictures: "[Photos RO]; path=/shares/photos; valid users= tv; guest ok = no; read only = yes; browseable = yes;"
+      SAMBA_VOLUME_CONFIG_media: "[Media]; path=/shares/media; valid users= torrent; guest ok = no; read only = no; browseable = yes;"
+      SAMBA_VOLUME_CONFIG_documents: "[Documents]; path=/shares/documents; valid users= paperless; guest ok = no; read only = no; browseable = yes;"
+
+    volumes:
+      - ${EXT_PATH}/photos:/shares/photos
+      - ${EXT_PATH}/media:/shares/media
+      - ${EXT_PATH}/paperless/consume:/shares/documents
+
+  tailscale:
+    restart: unless-stopped
+    ports:
+      - 445:445

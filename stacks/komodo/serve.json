@@ -1,0 +1,29 @@
+{
+  "TCP": {
+    "443": {
+      "HTTPS": true
+    },
+    "8080": {
+      "HTTPS": true
+    }
+  },
+  "Web": {
+    "${TS_CERT_DOMAIN}:443": {
+      "Handlers": {
+	"/listener/github": {
+	  "Proxy": "http://127.0.0.1:9120/listener/github"
+	}
+      }
+    },
+    "${TS_CERT_DOMAIN}:8080": {
+      "Handlers": {
+	"/": {
+	  "Proxy": "http://127.0.0.1:9120"
+	}
+      }
+    }
+  },
+  "AllowFunnel": {
+    "${TS_CERT_DOMAIN}:443": true
+  }
+}

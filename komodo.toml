@@ -1,0 +1,216 @@
+[[resource_sync]]
+name = "github"
+[resource_sync.config]
+repo = "gjhenrique/rpi_stuff"
+branch = "komodo"
+resource_path = ["komodo.toml"]
+
+[[server]]
+name = "lisa"
+[server.config]
+enabled = true
+# using Tailscale same network
+address = "https://localhost:8120"
+
+
+[[procedure]]
+name = "Deploy stacks"
+
+[[procedure.config.stage]]
+name = "Sync github repo"
+enabled = true
+executions = [
+  { execution.type = "RunSync", execution.params.sync = "github", enabled = true }
+]
+
+[[procedure.config.stage]]
+name = "Pull stacks"
+enabled = true
+executions = [
+  { execution.type = "BatchPullStack", execution.params.pattern = "*", enabled = true }
+]
+
+[[procedure.config.stage]]
+name = "Deploy stacks"
+enabled = true
+executions = [
+  { execution.type = "BatchDeployStackIfChanged", execution.params.pattern = "*", enabled = true }
+]
+
+[[stack]]
+name = "syncthing"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "syncthing/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_HOSTNAME: [[TS_PREFIX]]-syncthing
+TS_TAG: [[TS_PREFIX]]-syncthing
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "photos"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "photos/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+DB_PASSWORD: "[[IMMICH_DATABASE_PASSWORD]]"
+
+TS_PORT: 2283
+TS_HOSTNAME: [[TS_PREFIX]]-photos
+TS_TAG: [[TS_PREFIX]]-photos
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "torrent"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "torrent/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TORRENT_TRANSMISSION_USER: "[[TORRENT_TRANSMISSION_USER]]"
+TORRENT_TRANSMISSION_PASSWORD: "[[TORRENT_TRANSMISSION_PASSWORD]]"
+
+TS_EXIT_NODE_IP: 100.123.112.109 # berlin
+TS_HOSTNAME: [[TS_PREFIX]]-torrent
+TS_TAG: [[TS_PREFIX]]-torrent
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "actual"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "actual/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_PORT: 5006
+TS_HOSTNAME: [[TS_PREFIX]]-actual
+TS_TAG: [[TS_PREFIX]]-actual
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "emby"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["emby/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "netdata"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["netdata/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "paperless"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "paperless/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+PAPERLESS_URL="[[PAPERLESS_URL]]"
+PAPERLESS_ADMIN_USER="[[PAPERLESS_ADMIN_USER]]"
+PAPERLESS_ADMIN_PASSWORD="[[PAPERLESS_ADMIN_PASSWORD]]"
+
+TS_PORT: 8000
+TS_HOSTNAME: [[TS_PREFIX]]-paperless
+TS_TAG: [[TS_PREFIX]]-paperless
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "jellyfin"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "jellyfin/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_HOSTNAME: [[TS_PREFIX]]-jellyfin
+TS_TAG: [[TS_PREFIX]]-torrent
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "samba"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "samba/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+PHOTOS_PASSWORD: "[[SAMBA_PHOTOS_PASSWORD]]"
+TORRENT_PASSWORD: "[[SAMBA_TORRENT_PASSWORD]]"
+PAPERLESS_PASSWORD: "[[SAMBA_PAPERLESS_PASSWORD]]"
+TV_PASSWORD: "[[SAMBA_TV_PASSWORD]]"
+
+TS_HOSTNAME: [[TS_PREFIX]]-samba
+TS_TAG: [[TS_PREFIX]]-share
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "backup"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "komodo"
+file_paths = ["tailscale/compose.yaml", "backup/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_HOSTNAME: [[TS_PREFIX]]-backup
+TS_TAG: [[TS_PREFIX]]-share
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""

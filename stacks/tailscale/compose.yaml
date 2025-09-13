@@ -1,0 +1,47 @@
+---
+networks:
+  tailscale:
+    driver: bridge
+
+services:
+  # The long-running tailscale service will have access to the overpowered oauth keys
+  # It should be an init container instead, but komodo marks init containers as failed
+  tailscale:
+    image: "ghcr.io/tailscale/tailscale:v1.84.3"
+    restart: unless-stopped
+    networks:
+      - tailscale
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      TS_TAG: ${TS_TAG}
+      TS_OAUTH_CLIENT: ${TS_OAUTH_CLIENT}
+      TS_OAUTH_SECRET: ${TS_OAUTH_SECRET}
+      TS_HOSTNAME: ${TS_HOSTNAME}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: false
+      TS_EXTRA_ARGS: --ssh
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+
+        # life is too short to use ash
+        apk add bash
+        bash /opt/entrypoint.sh
+
+    volumes:
+      - ts-state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+      - ./entrypoint.sh:/opt/entrypoint.sh:ro
+    healthcheck:
+      test: ["CMD", "tailscale", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  ts-state:

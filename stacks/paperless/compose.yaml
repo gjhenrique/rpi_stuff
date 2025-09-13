@@ -1,0 +1,25 @@
+services:
+  broker:
+    image: docker.io/library/redis:8
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    volumes:
+      - ${EXT_PATH}/documents/redis:/data
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.17.1
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    depends_on:
+      - broker
+    volumes:
+      - ${EXT_PATH}/documents/data:/usr/src/paperless/data
+      - ${EXT_PATH}/documents/media:/usr/src/paperless/media
+      - ${EXT_PATH}/documents/export:/usr/src/paperless/export
+      - ${EXT_PATH}/documents/consume:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_URL: "${PAPERLESS_URL}"
+      PAPERLESS_REDIS: redis://localhost:6379
+      PAPERLESS_OCR_LANGUAGES: "deu eng"
+      PAPERLESS_ADMIN_USER: "${PAPERLESS_ADMIN}"
+      PAPERLESS_ADMIN_PASSWORD: "${PAPERLESS_PASSWORD}"
