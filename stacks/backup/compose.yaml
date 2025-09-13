@@ -1,7 +1,7 @@
 ---
 services:
   backrest:
-    image: docker.io/garethgeorge/backrest:v1.9.1
+    image: docker.io/garethgeorge/backrest:v1.9.2
     restart: unless-stopped
     network_mode: "service:tailscale"
     volumes:
