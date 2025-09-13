@@ -4,7 +4,7 @@
     "config:recommended"
   ],
   "docker-compose": {
-    "fileMatch": ["(^|/)compose.*\\.yml\\.j2$"]
+    "enabled": true
   },
   "packageRules": [
     {
