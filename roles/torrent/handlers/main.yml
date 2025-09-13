@@ -1,6 +1,0 @@
----
-- name: "Restart torrent - local"
-  ansible.builtin.systemd:
-    name: "compose-torrent"
-    daemon_reload: true
-    state: restarted

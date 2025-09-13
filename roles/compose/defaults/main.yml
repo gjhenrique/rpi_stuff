@@ -1,8 +1,0 @@
----
-compose_file_name: "compose.yml.j2"
-
-tailscale:
-  enabled: false
-
-# renovate: datasource=docker depName=autorestic
-autorestic_version: 1.8.3

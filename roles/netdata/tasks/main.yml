@@ -1,6 +1,0 @@
----
-- name: Include compose role
-  ansible.builtin.include_role:
-    name: compose
-  vars:
-    service_name: netdata

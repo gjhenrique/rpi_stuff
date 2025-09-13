@@ -1,7 +1,0 @@
-- name: Install packages
-  community.general.pacman:
-    name:
-      - docker-compose
-      - docker
-    update_cache: true
-    state: present

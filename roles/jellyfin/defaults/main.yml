@@ -1,6 +1,0 @@
----
-jellyfin_user: jellyfin
-
-jellyfin_tailscale_enabled: true
-jellyfin_tailscale_hostname: "jellyfin"
-jellyfin_tailscale_tag: "tag:jellyfin"

@@ -1,4 +1,0 @@
----
-actual_tailscale_enabled: true
-actual_tailscale_hostname: actual
-actual_tailscale_tag: "tag:actual"

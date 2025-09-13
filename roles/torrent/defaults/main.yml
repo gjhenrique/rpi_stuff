@@ -1,8 +1,0 @@
----
-torrent_transmission_username: 'admin'
-torrent_transmission_password: 'admin'
-
-torrent_tailscale_enabled: true
-torrent_tailscale_hostname: "torrent"
-torrent_tailscale_tag: "tag:torrent"
-torrent_tailscale_exit_node: true

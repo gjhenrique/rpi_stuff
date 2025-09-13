@@ -1,3 +1,2 @@
-app/secrets.yml filter=git-crypt diff=git-crypt
 secrets.env filter=git-crypt diff=git-crypt
 komodo-ts.env filter=git-crypt diff=git-crypt
