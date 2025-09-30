@@ -7,7 +7,7 @@ services:
   # The long-running tailscale service will have access to the overpowered oauth keys
   # It should be an init container instead, but komodo marks init containers as failed
   tailscale:
-    image: "ghcr.io/tailscale/tailscale:v1.84.3"
+    image: "ghcr.io/tailscale/tailscale:v1.88.3"
     restart: unless-stopped
     networks:
       - tailscale
