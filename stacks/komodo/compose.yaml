@@ -47,7 +47,7 @@ services:
       KOMODO_DATABASE_PASSWORD: ${KOMODO_DB_PASSWORD}
 
   periphery:
-    image: ghcr.io/moghtech/komodo-periphery:1.19.0
+    image: ghcr.io/moghtech/komodo-periphery:1.19.5
     network_mode: "service:tailscale"
     labels:
       komodo.skip:
