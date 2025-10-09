@@ -31,7 +31,7 @@ services:
       FERRETDB_POSTGRESQL_URL: postgres://${KOMODO_DB_USERNAME}:${KOMODO_DB_PASSWORD}@localhost:5432/postgres
   
   core:
-    image: ghcr.io/moghtech/komodo-core:1.19.0
+    image: ghcr.io/moghtech/komodo-core:1.19.5
     network_mode: "service:tailscale"
     labels:
       komodo.skip:
