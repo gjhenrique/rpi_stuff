@@ -59,5 +59,10 @@ services:
     restart: unless-stopped
     environment:
       TS_EXTRA_ARGS: "--exit-node=${TS_EXIT_NODE_IP} --exit-node-allow-lan-access=true --ssh"
+    ports:
+      - 9091:9091 #transmission
+      - 7878:7878 #radarr
+      - 8989:8989 #sonarr
+      - 9696:9696 # prowlarr
     volumes:
       - ${EXT_PATH}/media:/media
