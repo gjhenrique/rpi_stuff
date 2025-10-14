@@ -9,6 +9,8 @@ services:
       - ${EXT_PATH}/backrest/config:/config
       - cache:/cache
       - ${EXT_PATH}:${EXT_PATH}
+      # https://garethgeorge.github.io/backrest/cookbooks/ssh-remote
+      - ${EXT_PATH}/backrest/ssh:/root/.ssh:ro
     environment:
       - BACKREST_DATA=/data
       - BACKREST_CONFIG=/config/config.json
