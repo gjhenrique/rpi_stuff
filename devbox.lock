@@ -1,51 +1,51 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "git-crypt@0.7.0": {
-      "last_modified": "2024-12-03T12:40:06Z",
-      "resolved": "github:NixOS/nixpkgs/566e53c2ad750c84f6d31f9ccb9d00f823165550#git-crypt",
+    "git-crypt@0.8.0": {
+      "last_modified": "2025-10-07T08:41:47Z",
+      "resolved": "github:NixOS/nixpkgs/bce5fe2bb998488d8e7e7856315f90496723793c#git-crypt",
       "source": "devbox-search",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/r49hhwfzv59xv97wjzxwfndpblgrh4jp-git-crypt-0.7.0",
+              "path": "/nix/store/b7ay5zv4jkwa09gm8j8j25ki99y225z8-git-crypt-0.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/r49hhwfzv59xv97wjzxwfndpblgrh4jp-git-crypt-0.7.0"
+          "store_path": "/nix/store/b7ay5zv4jkwa09gm8j8j25ki99y225z8-git-crypt-0.8.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ggvfp4ganjvffzy3rr2i60sv8i4dra9k-git-crypt-0.7.0",
+              "path": "/nix/store/ya4rf787glrvcqdwk80mgd0bx942bffr-git-crypt-0.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ggvfp4ganjvffzy3rr2i60sv8i4dra9k-git-crypt-0.7.0"
+          "store_path": "/nix/store/ya4rf787glrvcqdwk80mgd0bx942bffr-git-crypt-0.8.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/58r6pacqgm8ikcncj75p48va24cc8p3m-git-crypt-0.7.0",
+              "path": "/nix/store/5l3xa5s84khz0b8wlvs48d0srnmayhrh-git-crypt-0.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/58r6pacqgm8ikcncj75p48va24cc8p3m-git-crypt-0.7.0"
+          "store_path": "/nix/store/5l3xa5s84khz0b8wlvs48d0srnmayhrh-git-crypt-0.8.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/0pm5nmm6y12zlk8bgb9yx1zq6ij9hdvq-git-crypt-0.7.0",
+              "path": "/nix/store/acrmlmk7mnb0raah2n2mpvwqjnjhykh9-git-crypt-0.8.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/0pm5nmm6y12zlk8bgb9yx1zq6ij9hdvq-git-crypt-0.7.0"
+          "store_path": "/nix/store/acrmlmk7mnb0raah2n2mpvwqjnjhykh9-git-crypt-0.8.0"
         }
       }
     },
