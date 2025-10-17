@@ -17,6 +17,8 @@ services:
       - ${EXT_PATH}/documents/media:/usr/src/paperless/media
       - ${EXT_PATH}/documents/export:/usr/src/paperless/export
       - ${EXT_PATH}/documents/consume:/usr/src/paperless/consume
+      # scanning will save it into this directory as well because indexing the document might take a while
+      - ${EXT_PATH}/documents/temporary:/temporary
     environment:
       PAPERLESS_URL: "${PAPERLESS_URL}"
       PAPERLESS_REDIS: redis://localhost:6379
