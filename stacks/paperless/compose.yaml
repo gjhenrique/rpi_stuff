@@ -17,7 +17,6 @@ services:
       - ${EXT_PATH}/documents/media:/usr/src/paperless/media
       - ${EXT_PATH}/documents/export:/usr/src/paperless/export
       - ${EXT_PATH}/documents/consume:/usr/src/paperless/consume
-      # scanning will save it into this directory as well because indexing the document might take a while
       - ${EXT_PATH}/documents/temporary:/temporary
     environment:
       PAPERLESS_URL: "${PAPERLESS_URL}"
@@ -26,6 +25,11 @@ services:
       PAPERLESS_ADMIN_USER: "${PAPERLESS_ADMIN}"
       PAPERLESS_ADMIN_PASSWORD: "${PAPERLESS_PASSWORD}"
 
+  # paperless takes some minutes to index the scanned file
+  # but sometimes I just want a document right away
+  # serve it on a caddy server and delete older files on cleanup-old-documents service
+  # a while true is not very scalable, but it will probably do the job
+  # if not, ofelia FTW
   caddy:
     image: caddy:2.10.2
     restart: unless-stopped
@@ -35,3 +39,21 @@ services:
       - ${EXT_PATH}/documents/caddy_data:/data
       - ${EXT_PATH}/documents/caddy_config:/config
     command: caddy file-server --root /temporary --listen :8080 --browse
+
+  cleanup-old-documents:
+    image: alpine:latest
+    restart: unless-stopped
+    volumes:
+      - ${EXT_PATH}/documents/temporary:/temporary
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        while true; do
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting cleanup of files older than 1 day..."
+          find /temporary -type f -mmin +1440 -print -delete | while read file; do
+            echo "  Deleted: $$file"
+          done
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] Cleanup complete. Sleeping for 24 hours..."
+          sleep 86400
+        done
