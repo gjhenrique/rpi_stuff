@@ -23,3 +23,13 @@ services:
       PAPERLESS_OCR_LANGUAGES: "deu eng"
       PAPERLESS_ADMIN_USER: "${PAPERLESS_ADMIN}"
       PAPERLESS_ADMIN_PASSWORD: "${PAPERLESS_PASSWORD}"
+
+  caddy:
+    image: caddy:2.10.2
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    volumes:
+      - ${EXT_PATH}/documents/temporary:/temporary
+      - ${EXT_PATH}/documents/caddy_data:/data
+      - ${EXT_PATH}/documents/caddy_config:/config
+    command: caddy file-server --root /temporary --listen :8080 --browse

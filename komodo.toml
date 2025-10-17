@@ -138,6 +138,24 @@ EXT_PATH: /mnt/external
 """
 
 [[stack]]
+name = "stirling-pdf"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["tailscale/compose.yaml", "stirling-pdf/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_PORT: 8080
+TS_HOSTNAME: [[TS_PREFIX]]-stirling-pdf
+TS_TAG: [[TS_PREFIX]]-paperless
+TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
 name = "paperless"
 [stack.config]
 server = "lisa"
