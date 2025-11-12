@@ -232,3 +232,22 @@ TS_TAG: [[TS_PREFIX]]-share
 TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
 TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
+
+[[stack]]
+name = "test-immich"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["tailscale/compose.yaml", "photos/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external/test-immich
+
+DB_PASSWORD: "[[IMMICH_DATABASE_PASSWORD]]"
+
+TS_HOSTNAME: test-immich
+TS_TAG: test-immich
+TS_OAUTH_CLIENT: "[[TS_IMMICH_OAUTH_CLIENT]]"
+TS_OAUTH_SECRET: "[[TS_IMMICH_OAUTH_SECRET]]"
+"""
