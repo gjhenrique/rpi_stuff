@@ -246,6 +246,7 @@ EXT_PATH: /mnt/external/test-immich
 
 DB_PASSWORD: "[[IMMICH_DATABASE_PASSWORD]]"
 
+TS_PORT: 2283
 TS_HOSTNAME: test-immich
 TS_TAG: test-immich
 TS_OAUTH_CLIENT: "[[TS_IMMICH_OAUTH_CLIENT]]"
