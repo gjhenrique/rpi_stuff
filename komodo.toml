@@ -240,7 +240,7 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "photos/compose.yaml"]
+file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "photos/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external/test-immich
 
