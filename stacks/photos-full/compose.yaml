@@ -17,9 +17,11 @@ services:
       DB_DATABASE_NAME: immich
       REDIS_HOSTNAME: localhost
       DB_HOSTNAME: localhost
+      IMMICH_MACHINE_LEARNING_URL: http://localhost:3003
     depends_on:
       - redis
       - database
+      - machine-learning
 
   redis:
     restart: unless-stopped
@@ -41,3 +43,15 @@ services:
     volumes:
       - ${EXT_PATH}/immich/postgres:/var/lib/postgresql/data
     shm_size: 128mb
+
+  machine-learning:
+    image: ghcr.io/immich-app/immich-machine-learning:v2.2.0
+    restart: unless-stopped
+    network_mode: "service:tailscale"
+    volumes:
+      - ${EXT_PATH}/immich/model-cache:/cache
+      - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      TZ: Europe/Berlin
