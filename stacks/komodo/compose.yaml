@@ -16,7 +16,7 @@ services:
       POSTGRES_DB: postgres
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:2.5.0
+    image: ghcr.io/ferretdb/ferretdb:2.7.0
     network_mode: "service:tailscale"
     labels:
       komodo.skip:
