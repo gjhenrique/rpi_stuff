@@ -1,7 +1,7 @@
 ---
 services:
   jellyfin:
-    image: lscr.io/linuxserver/jellyfin:10.10.7
+    image: lscr.io/linuxserver/jellyfin:10.11.4
     restart: unless-stopped
     network_mode: "service:tailscale"
     environment:
