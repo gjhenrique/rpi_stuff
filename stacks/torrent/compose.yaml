@@ -34,7 +34,7 @@ services:
       - ${EXT_PATH}/torrent/prowlarr:/config
 
   sonarr:
-    image: lscr.io/linuxserver/sonarr:4.0.15
+    image: lscr.io/linuxserver/sonarr:4.0.16
     restart: unless-stopped
     network_mode: "service:tailscale"
     environment:
