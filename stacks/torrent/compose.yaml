@@ -45,7 +45,7 @@ services:
       - ${EXT_PATH}/media:/media
 
   radarr:
-    image: lscr.io/linuxserver/radarr:5.26.2
+    image: lscr.io/linuxserver/radarr:5.28.0
     restart: unless-stopped
     network_mode: "service:tailscale"
     environment:
