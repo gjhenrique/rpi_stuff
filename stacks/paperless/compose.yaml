@@ -7,7 +7,7 @@ services:
       - ${EXT_PATH}/documents/redis:/data
 
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.17.1
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.1
     restart: unless-stopped
     network_mode: "service:tailscale"
     depends_on:
