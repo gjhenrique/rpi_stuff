@@ -232,3 +232,15 @@ TS_TAG: [[TS_PREFIX]]-share
 TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
 TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
+
+[[stack]]
+name = "arm"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["arm/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+"""
