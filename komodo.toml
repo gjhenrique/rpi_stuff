@@ -233,6 +233,7 @@ TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
 TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
+# HACK: required "sudo chown -R 1000:100 /mnt/external/arm"
 [[stack]]
 name = "arm"
 [stack.config]

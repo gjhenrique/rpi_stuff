@@ -7,7 +7,7 @@ services:
       - "8888:8080"
     environment:
       ARM_UID: "1000"
-      ARM_GID: "1000"
+      ARM_GID: "100"
     volumes:
       - ${EXT_PATH}/arm:/home/arm
       - ${EXT_PATH}/arm/music:/home/arm/music
