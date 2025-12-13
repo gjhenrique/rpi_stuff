@@ -7,7 +7,7 @@ services:
       - "8888:8080"
     environment:
       ARM_UID: "1000"
-      ARM_GID: "100"
+      ARM_GID: "1000"
     volumes:
       # HACK: required "sudo chown -R 1000:100 /mnt/external/media/arm"
       - ${EXT_PATH}/media/arm:/Home/arm
