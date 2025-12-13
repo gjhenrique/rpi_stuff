@@ -9,11 +9,13 @@ services:
       ARM_UID: "1000"
       ARM_GID: "100"
     volumes:
-      - ${EXT_PATH}/arm:/home/arm
-      - ${EXT_PATH}/arm/music:/home/arm/music
-      - ${EXT_PATH}/arm/logs:/home/arm/logs
-      - ${EXT_PATH}/arm/media:/home/arm/media
-      - ${EXT_PATH}/arm/config:/etc/arm/config
+      # HACK: required "sudo chown -R 1000:100 /mnt/external/media/arm"
+      - ${EXT_PATH}/media/arm:/Home/arm
+      - ${EXT_PATH}/media/arm/music:/home/arm/music
+      - ${EXT_PATH}/media/arm/logs:/home/arm/logs
+      - ${EXT_PATH}/media/arm/media:/home/arm/media
+      - ${EXT_PATH}/media/arm/config:/etc/arm/config
+      - ./arm.yaml:/etc/arm/config/arm.yaml
     devices:
       - /dev/sr0:/dev/sr0
       - /dev/sr1:/dev/sr1
