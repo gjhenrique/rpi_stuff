@@ -23,7 +23,6 @@
     system = "aarch64-linux";
 
     specialArgs = {
-
       pkgs = pkgsFor."aarch64-linux";
 
       host = {

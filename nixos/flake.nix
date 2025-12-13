@@ -1,12 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs = {
     nixpkgs,
-    nixos-hardware,
     self,
     ...
   } @ inputs: let
@@ -22,8 +20,6 @@
         config.allowUnfree = true;
       });
   in {
-    formatter = forAllSystems (system: pkgsFor.${system}.alejandra);
-
     nixosConfigurations = (
       import ./hosts {
         inherit nixpkgs pkgsFor;
