@@ -75,7 +75,20 @@
     };
   };
 
+  services.resolved = {
+    enable = true;
+    domains = ["~."];
+    fallbackDns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    extraConfig = ''
+      # docker default bridge
+      DNSStubListenerExtra=172.17.0.1
+      # kind default bridge
+      DNSStubListenerExtra=172.18.0.1
+    '';
+  };
+
   networking.firewall.enable = false;
+  networking.nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
