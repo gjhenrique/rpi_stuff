@@ -6,7 +6,7 @@ services:
     network_mode: "service:tailscale"
     environment:
       UID_photos: 1100
-      UID_torrent: 1003
+      UID_torrent: 1000
       UID_paperless: 1000
       UID_tv: 1200
 
