@@ -1,6 +1,6 @@
 services:
   stirling-pdf:
-    image: ghcr.io/stirling-tools/stirling-pdf:2.1.1
+    image: ghcr.io/stirling-tools/stirling-pdf:2.1.5
     restart: unless-stopped
     network_mode: "service:tailscale"
     volumes:
