@@ -1,0 +1,14 @@
+---
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2025.12.4
+    restart: unless-stopped
+    ports:
+      - "8123:8123"
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - ${EXT_PATH}/homeassistant:/config
+      - /run/dbus:/run/dbus:ro
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0

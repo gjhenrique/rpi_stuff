@@ -244,3 +244,15 @@ file_paths = ["arm/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
+
+[[stack]]
+name = "home-assistant"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["home-assistant/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+"""
