@@ -3,9 +3,12 @@
   "extends": [
     "config:recommended"
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["(^|/)compose.*\\.yml\\.j2$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)compose.*\\.yml\\.j2$/"
+      ],
       "matchStrings": [
         "^\\s*image:\\s*[\"']?(?<depName>.+):(?<currentValue>[^\"'\\s]+)[\"']?\\s*$"
       ],
@@ -15,7 +18,9 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["regex"],
+      "matchManagers": [
+        "custom.regex"
+      ],
       "matchPackageNames": [
         "lscr.io/linuxserver/jellyfin",
         "lscr.io/linuxserver/transmission"
@@ -23,7 +28,9 @@
       "allowedVersions": "<2000"
     },
     {
-      "matchManagers": ["regex"],
+      "matchManagers": [
+        "custom.regex"
+      ],
       "matchPackageNames": [
         "lscr.io/linuxserver/emby"
       ],
