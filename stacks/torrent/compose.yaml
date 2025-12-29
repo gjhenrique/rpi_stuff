@@ -20,7 +20,7 @@ services:
 
   # https://docs.linuxserver.io/images/docker-prowlarr/#usage
   prowlarr:
-    image: lscr.io/linuxserver/prowlarr:2.3.1-nightly
+    image: lscr.io/linuxserver/prowlarr:2.3.2-nightly
     restart: unless-stopped
     network_mode: "service:tailscale"
     depends_on:
