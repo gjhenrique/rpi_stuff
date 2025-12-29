@@ -3,12 +3,19 @@
   "extends": [
     "config:recommended"
   ],
-  "docker-compose": {
-    "fileMatch": ["(^|/)compose.*\\.yml\\.j2$"]
-  },
+  "regexManagers": [
+    {
+      "fileMatch": ["(^|/)compose.*\\.yml\\.j2$"],
+      "matchStrings": [
+        "^\\s*image:\\s*[\"']?(?<depName>.+):(?<currentValue>[^\"'\\s]+)[\"']?\\s*$"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
+    }
+  ],
   "packageRules": [
     {
-      "matchManagers": ["docker-compose"],
+      "matchManagers": ["regex"],
       "matchPackageNames": [
         "lscr.io/linuxserver/jellyfin",
         "lscr.io/linuxserver/transmission"
@@ -16,7 +23,7 @@
       "allowedVersions": "<2000"
     },
     {
-      "matchManagers": ["docker-compose"],
+      "matchManagers": ["regex"],
       "matchPackageNames": [
         "lscr.io/linuxserver/emby"
       ],
