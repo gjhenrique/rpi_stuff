@@ -256,3 +256,15 @@ file_paths = ["home-assistant/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
+
+[[stack]]
+name = "adguard"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["adguard/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+"""
