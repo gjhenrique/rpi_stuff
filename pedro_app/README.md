@@ -7,6 +7,12 @@ Roles from the common [rpi_stuff](https://github.com/gjhenrique/rpi_stuff):
 - torrent role with bot, flexget, wireguard, etc.
 - photoprism and share with samba
 
+## Modernization plan
+
+Single source of truth:
+
+- `pedro_app/PLAN.md`
+
 ## Install
 
 ``` shell
@@ -26,5 +32,5 @@ ansible-vault encrypt secrets.yml
 ansible-vault decrypt secrets.yml
 ```
 
-Comment the line `vault_password_file` on `ansible.cfg` if you want to type the password every time. 
+Comment the line `vault_password_file` on `ansible.cfg` if you want to type the password every time.
 **Be careful to not push or commit the unencrypted file to Git**
