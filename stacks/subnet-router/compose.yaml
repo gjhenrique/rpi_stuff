@@ -1,0 +1,24 @@
+---
+services:
+  subnet-router:
+    image: "ghcr.io/tailscale/tailscale:v1.92.4"
+    restart: unless-stopped
+    networks:
+      - tailscale
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    devices:
+      - /dev/net/run:/dev/net/tun
+    environment:
+      TS_HOSTNAME: ${TS_HOSNAME}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: false
+      TS_AUTHKEY: ${TS_OAUTH_SECRET}
+      TS_ROUTES: ${TS_ROUTES}
+      TS_EXTRA_ARGS: --advertise-tags=tag:${TS_TAG}
+    volumes:
+      - ts-state:/var/lib/tailscale
+
+volumes:
+  ts-state:

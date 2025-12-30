@@ -281,3 +281,20 @@ DOMAIN: "[[CADDY_DOMAIN]]"
 ALLOWED_EMAILS: "[[CADDY_ALLOWED_EMAILS]]"
 CLOUDFLARE_API_TOKEN: "[[CADDY_CLOUDFLARE_API_TOKEN]]"
 """
+
+[[stack]]
+name = "subnet-router"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/subnet-router"
+branch = "master"
+file_paths = ["compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_OAUTH_SECRET: "[[SUBNET_ROUTER_TS_OAUTH_SECRET]]"
+TS_TAG: "[[SUBNET_ROUTER_TS_TAG]]"
+TS_HOSTNAME: "[[SUBNET_ROUTER_TS_HOSTNAME]]"
+TS_ROUTES: "[[SUBNET_ROUTER_TS_ROUTES]]"
+"""
