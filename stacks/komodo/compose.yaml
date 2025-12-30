@@ -2,7 +2,6 @@
 services:
   postgres:
     image: ghcr.io/ferretdb/postgres-documentdb:16-0.106.0-ferretdb-2.5.0
-    network_mode: "service:tailscale"
     labels:
       komodo.skip:
     restart: unless-stopped
@@ -17,7 +16,6 @@ services:
 
   ferretdb:
     image: ghcr.io/ferretdb/ferretdb:2.5.0
-    network_mode: "service:tailscale"
     labels:
       komodo.skip:
     restart: unless-stopped
@@ -28,11 +26,10 @@ services:
     volumes:
       - ferretdb-state:/state
     environment:
-      FERRETDB_POSTGRESQL_URL: postgres://${KOMODO_DB_USERNAME}:${KOMODO_DB_PASSWORD}@localhost:5432/postgres
+      FERRETDB_POSTGRESQL_URL: postgres://${KOMODO_DB_USERNAME}:${KOMODO_DB_PASSWORD}@postgres:5432/postgres
   
   core:
     image: ghcr.io/moghtech/komodo-core:1.19.5
-    network_mode: "service:tailscale"
     labels:
       komodo.skip:
     restart: unless-stopped
@@ -41,14 +38,15 @@ services:
     env_file:
       - ../komodo/compose.env
       - ../komodo/secrets.env
+    ports:
+      - 127.0.0.1:9120:9120
     environment:
-      KOMODO_DATABASE_ADDRESS: localhost:27017
+      KOMODO_DATABASE_ADDRESS: ferretdb:27017
       KOMODO_DATABASE_USERNAME: ${KOMODO_DB_USERNAME}
       KOMODO_DATABASE_PASSWORD: ${KOMODO_DB_PASSWORD}
 
   periphery:
     image: ghcr.io/moghtech/komodo-periphery:1.19.5
-    network_mode: "service:tailscale"
     labels:
       komodo.skip:
     restart: unless-stopped
@@ -61,17 +59,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc:/proc
       - /etc/komodo:/etc/komodo
-
-  tailscale:
-    volumes:
-      # hidden contract defined by the tailscale stack
-      # Funnel apparently expects only port 443
-      # It would be safer to have a hidden port
-      - ../komodo/serve.json:/tailscale-serve-raw.json:ro
-    environment:
-      TS_SERVE_CONFIG: /var/lib/tailscale/serve.json
-    ports:
-      - 9120:9120
 
 volumes:
   postgres-data:
