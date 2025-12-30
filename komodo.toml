@@ -102,15 +102,9 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "actual/compose.yaml"]
+file_paths = ["actual/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
-
-TS_PORT: 5006
-TS_HOSTNAME: [[TS_PREFIX]]-actual
-TS_TAG: [[TS_PREFIX]]-actual
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
 [[stack]]
@@ -267,4 +261,23 @@ branch = "master"
 file_paths = ["adguard/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "caddy"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["caddy/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+GOOGLE_CLIENT_ID: "[[GOOGLE_CLIENT_ID]]"
+GOOGLE_CLIENT_SECRET: "[[GOOGLE_CLIENT_SECRET]]"
+JWT_SHARED_KEY: "[[JWT_SHARED_KEY]]"
+DOMAIN: "[[DOMAIN]]"
+ALLOWED_EMAILS: "[[ALLOWED_EMAILS]]"
+CLOUDFLARE_API_TOKEN: "[[CLOUDFLARE_API_TOKEN]]"
 """

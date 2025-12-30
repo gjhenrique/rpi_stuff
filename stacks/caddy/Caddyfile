@@ -1,0 +1,60 @@
+{
+	order authenticate before respond
+	order authorize before basicauth
+
+	security {
+		oauth identity provider google {
+			realm google
+			driver google
+			client_id {$GOOGLE_CLIENT_ID}.apps.googleusercontent.com
+			client_secret {$GOOGLE_CLIENT_SECRET}
+			scopes openid email profile
+		}
+
+		authentication portal myportal {
+			crypto default token lifetime 3600
+			crypto key sign-verify {$JWT_SHARED_KEY}
+			enable identity provider google
+			cookie domain {$DOMAIN}
+	                ui {
+				links {
+				  "My Identity" "/whoami" icon "las la-user"
+				}
+			}
+
+			transform user {
+				match realm google
+				regex match email {$ALLOWED_EMAILS}
+				action add role authp/user
+				ui link "Actual" https://actual.{$DOMAIN}/ icon "las la-wallet"
+			}
+		}
+
+		authorization policy mypolicy {
+			set auth url https://auth.{$DOMAIN}/oauth2/google
+			crypto key verify {$JWT_SHARED_KEY}
+			allow roles authp/admin authp/user
+			validate bearer header
+			inject headers with claims
+		}
+	}
+}
+
+(cloudflare_tls) {
+	tls {
+		dns cloudflare {$CLOUDFLARE_API_TOKEN}
+	}
+}
+
+auth.{$DOMAIN} {
+	import cloudflare_tls
+
+	authenticate with myportal
+}
+
+actual.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:5006
+}

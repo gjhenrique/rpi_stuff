@@ -1,0 +1,23 @@
+---
+services:
+  caddy:
+    image: ghcr.io/authcrunch/authcrunch:v1.0.14
+    restart: unless-stopped
+    network_mode: host
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - TZ=Europe/Berlin
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - JWT_SHARED_KEY=${JWT_SHARED_KEY}
+      - DOMAIN=${DOMAIN}
+      - ALLOWED_EMAILS=${ALLOWED_EMAILS}
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${EXT_PATH}/caddy/data:/data
+      - ${EXT_PATH}/caddy/config:/config
+    cap_add:
+      - NET_ADMIN
