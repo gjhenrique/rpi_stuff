@@ -16,9 +16,9 @@
 			crypto key sign-verify {$JWT_SHARED_KEY}
 			enable identity provider google
 			cookie domain {$DOMAIN}
-	                ui {
+			ui {
 				links {
-				  "My Identity" "/whoami" icon "las la-user"
+					"My Identity" "/whoami" icon "las la-user"
 				}
 			}
 
