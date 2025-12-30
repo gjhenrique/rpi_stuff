@@ -8,7 +8,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
-      TS_HOSTNAME: ${TS_HOSNAME}
+      TS_HOSTNAME: ${TS_HOSTNAME}
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: false
       TS_AUTHKEY: ${TS_OAUTH_SECRET}
