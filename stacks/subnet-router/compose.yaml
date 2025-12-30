@@ -3,6 +3,7 @@ services:
   subnet-router:
     image: "ghcr.io/tailscale/tailscale:v1.92.4"
     restart: unless-stopped
+    network_mode: host
     cap_add:
       - net_admin
     devices:
