@@ -4,10 +4,9 @@ services:
     image: "ghcr.io/tailscale/tailscale:v1.92.4"
     restart: unless-stopped
     cap_add:
-      - NET_ADMIN
-      - NET_RAW
+      - net_admin
     devices:
-      - /dev/net/run:/dev/net/tun
+      - /dev/net/tun:/dev/net/tun
     environment:
       TS_HOSTNAME: ${TS_HOSNAME}
       TS_STATE_DIR: /var/lib/tailscale
