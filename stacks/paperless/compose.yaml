@@ -33,7 +33,7 @@ services:
     image: caddy:2.10.2
     restart: unless-stopped
     ports:
-      - 127.0.0.1:8000:8000
+      - 127.0.0.1:8001:8080
     volumes:
       - ${EXT_PATH}/documents/temporary:/temporary
       - ${EXT_PATH}/documents/caddy_data:/data

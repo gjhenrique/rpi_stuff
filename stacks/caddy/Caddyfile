@@ -80,5 +80,5 @@ docs.{$DOMAIN} {
 	import cloudflare_tls
 
 	authorize with mypolicy
-	reverse_proxy 127.0.0.1:8000
+	reverse_proxy 127.0.0.1:8001
 }
