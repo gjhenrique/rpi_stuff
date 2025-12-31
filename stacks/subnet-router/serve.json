@@ -1,11 +1,11 @@
 {
   "TCP": {
-    "8765": {
+    "8443": {
       "HTTPS": true
     }
   },
   "Web": {
-    "${TS_CERT_DOMAIN}:8765": {
+    "${TS_CERT_DOMAIN}:8443": {
       "Handlers": {
 	"/listener/github": {
 	  "Proxy": "http://127.0.0.1:9120/listener/github"
@@ -14,6 +14,6 @@
     }
   },
   "AllowFunnel": {
-    "${TS_CERT_DOMAIN}:8765": true
+    "${TS_CERT_DOMAIN}:8443": true
   }
 }
