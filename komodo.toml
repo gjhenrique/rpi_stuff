@@ -9,8 +9,7 @@ resource_path = ["komodo.toml"]
 name = "lisa"
 [server.config]
 enabled = true
-# using Tailscale same network
-address = "https://localhost:8120"
+address = "https://periphery:8120"
 
 
 [[procedure]]
