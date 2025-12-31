@@ -4,7 +4,7 @@ services:
     image: docker.io/garethgeorge/backrest:v1.10.1
     restart: unless-stopped
     ports:
-      - 127.0.0.1:9898
+      - 127.0.0.1:9898:9898
     volumes:
       - ${EXT_PATH}/backrest/data:/data
       - ${EXT_PATH}/backrest/config:/config
