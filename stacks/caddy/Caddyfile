@@ -90,3 +90,11 @@ scan.{$DOMAIN} {
 	authorize with mypolicy
 	reverse_proxy 127.0.0.1:8001
 }
+
+#arm
+dvd.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:8888
+}
