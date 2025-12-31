@@ -8,7 +8,7 @@ services:
       PGID: 1000
       TZ: "Europe/Berlin"
     ports:
-      # not 127.0.0.1 intentionally
+      # not 127.0.0.1 intentionally. TV references IP directly
       - 8096:8096
     volumes:
       - config:/config

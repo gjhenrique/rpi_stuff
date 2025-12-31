@@ -177,7 +177,7 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "jellyfin/compose.yaml"]
+file_paths = ["jellyfin/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
