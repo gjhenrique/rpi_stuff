@@ -80,5 +80,13 @@ docs.{$DOMAIN} {
 	import cloudflare_tls
 
 	authorize with mypolicy
+	reverse_proxy 127.0.0.1:8000
+}
+
+# scanned paper
+scan.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
 	reverse_proxy 127.0.0.1:8001
 }
