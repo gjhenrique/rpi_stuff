@@ -181,11 +181,6 @@ branch = "master"
 file_paths = ["tailscale/compose.yaml", "jellyfin/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
-
-TS_HOSTNAME: [[TS_PREFIX]]-jellyfin
-TS_TAG: [[TS_PREFIX]]-torrent
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
 [[stack]]
