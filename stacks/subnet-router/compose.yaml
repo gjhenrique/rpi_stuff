@@ -15,8 +15,10 @@ services:
       TS_AUTHKEY: ${TS_OAUTH_SECRET}
       TS_ROUTES: ${TS_ROUTES}
       TS_EXTRA_ARGS: --advertise-tags=tag:${TS_TAG}
+      TS_SERVE_CONFIG: /tailscale-serve.json
     volumes:
       - ts-state:/var/lib/tailscale
+      - ./serve.json:/tailscale-serve.json:ro
 
 volumes:
   ts-state:
