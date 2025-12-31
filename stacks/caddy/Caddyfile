@@ -98,3 +98,11 @@ dvd.{$DOMAIN} {
 	authorize with mypolicy
 	reverse_proxy 127.0.0.1:8888
 }
+
+#arm
+backup.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:9898
+}

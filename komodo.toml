@@ -203,14 +203,9 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "backup/compose.yaml"]
+file_paths = ["backup/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
-
-TS_HOSTNAME: [[TS_PREFIX]]-backup
-TS_TAG: [[TS_PREFIX]]-share
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
 [[stack]]
