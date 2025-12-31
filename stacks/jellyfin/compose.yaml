@@ -3,11 +3,13 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:10.11.5
     restart: unless-stopped
-    network_mode: "service:tailscale"
     environment:
       PUID: 1000
       PGID: 1000
       TZ: "Europe/Berlin"
+    ports:
+      # not 127.0.0.1 intentionally
+      - 8096:8096
     volumes:
       - config:/config
       - cache:/cache
