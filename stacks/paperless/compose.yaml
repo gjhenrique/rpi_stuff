@@ -34,6 +34,8 @@ services:
     image: caddy:2.10.2
     restart: unless-stopped
     network_mode: "service:tailscale"
+    ports:
+      - 127.0.0.1:8000:8000
     volumes:
       - ${EXT_PATH}/documents/temporary:/temporary
       - ${EXT_PATH}/documents/caddy_data:/data

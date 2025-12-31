@@ -155,19 +155,11 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "paperless/compose.yaml"]
+file_paths = ["paperless/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 
 PAPERLESS_URL="[[PAPERLESS_URL]]"
-PAPERLESS_ADMIN_USER="[[PAPERLESS_ADMIN_USER]]"
-PAPERLESS_ADMIN_PASSWORD="[[PAPERLESS_ADMIN_PASSWORD]]"
-
-TS_PORT: 8000
-TS_HOSTNAME: [[TS_PREFIX]]-paperless
-TS_TAG: [[TS_PREFIX]]-paperless
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
 [[stack]]

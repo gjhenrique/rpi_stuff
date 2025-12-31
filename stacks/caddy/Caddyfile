@@ -46,6 +46,7 @@
 	}
 }
 
+# caddy-security
 auth.{$DOMAIN} {
 	import cloudflare_tls
 
@@ -66,9 +67,18 @@ komodo.{$DOMAIN} {
 	reverse_proxy 127.0.0.1:9120
 }
 
+# adguard
 dns.{$DOMAIN} {
 	import cloudflare_tls
 
 	authorize with mypolicy
 	reverse_proxy 127.0.0.1:8090
+}
+
+# paperless
+docs.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:8000
 }
