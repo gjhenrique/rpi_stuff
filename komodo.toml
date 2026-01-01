@@ -60,17 +60,11 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "tailscale/serve.yaml", "photos/compose.yaml"]
+file_paths = ["photos/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 
 DB_PASSWORD: "[[IMMICH_DATABASE_PASSWORD]]"
-
-TS_PORT: 2283
-TS_HOSTNAME: [[TS_PREFIX]]-photos
-TS_TAG: [[TS_PREFIX]]-photos
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
 [[stack]]
