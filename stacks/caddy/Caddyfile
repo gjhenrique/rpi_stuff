@@ -111,6 +111,6 @@ backup.{$DOMAIN} {
 photos.{$DOMAIN} {
 	import cloudflare_tls
 
-	authorize with mypolicy
+	# no authentication because of the mobile app
 	reverse_proxy 127.0.0.1:2283
 }
