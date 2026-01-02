@@ -43,14 +43,9 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "syncthing/compose.yaml"]
+file_paths = ["syncthing/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
-
-TS_HOSTNAME: [[TS_PREFIX]]-syncthing
-TS_TAG: [[TS_PREFIX]]-syncthing
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
 [[stack]]

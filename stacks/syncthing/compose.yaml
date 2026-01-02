@@ -4,10 +4,14 @@ services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:v2.0.9-ls195
     restart: unless-stopped
-    network_mode: "service:tailscale"
     environment:
       PUID: 0
       PGID: 0
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
     volumes:
       - ${EXT_PATH}/syncthing/config:/config
       - ${EXT_PATH}/syncthing/data:/data
