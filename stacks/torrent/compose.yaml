@@ -80,6 +80,12 @@ services:
       TS_EXTRA_ARGS: "--advertise-tags=tag:${TS_TAG} --exit-node=${TS_EXIT_NODE_IP} --exit-node-allow-lan-access=true"
     volumes:
       - ts-state:/var/lib/tailscale
+    healthcheck:
+      test: ["CMD", "tailscale", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
 volumes:
   ts-state:
