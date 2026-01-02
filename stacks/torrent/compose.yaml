@@ -1,4 +1,8 @@
 ---
+networks:
+  tailscale:
+    driver: bridge
+
 services:
   # https://docs.linuxserver.io/images/docker-transmission
   transmission:
@@ -56,8 +60,11 @@ services:
   tailscale:
     image: "ghcr.io/tailscale/tailscale:v1.92.4"
     restart: unless-stopped
+    networks:
+      - tailscale
     cap_add:
       - net_admin
+      - net_raw
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
