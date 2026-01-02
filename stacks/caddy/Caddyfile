@@ -112,6 +112,7 @@ photos.{$DOMAIN} {
 	import cloudflare_tls
 
 	# no authentication because of the mobile app
+	# auth is handled by immich itself
 	reverse_proxy 127.0.0.1:2283
 }
 
@@ -119,5 +120,39 @@ photos.{$DOMAIN} {
 ha.{$DOMAIN} {
 	import cloudflare_tls
 
+	# no auth because of the mobile app
+	# HA doesn't require too much security anyway
 	reverse_proxy 127.0.0.1:8123
+}
+
+# sonarr
+tv.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:8989
+}
+
+# radarr
+movies.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:7878
+}
+
+# transmission
+torrents.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:9091
+}
+
+# prowlarr
+prowlarr.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:9696
 }

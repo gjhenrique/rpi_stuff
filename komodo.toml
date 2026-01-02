@@ -69,18 +69,14 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "torrent/compose.yaml"]
+file_paths = ["torrent/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 
-TORRENT_TRANSMISSION_USER: "[[TORRENT_TRANSMISSION_USER]]"
-TORRENT_TRANSMISSION_PASSWORD: "[[TORRENT_TRANSMISSION_PASSWORD]]"
-
-TS_EXIT_NODE_IP: 100.123.112.109 # berlin
-TS_HOSTNAME: [[TS_PREFIX]]-torrent
-TS_TAG: [[TS_PREFIX]]-torrent
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
+TS_EXIT_NODE_IP: 100.100.45.90 # fra-0003
+TS_HOSTNAME: "[[TORRENT_TS_HOSTNAME]]"
+TS_TAG: "[[TORRENT_TS_TAG]]"
+TS_OAUTH_SECRET: "[[TORRENT_TS_OAUTH_SECRET]]"
 """
 
 [[stack]]
