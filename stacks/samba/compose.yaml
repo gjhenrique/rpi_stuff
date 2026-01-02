@@ -3,7 +3,8 @@ services:
   samba:
     image: ghcr.io/servercontainers/samba:smbd-only-latest
     restart: unless-stopped
-    network_mode: "service:tailscale"
+    ports:
+      - 445:445
     environment:
       UID_photos: 1100
       UID_torrent: 1000
@@ -24,8 +25,3 @@ services:
       - ${EXT_PATH}/photos:/shares/photos
       - ${EXT_PATH}/media:/shares/media
       - ${EXT_PATH}/paperless/consume:/shares/documents
-
-  tailscale:
-    restart: unless-stopped
-    ports:
-      - 445:445

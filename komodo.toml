@@ -175,7 +175,7 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["tailscale/compose.yaml", "samba/compose.yaml"]
+file_paths = ["samba/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 
@@ -183,11 +183,6 @@ PHOTOS_PASSWORD: "[[SAMBA_PHOTOS_PASSWORD]]"
 TORRENT_PASSWORD: "[[SAMBA_TORRENT_PASSWORD]]"
 PAPERLESS_PASSWORD: "[[SAMBA_PAPERLESS_PASSWORD]]"
 TV_PASSWORD: "[[SAMBA_TV_PASSWORD]]"
-
-TS_HOSTNAME: [[TS_PREFIX]]-samba
-TS_TAG: [[TS_PREFIX]]-share
-TS_OAUTH_CLIENT: "[[TS_OAUTH_CLIENT]]"
-TS_OAUTH_SECRET: "[[TS_OAUTH_SECRET]]"
 """
 
 [[stack]]
