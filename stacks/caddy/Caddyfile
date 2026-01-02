@@ -114,3 +114,18 @@ photos.{$DOMAIN} {
 	# no authentication because of the mobile app
 	reverse_proxy 127.0.0.1:2283
 }
+
+# immich
+photos.{$DOMAIN} {
+	import cloudflare_tls
+
+	# no authentication because of the mobile app
+	reverse_proxy 127.0.0.1:2283
+}
+
+# home-assistant
+ha.{$DOMAIN} {
+	import cloudflare_tls
+
+	reverse_proxy 127.0.0.1:8123
+}
