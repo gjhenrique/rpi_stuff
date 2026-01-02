@@ -70,7 +70,7 @@ services:
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: false
       TS_AUTHKEY: ${TS_OAUTH_SECRET}
-      TS_EXTRA_ARGS: "--advertise-tags=tag:${TS_TAG}--exit-node=${TS_EXIT_NODE_IP} --exit-node-allow-lan-access=true"
+      TS_EXTRA_ARGS: "--advertise-tags=tag:${TS_TAG} --exit-node=${TS_EXIT_NODE_IP} --exit-node-allow-lan-access=true"
     volumes:
       - ts-state:/var/lib/tailscale
 
