@@ -84,9 +84,8 @@ name = "actual"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/actual"
 branch = "master"
-file_paths = ["actual/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
@@ -96,9 +95,8 @@ name = "emby"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/emby"
 branch = "master"
-file_paths = ["emby/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
@@ -108,9 +106,8 @@ name = "netdata"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/netdata"
 branch = "master"
-file_paths = ["netdata/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
@@ -120,9 +117,8 @@ name = "paperless"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/paperless"
 branch = "master"
-file_paths = ["paperless/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 
@@ -134,9 +130,8 @@ name = "jellyfin"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/jellyfin"
 branch = "master"
-file_paths = ["jellyfin/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
@@ -146,9 +141,8 @@ name = "samba"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/samba"
 branch = "master"
-file_paths = ["samba/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 
@@ -175,9 +169,8 @@ name = "arm"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/arm"
 branch = "master"
-file_paths = ["arm/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
@@ -187,9 +180,8 @@ name = "home-assistant"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/home-assistant"
 branch = "master"
-file_paths = ["home-assistant/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
@@ -199,9 +191,8 @@ name = "adguard"
 [stack.config]
 server = "lisa"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/adguard"
 branch = "master"
-file_paths = ["adguard/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 """
@@ -232,7 +223,6 @@ server = "lisa"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks/subnet-router"
 branch = "master"
-file_paths = ["compose.yaml"]
 environment = """
 EXT_PATH: /mnt/external
 
