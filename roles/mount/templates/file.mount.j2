@@ -1,6 +1,6 @@
 [Unit]
 Description=Mount {{ mount_path }}
-{% if depends | length %}
+{% if depends and depends | length > 0 %}
 Requires={{ depends[1:].split('/') | join('-') }}.mount
 {% else %}
 Requires=local-fs.target
@@ -10,7 +10,7 @@ Requires=local-fs.target
 Where={{ mount_path }}
 What={{ mount_from }}
 Type={{ type }}
-{% if options | length  %}
+{% if options and options | length > 0 %}
 Options={{ options }}
 {% endif %}
 

@@ -1,2 +1,5 @@
 [rpis]
 mediasrv
+
+[homelab_servers]
+homelab ansible_user=root

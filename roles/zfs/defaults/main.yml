@@ -1,0 +1,18 @@
+---
+# ZFS configuration defaults
+zfs_pool_name: "tank"
+zfs_pool_type: "mirror"  # mirror (RAID1 equivalent), raidz1, raidz2, stripe, etc.
+zfs_pool_devices: []  # REQUIRED: List of disk devices (e.g., ['/dev/sda', '/dev/sdb'])
+zfs_pool_mountpoint: "/mnt/{{ zfs_pool_name }}"
+zfs_pool_properties:
+  compression: "lz4"
+  atime: "off"
+  recordsize: "1M"
+  checksum: "sha256"
+zfs_datasets: []  # Optional: List of datasets to create
+  # Example:
+  # - name: "storage"
+  #   mountpoint: "/mnt/tank/storage"
+  #   properties:
+  #     compression: "zstd"
+zfs_auto_import: true

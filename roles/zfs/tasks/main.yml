@@ -1,0 +1,173 @@
+---
+- name: Fail if pool devices are not specified
+  ansible.builtin.fail:
+    msg: "zfs_pool_devices must be specified (list of disk devices, e.g., ['/dev/sda', '/dev/sdb'])"
+  when: zfs_pool_devices is not defined or zfs_pool_devices | length == 0
+
+- name: Ensure ZFS utilities are installed (Debian/Ubuntu)
+  ansible.builtin.apt:
+    name:
+      - zfsutils-linux
+    update_cache: true
+    state: present
+  when: ansible_facts['os_family'] | default('Unknown') == 'Debian'
+  register: zfs_install
+
+- name: Load ZFS kernel module
+  ansible.builtin.modprobe:
+    name: zfs
+    state: present
+  register: zfs_module
+
+- name: Check if ZFS pool already exists
+  ansible.builtin.command:
+    cmd: "zpool list {{ zfs_pool_name }}"
+  register: zfs_pool_exists
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Ensure all pool devices are block devices
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop: "{{ zfs_pool_devices }}"
+  register: pool_device_stats
+
+- name: Fail if any device is not a block device
+  ansible.builtin.fail:
+    msg: "Device {{ item.item }} is not a block device"
+  loop: "{{ pool_device_stats.results }}"
+  when: not item.stat.exists or not item.stat.isblk
+
+- name: Wipe filesystem signatures from ZFS devices
+  ansible.builtin.command:
+    cmd: "wipefs -a {{ item }}"
+  loop: "{{ zfs_pool_devices }}"
+  when: not zfs_pool_exists.rc == 0
+  changed_when: true
+
+- name: Check if devices are already in use by ZFS
+  ansible.builtin.command:
+    cmd: "zpool status | grep -q '{{ item }}' || true"
+  loop: "{{ zfs_pool_devices }}"
+  register: devices_in_use
+  changed_when: false
+  failed_when: false
+  when: not zfs_pool_exists.rc == 0
+
+- name: Create ZFS pool (mirror)
+  ansible.builtin.command:
+    cmd: "zpool create -f -m {{ zfs_pool_mountpoint }} {{ zfs_pool_name }} mirror {{ zfs_pool_devices | join(' ') }}"
+  when:
+    - not zfs_pool_exists.rc == 0
+    - zfs_pool_type == "mirror"
+  register: create_pool
+  changed_when: create_pool.rc == 0
+
+- name: Create ZFS pool (stripe)
+  ansible.builtin.command:
+    cmd: "zpool create -f -m {{ zfs_pool_mountpoint }} {{ zfs_pool_name }} {{ zfs_pool_devices | join(' ') }}"
+  when:
+    - not zfs_pool_exists.rc == 0
+    - zfs_pool_type == "stripe"
+  register: create_pool_stripe
+  changed_when: create_pool_stripe.rc == 0
+
+- name: Set ZFS pool properties
+  ansible.builtin.command:
+    cmd: "zfs set {{ item.key }}={{ item.value }} {{ zfs_pool_name }}"
+  loop: "{{ zfs_pool_properties | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}={{ item.value }}"
+  when: zfs_pool_exists.rc == 0 or create_pool.changed | default(false) or create_pool_stripe.changed | default(false)
+  register: set_properties
+  changed_when: set_properties.rc == 0
+  failed_when: false
+
+- name: Check if ZFS datasets already exist
+  ansible.builtin.command:
+    cmd: "zfs list {{ zfs_pool_name }}/{{ item.name }}"
+  loop: "{{ zfs_datasets }}"
+  register: existing_datasets
+  changed_when: false
+  failed_when: false
+  when:
+    - zfs_datasets is defined
+    - zfs_datasets | length > 0
+    - zfs_pool_exists.rc == 0 or create_pool.changed | default(false) or create_pool_stripe.changed | default(false)
+
+- name: Create ZFS datasets
+  ansible.builtin.shell: |
+    zfs create \
+    {% if item.mountpoint is defined %}-o mountpoint={{ item.mountpoint }} {% endif %}\
+    {% if item.properties is defined %}
+    {% for prop_key, prop_value in item.properties.items() %}-o {{ prop_key }}={{ prop_value }} {% endfor %}
+    {% endif %}
+    {{ zfs_pool_name }}/{{ item.name }}
+  loop: "{{ zfs_datasets }}"
+  when:
+    - zfs_datasets is defined
+    - zfs_datasets | length > 0
+    - zfs_pool_exists.rc == 0 or create_pool.changed | default(false) or create_pool_stripe.changed | default(false)
+    - (existing_datasets.results | selectattr('item', 'equalto', item) | map(attribute='rc') | first | default(1)) != 0
+  register: create_datasets
+  changed_when: create_datasets.rc == 0
+  failed_when: false
+
+- name: Check if ZFS services exist
+  ansible.builtin.command:
+    cmd: "systemctl list-unit-files | grep -q zfs.target"
+  register: zfs_service_check
+  changed_when: false
+  failed_when: false
+  when: zfs_install.changed | default(false) or zfs_pool_exists.rc == 0
+
+- name: Enable ZFS target service (if available)
+  ansible.builtin.systemd:
+    name: zfs.target
+    enabled: true
+    state: started
+  when:
+    - zfs_service_check.rc == 0
+    - zfs_install.changed | default(false) or zfs_pool_exists.rc == 0 or create_pool.changed | default(false) or create_pool_stripe.changed | default(false)
+  failed_when: false
+
+- name: Enable ZFS import cache service (if available)
+  ansible.builtin.systemd:
+    name: zfs-import-cache.service
+    enabled: "{{ zfs_auto_import }}"
+    state: "{% if zfs_auto_import %}started{% else %}stopped{% endif %}"
+  when:
+    - zfs_auto_import | default(true)
+    - zfs_install.changed | default(false) or zfs_pool_exists.rc == 0 or create_pool.changed | default(false) or create_pool_stripe.changed | default(false)
+  failed_when: false
+
+- name: Enable ZFS mount service (if available)
+  ansible.builtin.systemd:
+    name: zfs-mount.service
+    enabled: true
+    state: started
+  when: zfs_install.changed | default(false) or zfs_pool_exists.rc == 0 or create_pool.changed | default(false) or create_pool_stripe.changed | default(false)
+  failed_when: false
+
+- name: Get ZFS pool status
+  ansible.builtin.command:
+    cmd: "zpool status {{ zfs_pool_name }}"
+  register: zfs_pool_status
+  changed_when: false
+
+- name: Get ZFS pool information
+  ansible.builtin.command:
+    cmd: "zfs list {{ zfs_pool_name }}"
+  register: zfs_pool_info
+  changed_when: false
+
+- name: Display ZFS pool information
+  ansible.builtin.debug:
+    msg:
+      - "ZFS pool '{{ zfs_pool_name }}' has been created successfully"
+      - "Pool type: {{ zfs_pool_type }}"
+      - "Devices: {{ zfs_pool_devices | join(', ') }}"
+      - "Mount point: {{ zfs_pool_mountpoint }}"
+      - "Pool properties: {{ zfs_pool_properties | dict2items | map(attribute='key') | list | join(', ') }}"
+      - "Status: Ready to use"

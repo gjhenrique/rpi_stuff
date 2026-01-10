@@ -15,8 +15,8 @@
     file_systemd: "{{ item.mount_path[1:].split('/') | join('-') }}"
     mount_from: "{{ item.mount_from }}"
     type: "{{ item.type }}"
-    depends: "{{ item.depends | default(None) }}"
-    options: "{{ item.options | default(None) }}"
+    depends: "{{ item.depends | default('') }}"
+    options: "{{ item.options | default('') }}"
   loop: "{{ mount_paths }}"
   notify: "Restart mounts"
 

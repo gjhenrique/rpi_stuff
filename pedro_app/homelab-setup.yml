@@ -1,0 +1,17 @@
+---
+- hosts: homelab_servers
+  vars:
+    zfs_pool_devices:
+      - /dev/sda
+      - /dev/sdb
+    zfs_pool_name: "tank"
+    zfs_pool_type: "mirror"
+    zfs_pool_mountpoint: "/mnt/tank"
+    zfs_pool_properties:
+      compression: "lz4"
+      atime: "off"
+      recordsize: "1M"
+      checksum: "sha256"
+  roles:
+    - role: zfs
+      tags: zfs
