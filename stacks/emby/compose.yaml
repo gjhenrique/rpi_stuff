@@ -1,7 +1,7 @@
 ---
 services:
   emby:
-    image: lscr.io/linuxserver/emby:4.8.10
+    image: lscr.io/linuxserver/emby:4.9.3
     restart: unless-stopped
     environment:
       PUID: 0
@@ -10,13 +10,18 @@ services:
     volumes:
       - ${EXT_PATH}/emby/config:/config
       - ${EXT_PATH}/media:/media
-    # Emby is here just for backup, so no tailscale needed
-    # Jellyfin is available on the Tailnet
     devices:
       - /dev/dri:/dev/dri
     ports:
-      - 8097:8096
-      - 8921:8920
-      - 7360:7359/udp
-      - 1901:1900/udp
+      - ${EMBY_HTTP_PORT:-8097}:8096
+      - ${EMBY_HTTPS_PORT:-8921}:8920
+      - ${EMBY_UDP_PORT_1:-7360}:7359/udp
+      - ${EMBY_UDP_PORT_2:-1901}:1900/udp
     cpus: 1
+    command:
+      - /init
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
