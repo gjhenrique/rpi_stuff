@@ -11,6 +11,12 @@ name = "lisa"
 enabled = true
 address = "https://periphery:8120"
 
+[[server]]
+name = "lovelace"
+[server.config]
+enabled = true
+address = "https://periphery:8120"
+
 
 [[procedure]]
 name = "Deploy stacks"
