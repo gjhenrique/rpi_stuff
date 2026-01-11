@@ -21,7 +21,6 @@ address = "https://periphery:8120"
 
 [[procedure]]
 name = "Deploy stacks"
-tags = ["deploy", "lovelace"]
 
 [[procedure.config.stage]]
 name = "Sync github repo"
