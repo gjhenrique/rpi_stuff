@@ -21,6 +21,7 @@ address = "https://periphery:8120"
 
 [[procedure]]
 name = "Deploy stacks"
+tags = ["deploy", "lovelace"]
 
 [[procedure.config.stage]]
 name = "Sync github repo"
@@ -243,11 +244,23 @@ TS_ROUTES: "[[SUBNET_ROUTER_TS_ROUTES]]"
 
 [[stack]]
 name = "lovelace-syncthing"
+tags = ["lovelace"]
 [stack.config]
 server = "lovelace"
-tags = ["lovelace"]
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks/lovelace-syncthing"
+run_directory = "stacks/syncthing"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+"""
+
+[[stack]]
+name = "lovelace-emby"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/emby"
 branch = "master"
 environment = """
 EXT_PATH: /mnt/tank
