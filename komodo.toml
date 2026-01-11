@@ -263,4 +263,9 @@ run_directory = "stacks/emby"
 branch = "master"
 environment = """
 EXT_PATH: /mnt/tank
+
+EMBY_HTTP_PORT: 8096
+EMBY_HTTPS_PORT: 8097
+EMBY_UDP_PORT_1: 7359
+EMBY_UDP_PORT_2: 1900
 """

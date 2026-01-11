@@ -18,8 +18,6 @@ services:
       - ${EMBY_UDP_PORT_1:-7360}:7359/udp
       - ${EMBY_UDP_PORT_2:-1901}:1900/udp
     cpus: 1
-    command:
-      - /init
     logging:
       driver: "json-file"
       options:
