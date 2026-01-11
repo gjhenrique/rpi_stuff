@@ -36,6 +36,7 @@
 				ui link "Finances" https://actual.{$DOMAIN}/ icon "las la-wallet"
 				ui link "DNS" https://dns.{$DOMAIN}/ icon "las la-network-wired"
 				ui link "Backup" https://backup.{$DOMAIN}/ icon "las la-hdd"
+				ui link "Emby" https://emby.{$DOMAIN}/ icon "las la-video"
 			}
 		}
 
@@ -75,6 +76,14 @@ dns.{$DOMAIN} {
 
 	authorize with mypolicy
 	reverse_proxy 127.0.0.1:8090
+}
+
+# emby
+emby.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:8096
 }
 
 # paperless

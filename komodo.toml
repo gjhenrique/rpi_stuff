@@ -269,3 +269,69 @@ EMBY_HTTPS_PORT: 8097
 EMBY_UDP_PORT_1: 7359
 EMBY_UDP_PORT_2: 1900
 """
+
+[[stack]]
+name = "lovelace-adguard"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/adguard"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+"""
+
+[[stack]]
+name = "lovelace-subnet-router"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/subnet-router"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+TS_OAUTH_SECRET: "[[SUBNET_ROUTER_TS_OAUTH_SECRET]]"
+TS_TAG: "[[SUBNET_ROUTER_TS_TAG]]"
+TS_HOSTNAME: "[[SUBNET_ROUTER_TS_HOSTNAME]]"
+TS_ROUTES: "[[SUBNET_ROUTER_TS_ROUTES]]"
+"""
+
+[[stack]]
+name = "lovelace-caddy"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["caddy/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/tank
+
+GOOGLE_CLIENT_ID: "[[CADDY_GOOGLE_CLIENT_ID]]"
+GOOGLE_CLIENT_SECRET: "[[CADDY_GOOGLE_CLIENT_SECRET]]"
+JWT_SHARED_KEY: "[[CADDY_JWT_SHARED_KEY]]"
+DOMAIN: "[[CADDY_DOMAIN]]"
+ALLOWED_EMAILS: "[[CADDY_ALLOWED_EMAILS]]"
+CLOUDFLARE_API_TOKEN: "[[CADDY_CLOUDFLARE_API_TOKEN]]"
+"""
+
+[[stack]]
+name = "lovelace-samba"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/samba"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+PHOTOS_PASSWORD: "[[SAMBA_PHOTOS_PASSWORD]]"
+TORRENT_PASSWORD: "[[SAMBA_TORRENT_PASSWORD]]"
+PAPERLESS_PASSWORD: "[[SAMBA_PAPERLESS_PASSWORD]]"
+TV_PASSWORD: "[[SAMBA_TV_PASSWORD]]"
+"""
