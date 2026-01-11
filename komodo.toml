@@ -13,6 +13,7 @@ address = "https://periphery:8120"
 
 [[server]]
 name = "lovelace"
+tags = ["lovelace"]
 [server.config]
 enabled = true
 address = "https://periphery:8120"
@@ -236,4 +237,18 @@ TS_OAUTH_SECRET: "[[SUBNET_ROUTER_TS_OAUTH_SECRET]]"
 TS_TAG: "[[SUBNET_ROUTER_TS_TAG]]"
 TS_HOSTNAME: "[[SUBNET_ROUTER_TS_HOSTNAME]]"
 TS_ROUTES: "[[SUBNET_ROUTER_TS_ROUTES]]"
+"""
+
+# Lovelace stacks
+
+[[stack]]
+name = "lovelace-syncthing"
+[stack.config]
+server = "lovelace"
+tags = ["lovelace"]
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/lovelace-syncthing"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
 """
