@@ -1,4 +1,7 @@
 ---
+# Disable systemd-resolved to allow AdGuard Home to bind to port 53
+boilerplate_disable_systemd_resolved: true
+
 jellyfin_user: "torrent"
 emby_user: "torrent"
 

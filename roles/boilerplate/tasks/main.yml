@@ -21,3 +21,9 @@
 - name: Configure firewall (Debian/Ubuntu)
   include_tasks: setup-firewall.yml
   when: ansible_os_family == 'Debian'
+
+- name: Disable systemd-resolved for DNS server deployment (AdGuard/Pi-hole)
+  include_tasks: disable-systemd-resolved.yml
+  when:
+    - boilerplate_disable_systemd_resolved | default(false)
+    - ansible_os_family == 'Debian'

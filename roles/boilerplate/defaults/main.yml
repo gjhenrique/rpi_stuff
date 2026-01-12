@@ -8,3 +8,14 @@ docker_apt_gpg_key_checksum: "sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807c
 # Firewall configuration
 boilerplate_firewall_local_network: "192.168.1.0/24"
 boilerplate_firewall_reset: false
+
+# DNS configuration (for AdGuard Home / Pi-hole etc.)
+# Set to true to disable systemd-resolved and free up port 53
+boilerplate_disable_systemd_resolved: false
+# Upstream DNS servers to use when systemd-resolved is disabled
+# These are used temporarily until AdGuard Home takes over DNS resolution
+boilerplate_upstream_dns_servers:
+  - 1.1.1.1  # Cloudflare
+  - 8.8.8.8  # Google
+# Set to false if you need to modify resolv.conf later (e.g., point to AdGuard)
+boilerplate_protect_resolv_conf: true

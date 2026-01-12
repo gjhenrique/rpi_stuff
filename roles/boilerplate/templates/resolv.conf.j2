@@ -1,0 +1,13 @@
+# Managed by Ansible - do not edit manually
+# systemd-resolved has been disabled to free port 53 for AdGuard Home
+#
+# Upstream DNS servers configured via boilerplate_upstream_dns_servers
+
+{% for dns_server in boilerplate_upstream_dns_servers %}
+nameserver {{ dns_server }}
+{% endfor %}
+
+# Search domain (optional)
+{% if boilerplate_dns_search_domain is defined %}
+search {{ boilerplate_dns_search_domain }}
+{% endif %}

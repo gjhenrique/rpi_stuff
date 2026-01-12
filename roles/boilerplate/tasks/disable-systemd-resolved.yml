@@ -1,0 +1,41 @@
+---
+# Disable systemd-resolved to free up port 53 for AdGuard Home / Pi-hole
+# This is needed because systemd-resolved binds to 127.0.0.53:53 by default
+
+- name: Check if systemd-resolved is active
+  ansible.builtin.systemd:
+    name: systemd-resolved
+  register: boilerplate_resolved_service
+  ignore_errors: true
+
+- name: Stop systemd-resolved service
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+  when: boilerplate_resolved_service.status.ActiveState == "active"
+
+- name: Check if /etc/resolv.conf is a symlink
+  ansible.builtin.stat:
+    path: /etc/resolv.conf
+  register: boilerplate_resolv_conf_stat
+
+- name: Remove symlink to systemd-resolved stub
+  ansible.builtin.file:
+    path: /etc/resolv.conf
+    state: absent
+  when: boilerplate_resolv_conf_stat.stat.islnk is defined and boilerplate_resolv_conf_stat.stat.islnk
+
+- name: Create static /etc/resolv.conf with upstream DNS servers
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Prevent resolv.conf from being overwritten by DHCP
+  ansible.builtin.file:
+    path: /etc/resolv.conf
+    attributes: +i
+  when: boilerplate_protect_resolv_conf | default(true)
