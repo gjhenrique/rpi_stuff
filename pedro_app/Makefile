@@ -4,6 +4,18 @@ setup:
 deploy:
 	ansible-playbook site.yml --become-password-file ~/.pwd-file -vv
 
+deploy-homelab:
+	ansible-playbook homelab-setup.yml --become-password-file ~/.pwd-file -vv
+
+deploy-homelab-boilerplate:
+	ansible-playbook homelab-setup.yml --become-password-file ~/.pwd-file -vv --tags boilerplate
+
+deploy-homelab-zfs:
+	ansible-playbook homelab-setup.yml --become-password-file ~/.pwd-file -vv --tags zfs
+
+deploy-homelab-komodo:
+	ansible-playbook homelab-setup.yml --become-password-file ~/.pwd-file -vv --tags komodo
+
 run: deploy sync-rules
 
 ssh:
@@ -28,4 +40,4 @@ sync-rules:
 
 
 
-.PHONY: decrypt encrypt run validate sync-rules deploy ssh setup
+.PHONY: decrypt encrypt run validate sync-rules deploy deploy-homelab deploy-homelab-boilerplate deploy-homelab-zfs deploy-homelab-komodo ssh setup
