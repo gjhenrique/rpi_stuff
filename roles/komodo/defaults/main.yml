@@ -1,0 +1,4 @@
+---
+# Komodo configuration defaults
+komodo_root_directory: /etc/komodo
+komodo_install_git_crypt: true

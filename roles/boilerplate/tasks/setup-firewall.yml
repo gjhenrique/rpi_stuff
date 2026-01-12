@@ -1,0 +1,47 @@
+---
+# Configure UFW firewall for Debian/Ubuntu systems
+
+- name: Reset UFW to defaults (optional, comment out if you want to preserve existing rules)
+  community.general.ufw:
+    state: reset
+  when: boilerplate_firewall_reset | default(false)
+
+- name: Set UFW default policies
+  community.general.ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+  loop:
+    - { direction: 'incoming', policy: 'deny' }
+    - { direction: 'outgoing', policy: 'allow' }
+  when: not (boilerplate_firewall_reset | default(false))
+
+- name: Allow SSH
+  community.general.ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+    comment: 'SSH'
+
+- name: Allow local network access to all ports
+  community.general.ufw:
+    rule: allow
+    src: "{{ boilerplate_firewall_local_network | default('192.168.1.0/24') }}"
+    comment: 'Local network access'
+
+- name: Allow HTTP (for Caddy/Let's Encrypt)
+  community.general.ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+    comment: 'HTTP (Caddy Lets Encrypt)'
+
+- name: Allow HTTPS
+  community.general.ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+    comment: 'HTTPS (Caddy)'
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled

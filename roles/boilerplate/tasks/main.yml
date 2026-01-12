@@ -17,3 +17,7 @@
     value: '80'
     sysctl_set: true
     sysctl_file: /etc/sysctl.d/10-unprivileged-port.conf
+
+- name: Configure firewall (Debian/Ubuntu)
+  include_tasks: setup-firewall.yml
+  when: ansible_os_family == 'Debian'

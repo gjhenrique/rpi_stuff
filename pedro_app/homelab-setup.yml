@@ -13,5 +13,9 @@
       recordsize: "1M"
       checksum: "sha256"
   roles:
+    - role: boilerplate
+      tags: boilerplate
     - role: zfs
       tags: zfs
+    - role: komodo
+      tags: komodo
