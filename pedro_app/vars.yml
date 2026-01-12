@@ -84,7 +84,7 @@ share_tailscale_enabled: true
 share_photoprism_cpus: 2
 
 # renovate: datasource=docker depName=tailscale/tailscale
-tailscale_version: v1.84
+tailscale_version: v1.92.5
 
 mount_paths:
   - mount_path: /mnt/external
