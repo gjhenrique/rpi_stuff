@@ -29,13 +29,20 @@
     file_systemd: "{{ item.mount_path[1:].split('/') | join('-') }}"
   loop: "{{ mount_paths }}"
 
-- name: Change ownership to specified user
-  ansible.builtin.file:
-    path: "{{ item.mount_path }}"
-    owner: "{{ item.user }}"
-    recurse: true
+- name: Remove .DS_Store files before changing ownership
+  ansible.builtin.shell: |
+    find "{{ item.mount_path }}" -name ".DS_Store" -type f -delete 2>/dev/null || true
   when: "item.user is defined"
   loop: "{{ mount_paths }}"
+  changed_when: false
+  failed_when: false
+
+- name: Change ownership to specified user
+  ansible.builtin.shell: |
+    find "{{ item.mount_path }}" \( -type f -o -type d \) -exec chown "{{ item.user }}" {} + 2>/dev/null || true
+  when: "item.user is defined"
+  loop: "{{ mount_paths }}"
+  changed_when: false
 
 - name: Create docker storage directory
   ansible.builtin.file:
