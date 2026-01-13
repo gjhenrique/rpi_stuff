@@ -357,9 +357,8 @@ tags = ["lovelace"]
 [stack.config]
 server = "lovelace"
 repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
+run_directory = "stacks/torrent"
 branch = "master"
-file_paths = ["torrent/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/tank
 
