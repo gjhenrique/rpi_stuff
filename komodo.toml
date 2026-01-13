@@ -367,3 +367,17 @@ TS_HOSTNAME: "[[TORRENT_TS_HOSTNAME]]"
 TS_TAG: "[[TORRENT_TS_TAG]]"
 TS_OAUTH_SECRET: "[[TORRENT_TS_OAUTH_SECRET]]"
 """
+
+[[stack]]
+name = "lovelace-paperless"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/paperless"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+PAPERLESS_URL: "[[PAPERLESS_URL]]"
+"""
