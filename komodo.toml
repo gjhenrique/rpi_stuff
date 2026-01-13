@@ -344,7 +344,7 @@ server = "lovelace"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks"
 branch = "master"
-file_paths = ["photos/compose.yaml"]
+file_paths = ["photos-full/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/tank
 

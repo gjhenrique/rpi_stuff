@@ -3,7 +3,8 @@ services:
   immich:
     image: ghcr.io/immich-app/immich-server:v2.4.1
     restart: unless-stopped
-    network_mode: "service:tailscale"
+    ports:
+      - 127.0.0.1:2283:2283
     volumes:
       - ${EXT_PATH}/immich:/data
       - ${EXT_PATH}/photos:/mnt/media/photos:ro
@@ -15,9 +16,9 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE_NAME: immich
-      REDIS_HOSTNAME: localhost
-      DB_HOSTNAME: localhost
-      IMMICH_MACHINE_LEARNING_URL: http://localhost:3003
+      REDIS_HOSTNAME: redis
+      DB_HOSTNAME: database
+      IMMICH_MACHINE_LEARNING_URL: http://machine-learning:3003
     depends_on:
       - redis
       - database
@@ -25,14 +26,12 @@ services:
 
   redis:
     restart: unless-stopped
-    network_mode: "service:tailscale"
     image: docker.io/valkey/valkey:8-bookworm@sha256:fea8b3e67b15729d4bb70589eb03367bab9ad1ee89c876f54327fc7c6e618571
     healthcheck:
       test: redis-cli ping || exit 1
 
   database:
     restart: unless-stopped
-    network_mode: "service:tailscale"
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:c44be5f2871c59362966d71eab4268170eb6f5653c0e6170184e72b38ffdf107
     environment:
       POSTGRES_USER: postgres
@@ -47,7 +46,6 @@ services:
   machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:v2.4.1
     restart: unless-stopped
-    network_mode: "service:tailscale"
     volumes:
       - ${EXT_PATH}/immich/model-cache:/cache
       - /etc/localtime:/etc/localtime:ro
