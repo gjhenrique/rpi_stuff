@@ -22,6 +22,38 @@
     proto: tcp
     comment: 'SSH'
 
+- name: Allow DNS from localhost (UDP)
+  community.general.ufw:
+    rule: allow
+    port: '53'
+    proto: udp
+    src: '127.0.0.1'
+    comment: 'DNS from localhost (UDP)'
+
+- name: Allow DNS from localhost (TCP)
+  community.general.ufw:
+    rule: allow
+    port: '53'
+    proto: tcp
+    src: '127.0.0.1'
+    comment: 'DNS from localhost (TCP)'
+
+- name: Allow DNS from local network (UDP)
+  community.general.ufw:
+    rule: allow
+    port: '53'
+    proto: udp
+    src: "{{ boilerplate_firewall_local_network | default('192.168.1.0/24') }}"
+    comment: 'DNS from local network (UDP)'
+
+- name: Allow DNS from local network (TCP)
+  community.general.ufw:
+    rule: allow
+    port: '53'
+    proto: tcp
+    src: "{{ boilerplate_firewall_local_network | default('192.168.1.0/24') }}"
+    comment: 'DNS from local network (TCP)'
+
 - name: Allow local network access to all ports
   community.general.ufw:
     rule: allow

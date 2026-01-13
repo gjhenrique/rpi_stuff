@@ -1,11 +1,45 @@
+- name: Check for running apt processes
+  ansible.builtin.shell: |
+    ps aux | grep -E '[a]pt|[d]pkg' | wc -l
+  register: apt_process_count
+  changed_when: false
+  failed_when: false
+
+- name: Check for apt lock files
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  register: apt_locks
+  loop:
+    - /var/lib/apt/lists/lock
+    - /var/cache/apt/archives/lock
+    - /var/lib/dpkg/lock
+    - /var/lib/dpkg/lock-frontend
+  failed_when: false
+
+- name: Remove stale apt locks if no processes are running
+  ansible.builtin.file:
+    path: "{{ item.item }}"
+    state: absent
+  loop: "{{ apt_locks.results }}"
+  when:
+    - apt_process_count.stdout | int == 0
+    - item.stat.exists
+  ignore_errors: true
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  timeout: 300
+
 - name: Dependencies for adding repos
   ansible.builtin.apt:
     name:
       - apt-transport-https
       - ca-certificates
       - gnupg2
-    update_cache: true
     state: present
+  timeout: 300
 
 - name: Add Docker apt key.
   ansible.builtin.get_url:
@@ -20,6 +54,7 @@
     repo: "{{ docker_apt_repository }}"
     state: present
     update_cache: true
+  timeout: 300
 
 - name: Ensure dependencies are installed.
   ansible.builtin.apt:
@@ -41,4 +76,47 @@
       - python3-pip
     update_cache: true
     state: present
+  timeout: 1800
+
+- name: Disable systemd-resolved to free port 53 for AdGuard
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    enabled: false
+    state: stopped
+
+- name: Configure systemd-resolved to not listen on port 53
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backup: true
+  loop:
+    - { regexp: '^#?DNSStubListener=', line: 'DNSStubListener=no' }
+    - { regexp: '^#?DNS=', line: 'DNS=127.0.0.1' }
+    - { regexp: '^#?FallbackDNS=', line: 'FallbackDNS=' }
+
+- name: Remove systemd-resolved symlink for resolv.conf
+  ansible.builtin.file:
+    path: /etc/resolv.conf
+    state: absent
+  when: ansible_facts['resolv_conf']['is_link'] | default(false)
+
+- name: Remove immutable attribute from resolv.conf if present
+  ansible.builtin.file:
+    path: /etc/resolv.conf
+    attributes: -i
+  ignore_errors: true
+
+- name: Create static resolv.conf pointing to localhost for AdGuard, with fallback to Cloudflare and Google
+  ansible.builtin.copy:
+    dest: /etc/resolv.conf
+    content: |
+      # Static resolv.conf for AdGuard
+      # AdGuard will be running on 127.0.0.1:53
+      nameserver 127.0.0.1
+      nameserver 1.1.1.1
+      nameserver 8.8.8.8
+    mode: '0644'
+    owner: root
+    group: root
 

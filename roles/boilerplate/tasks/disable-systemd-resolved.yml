@@ -33,6 +33,7 @@
     owner: root
     group: root
     mode: '0644'
+  when: boilerplate_protect_resolv_conf | default(true)
 
 - name: Prevent resolv.conf from being overwritten by DHCP
   ansible.builtin.file:

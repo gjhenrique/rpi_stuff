@@ -22,9 +22,7 @@
 			"dst": [
 				"tag:gui-torrent:*",
 				"tag:gui-subnet-router:*",
-
 				"192.168.178.96/32:2200",
-
 				"192.168.178.96/32:53",
 				"192.168.178.96/32:80",
 				"192.168.178.96/32:9120",
@@ -44,10 +42,18 @@
 				"tag:pedro-observability:*",
 				"tag:pedro-actual:*",
 				"tag:pedro-paperless:*",
+				// New setup for beefy homeserver
 				"tag:tanaka-subnet-router:*",
 				"tag:tanaka-adguard:*",
 				"tag:tanaka-emby:*",
 				"tag:tanaka-samba:*",
+				"tag:tanaka-torrent:*",
+
+				// pedro's router
+				"192.168.1.219/32:53",
+				"192.168.1.219/32:80",
+				"192.168.1.219/32:443",
+				"192.168.1.219/32:47654",
 			],
 		},
 
@@ -93,15 +99,8 @@
 
 			"dst": [
 				"tag:pedro-torrent",
-				"tag:pedro-share",
-				"tag:pedro-syncthing",
-				"tag:pedro-observability",
-				"tag:pedro-actual",
-				"tag:pedro-paperless",
 				"tag:tanaka-subnet-router",
-				"tag:tanaka-adguard",
-				"tag:tanaka-emby",
-				"tag:tanaka-samba",
+				"tag:tanaka-torrent",
 			],
 
 			"src":   ["group:pedro"],
@@ -110,9 +109,8 @@
 	],
 
 	"tagOwners": {
-		"tag:gui-subnet-router": ["group:gui"],
-		"tag:gui-torrent":       ["group:gui"],
-
+		"tag:gui-subnet-router":   ["group:gui"],
+		"tag:gui-torrent":         ["group:gui"],
 		"tag:pedro-mgmt":          ["group:pedro"],
 		"tag:pedro-torrent":       ["tag:pedro-mgmt"],
 		"tag:pedro-syncthing":     ["tag:pedro-mgmt"],
@@ -122,12 +120,13 @@
 		"tag:pedro-plex":          ["tag:pedro-mgmt"],
 		"tag:pedro-actual":        ["tag:pedro-mgmt"],
 		"tag:pedro-paperless":     ["tag:pedro-mgmt"],
-
+		// New setup
 		"tag:tanaka-mgmt":          ["group:pedro"],
 		"tag:tanaka-subnet-router": ["tag:tanaka-mgmt"],
 		"tag:tanaka-adguard":       ["tag:tanaka-mgmt"],
 		"tag:tanaka-emby":          ["tag:tanaka-mgmt"],
 		"tag:tanaka-samba":         ["tag:tanaka-mgmt"],
+		"tag:tanaka-torrent":       ["tag:tanaka-mgmt"],
 	},
 
 	"groups": {
@@ -156,9 +155,21 @@
 			"target": ["autogroup:member", "tag:gui-subnet-router"],
 			"attr":   ["funnel"],
 		},
-		{"target": ["100.86.172.76"], "attr": ["mullvad"]},
-		{"target": ["100.68.99.64"], "attr": ["mullvad"]},
-		{"target": ["100.74.216.15"], "attr": ["mullvad"]},
+		{
+			"target": ["100.86.172.76"],
+			"attr":   ["mullvad"],
+		},
+		{
+			"target": ["100.68.99.64"],
+			"attr":   ["mullvad"],
+		},
+		{
+			"target": ["100.74.216.15"],
+			"attr":   ["mullvad"],
+		},
+
+		// Allow tanaka-torrent tag to use Mullvad exit nodes
+		{"target": ["tag:tanaka-torrent"], "attr": ["mullvad"]},
 	],
 
 	"autoApprovers": {

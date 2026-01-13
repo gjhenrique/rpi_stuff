@@ -12,6 +12,10 @@
       atime: "off"
       recordsize: "1M"
       checksum: "sha256"
+    # Disable systemd-resolved to free port 53 for AdGuard Home
+    boilerplate_disable_systemd_resolved: true
+    # Allow DHCP to manage resolv.conf (don't create static file or make it immutable)
+    boilerplate_protect_resolv_conf: false
   roles:
     - role: boilerplate
       tags: boilerplate
