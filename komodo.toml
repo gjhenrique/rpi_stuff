@@ -394,7 +394,7 @@ file_paths = ["prometheus/compose.yaml"]
 environment = """
 EXT_PATH: /mnt/tank
 
-PROMETHEUS_RETENTION: "750d"
-PROMETHEUS_CONFIG_FILE: "custom/prometheus.yml"
-ALERTMANAGER_CONFIG_FILE: "custom/alertmanager.yml"
+PROMETHEUS_RETENTION: 750d
+PROMETHEUS_CONFIG_FILE: custom/prometheus.yml
+ALERTMANAGER_CONFIG_FILE: custom/alertmanager.yml
 """
