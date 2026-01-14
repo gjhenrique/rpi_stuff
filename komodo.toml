@@ -282,7 +282,8 @@ profiles = ["full"]
 environment = """
 EXT_PATH: /mnt/tank
 
-# AdGuard Exporter credentials (optional - only if auth is enabled)
+# AdGuard Exporter credentials (optional - only needed if AdGuard auth is enabled)
+# Add these to Komodo secrets if your AdGuard has authentication enabled
 ADGUARD_USERNAME: "[[ADGUARD_USERNAME]]"
 ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
 """
