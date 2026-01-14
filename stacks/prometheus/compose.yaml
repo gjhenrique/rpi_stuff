@@ -14,14 +14,17 @@ services:
     environment:
       - PROMETHEUS_CONFIG_FILE=${PROMETHEUS_CONFIG_FILE:-prometheus.yml.default}
       - PROMETHEUS_RETENTION=${PROMETHEUS_RETENTION:-30d}
+    entrypoint: ["/bin/sh", "-c"]
     command:
-      - --config.file=/etc/prometheus/${PROMETHEUS_CONFIG_FILE}
-      - --storage.tsdb.path=/prometheus
-      - --web.enable-lifecycle
-      - --storage.tsdb.retention.time=${PROMETHEUS_RETENTION}
-      - --enable-feature=memory-snapshot-on-shutdown
-      - --enable-feature=auto-gomaxprocs
-      - --enable-feature=native-histograms
+      - |
+        exec /bin/prometheus \
+          --config.file=/etc/prometheus/$$PROMETHEUS_CONFIG_FILE \
+          --storage.tsdb.path=/prometheus \
+          --web.enable-lifecycle \
+          --storage.tsdb.retention.time=$$PROMETHEUS_RETENTION \
+          --enable-feature=memory-snapshot-on-shutdown \
+          --enable-feature=auto-gomaxprocs \
+          --enable-feature=native-histograms
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy"]
       interval: 30s
@@ -40,9 +43,12 @@ services:
       - ${EXT_PATH}/alertmanager/config:/etc/alertmanager/custom:ro
     environment:
       - ALERTMANAGER_CONFIG_FILE=${ALERTMANAGER_CONFIG_FILE:-alertmanager.yml.default}
+    entrypoint: ["/bin/sh", "-c"]
     command:
-      - --config.file=/etc/alertmanager/${ALERTMANAGER_CONFIG_FILE}
-      - --storage.path=/alertmanager
+      - |
+        exec /bin/alertmanager \
+          --config.file=/etc/alertmanager/$$ALERTMANAGER_CONFIG_FILE \
+          --storage.path=/alertmanager
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:9093/-/healthy"]
       interval: 30s
