@@ -278,7 +278,6 @@ server = "lovelace"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks/adguard"
 branch = "master"
-profiles = ["full"]
 environment = """
 EXT_PATH: /mnt/tank
 

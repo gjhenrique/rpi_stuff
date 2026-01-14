@@ -32,5 +32,3 @@ services:
       - "prometheus.io/port=9618"
       - "prometheus.io/path=/metrics"
       - "prometheus.io/address=localhost:9618"
-    profiles:
-      - full
