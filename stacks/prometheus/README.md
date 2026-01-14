@@ -103,8 +103,14 @@ services:
 | Label | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `prometheus.io/scrape` | **Yes** | - | Set to `"true"` to enable scraping |
-| `prometheus.io/port` | No | First exposed port | Port to scrape metrics from |
+| `prometheus.io/address` | No | - | Full address (e.g., `localhost:9618`). Takes priority over `port` label. |
+| `prometheus.io/port` | No | First exposed port | Port to scrape metrics from (constructs `localhost:PORT`) |
 | `prometheus.io/path` | No | `/metrics` | HTTP path for metrics endpoint |
+
+**Address Priority:**
+1. If `prometheus.io/address` is set → use that address directly
+2. Else if `prometheus.io/port` is set → use `localhost:PORT`
+3. Else → use first exposed port from container
 
 ### Examples
 
@@ -145,6 +151,25 @@ services:
       prometheus.io/port: "9187"
       prometheus.io/path: "/probe"
 ```
+
+**Example 4: Service bound to localhost (not accessible via Docker network)**
+
+```yaml
+services:
+  exporter:
+    image: some-exporter:latest
+    ports:
+      - "127.0.0.1:9618:9618"  # Only accessible from host, so use host internal ip
+    labels:
+      prometheus.io/scrape: "true"
+      prometheus.io/address: "172.17.0.1:9618"  # Use full address from docker host
+      prometheus.io/path: "/metrics"
+```
+
+**When to use `prometheus.io/address`:**
+- Service is bound to localhost only (not accessible via Docker network)
+- Service is on a different host (e.g., `192.168.1.100:9618`)
+- Service requires specific hostname resolution
 
 ### Verifying Discovery
 

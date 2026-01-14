@@ -15,3 +15,22 @@ services:
     volumes:
       - ${EXT_PATH}/adguard/work:/opt/adguardhome/work
       - ${EXT_PATH}/adguard/conf:/opt/adguardhome/conf
+
+  adguard-exporter:
+    image: ghcr.io/henrywhitaker3/adguard-exporter:latest
+    container_name: adguard-exporter
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9618:9618"
+    environment:
+      - ADGUARD_SERVERS=http://adguard:80
+      - ADGUARD_USERNAME=${ADGUARD_USERNAME:-}
+      - ADGUARD_PASSWORD=${ADGUARD_PASSWORD:-}
+      - PORT=9618
+    labels:
+      - "prometheus.io/scrape=true"
+      - "prometheus.io/port=9618"
+      - "prometheus.io/path=/metrics"
+      - "prometheus.io/address=localhost:9618"
+    profiles:
+      - full

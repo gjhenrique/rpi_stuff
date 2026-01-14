@@ -278,8 +278,13 @@ server = "lovelace"
 repo = "gjhenrique/rpi_stuff"
 run_directory = "stacks/adguard"
 branch = "master"
+profiles = ["full"]
 environment = """
 EXT_PATH: /mnt/tank
+
+# AdGuard Exporter credentials (optional - only if auth is enabled)
+ADGUARD_USERNAME: "[[ADGUARD_USERNAME]]"
+ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
 """
 
 [[stack]]
