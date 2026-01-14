@@ -22,13 +22,6 @@ services:
     restart: unless-stopped
     ports:
       - "9633:9633"
-    volumes:
-      - /dev:/dev:ro
-      - /proc:/proc:ro
-      - /sys:/sys:ro
-      - /etc:/etc:ro
-    command:
-      - --smartctl.device-include="^/dev/sd[a-z]$"
     healthcheck:
       test: ["CMD", "wget", "--spider", "http://localhost:9633/"]
       interval: 30s
