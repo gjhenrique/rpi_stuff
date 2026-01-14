@@ -395,6 +395,6 @@ environment = """
 EXT_PATH: /mnt/tank
 
 PROMETHEUS_RETENTION: "750d"
-# PROMETHEUS_CONFIG_FILE: "custom/prometheus.yml"  # Optional: override config
-# ALERTMANAGER_CONFIG_FILE: "custom/alertmanager.yml"  # Optional: override config
+PROMETHEUS_CONFIG_FILE: "custom/prometheus.yml"
+ALERTMANAGER_CONFIG_FILE: "custom/alertmanager.yml"
 """

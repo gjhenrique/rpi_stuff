@@ -1,4 +1,12 @@
 ---
+# This is the DEFAULT Prometheus configuration
+# Minimal setup with Docker Service Discovery only
+#
+# To use a custom config:
+# 1. Create /mnt/tank/prometheus/config/prometheus.yml on the server
+# 2. Set PROMETHEUS_CONFIG_FILE: "custom/prometheus.yml" in komodo.toml
+# 3. Redeploy the stack
+
 global:
   scrape_interval: 30s
   scrape_timeout: 14s
@@ -24,6 +32,10 @@ scrape_configs:
       - targets: ['localhost:9093']
 
   # Docker Service Discovery - auto-scrape containers with labels
+  # Add these labels to your containers:
+  #   prometheus.io/scrape: "true"
+  #   prometheus.io/port: "8080"        # optional
+  #   prometheus.io/path: "/metrics"    # optional
   - job_name: 'docker_sd'
     docker_sd_configs:
       - host: unix:///var/run/docker.sock

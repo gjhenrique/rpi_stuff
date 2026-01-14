@@ -42,6 +42,7 @@ services:
       - ${EXT_PATH}/alertmanager/data:/alertmanager
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml.default:ro
       - ${EXT_PATH}/alertmanager/config:/etc/alertmanager/custom:ro
+      - ${EXT_PATH}/alertmanager/config/templates:/etc/alertmanager/templates:ro
     environment:
       - ALERTMANAGER_CONFIG_FILE=${ALERTMANAGER_CONFIG_FILE:-alertmanager.yml.default}
     entrypoint: ["/bin/sh", "-c"]

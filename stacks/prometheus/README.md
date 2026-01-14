@@ -8,7 +8,7 @@ This stack includes:
 
 - **Prometheus v3.8.1** - Metrics collection and storage
 - **Alertmanager v0.30.0** - Alert routing and notification management
-- **Docker Service Discovery** - Auto-scrape containers via labels
+- **Docker Service Discovery** - Auto-scrape containers via labelsh
 - **Config override mechanism** - Customize configs without git changes
 - **Rules directory on EXT_PATH** - Easy alert rule management
 
