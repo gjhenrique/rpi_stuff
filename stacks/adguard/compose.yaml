@@ -24,8 +24,8 @@ services:
       - "9618:9618"
     environment:
       - ADGUARD_SERVERS=http://adguard:80
-      - ADGUARD_USERNAME=${ADGUARD_USERNAME:-}
-      - ADGUARD_PASSWORD=${ADGUARD_PASSWORD:-}
+      - ADGUARD_USERNAMES=${ADGUARD_USERNAME:-}
+      - ADGUARD_PASSWORDS=${ADGUARD_PASSWORD:-}
       - PORT=9618
     labels:
       - "prometheus.io/scrape=true"
