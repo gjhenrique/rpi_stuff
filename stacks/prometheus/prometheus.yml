@@ -1,0 +1,73 @@
+---
+global:
+  scrape_interval: 30s
+  scrape_timeout: 14s
+  evaluation_interval: 1m
+
+rule_files:
+  - /etc/prometheus/rules/*.rules.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Alertmanager metrics
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets: ['localhost:9093']
+
+  # Docker Service Discovery - auto-scrape containers with labels
+  - job_name: 'docker_sd'
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 30s
+    relabel_configs:
+      # Only scrape containers with prometheus.io/scrape=true label
+      - source_labels: [__meta_docker_container_label_prometheus_io_scrape]
+        action: keep
+        regex: true
+
+      # Set address: use prometheus.io/port label if present
+      - source_labels: [__meta_docker_container_label_prometheus_io_port]
+        action: replace
+        target_label: __address__
+        regex: (.+)
+        replacement: localhost:${1}
+
+      # Fallback to container's first exposed port if no label
+      - source_labels: [__address__, __meta_docker_port_private]
+        action: replace
+        target_label: __address__
+        regex: ;(.+)
+        replacement: localhost:${1}
+
+      # Extract metrics path from label
+      - source_labels: [__meta_docker_container_label_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+        replacement: ${1}
+
+      # Use container name as instance label (strip leading slash)
+      - source_labels: [__meta_docker_container_name]
+        action: replace
+        regex: /(.+)
+        target_label: instance
+        replacement: ${1}
+
+      # Preserve docker compose service name
+      - source_labels: [__meta_docker_container_label_com_docker_compose_service]
+        action: replace
+        target_label: service
+
+      # Preserve docker compose project name
+      - source_labels: [__meta_docker_container_label_com_docker_compose_project]
+        action: replace
+        target_label: project

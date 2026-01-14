@@ -1,0 +1,53 @@
+---
+services:
+  prometheus:
+    image: prom/prometheus:v3.8.1
+    container_name: prometheus
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - ${EXT_PATH}/prometheus/data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml.default:ro
+      - ${EXT_PATH}/prometheus/config:/etc/prometheus/custom:ro
+      - ${EXT_PATH}/prometheus/rules:/etc/prometheus/rules:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - PROMETHEUS_CONFIG_FILE=${PROMETHEUS_CONFIG_FILE:-prometheus.yml.default}
+      - PROMETHEUS_RETENTION=${PROMETHEUS_RETENTION:-30d}
+    command:
+      - --config.file=/etc/prometheus/$${PROMETHEUS_CONFIG_FILE}
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --storage.tsdb.retention.time=$${PROMETHEUS_RETENTION}
+      - --enable-feature=memory-snapshot-on-shutdown
+      - --enable-feature=auto-gomaxprocs
+      - --enable-feature=native-histograms
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  alertmanager:
+    image: prom/alertmanager:v0.30.0
+    container_name: alertmanager
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - ${EXT_PATH}/alertmanager/data:/alertmanager
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml.default:ro
+      - ${EXT_PATH}/alertmanager/config:/etc/alertmanager/custom:ro
+    environment:
+      - ALERTMANAGER_CONFIG_FILE=${ALERTMANAGER_CONFIG_FILE:-alertmanager.yml.default}
+    command:
+      - --config.file=/etc/alertmanager/$${ALERTMANAGER_CONFIG_FILE}
+      - --storage.path=/alertmanager
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9093/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      - prometheus

@@ -1,0 +1,15 @@
+---
+global:
+  resolve_timeout: 5m
+
+receivers:
+  - name: 'null-receiver'
+    # Default receiver that does nothing
+    # Configure with webhook, email, telegram, etc. as needed
+
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: 'null-receiver'

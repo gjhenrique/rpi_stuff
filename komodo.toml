@@ -381,3 +381,20 @@ EXT_PATH: /mnt/tank
 
 PAPERLESS_URL: "[[PAPERLESS_URL]]"
 """
+
+[[stack]]
+name = "lovelace-prometheus"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["prometheus/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/tank
+
+PROMETHEUS_RETENTION: "[[PROMETHEUS_RETENTION]]"
+PROMETHEUS_CONFIG_FILE: "[[PROMETHEUS_CONFIG_FILE]]"
+ALERTMANAGER_CONFIG_FILE: "[[ALERTMANAGER_CONFIG_FILE]]"
+"""
