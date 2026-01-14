@@ -21,7 +21,7 @@ services:
     container_name: adguard-exporter
     restart: unless-stopped
     ports:
-      - "127.0.0.1:9618:9618"
+      - "9618:9618"
     environment:
       - ADGUARD_SERVERS=http://adguard:80
       - ADGUARD_USERNAME=${ADGUARD_USERNAME:-}
