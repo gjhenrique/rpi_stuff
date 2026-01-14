@@ -128,7 +128,19 @@ photos.{$DOMAIN} {
 
 	# no authentication because of the mobile app
 	# auth is handled by immich itself
-	reverse_proxy 127.0.0.1:2283
+	reverse_proxy 127.0.0.1:2283 {
+		# Immich can proxy/stream large video files; keep upstream timeouts high
+		transport http {
+			# Max time to establish a TCP connection to upstream
+			dial_timeout 60s
+
+			# Time allowed to read the entire upstream response body (long video streams)
+			read_timeout 2h
+
+			# Time allowed to write the entire request body to upstream (large uploads)
+			write_timeout 2h
+		}
+	}
 }
 
 # home-assistant
