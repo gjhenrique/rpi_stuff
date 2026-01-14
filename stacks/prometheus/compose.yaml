@@ -5,6 +5,7 @@ services:
     container_name: prometheus
     network_mode: host
     restart: unless-stopped
+    user: "65534:988"  # nobody:docker to access docker socket
     volumes:
       - ${EXT_PATH}/prometheus/data:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml.default:ro
