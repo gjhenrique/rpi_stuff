@@ -23,3 +23,5 @@
       tags: zfs
     - role: komodo
       tags: komodo
+    - role: o11y-prereq
+      tags: o11y-prereq

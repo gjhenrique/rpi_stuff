@@ -1,0 +1,3 @@
+---
+# Defaults for o11y-prereq role
+# This role installs prometheus-node-exporter and enables it as a systemd service

@@ -1,0 +1,30 @@
+---
+- name: Install prerequisites for Debian
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - prometheus-node-exporter
+    - jq
+    - curl
+    - smartmontools
+  when: ansible_os_family == 'Debian'
+  tags: prereq
+
+- name: Install prerequisites for Archlinux
+  community.general.pacman:
+    name:
+      - prometheus-node-exporter
+      - jq
+      - curl
+      - smartmontools
+    update_cache: true
+    state: present
+  when: ansible_os_family == 'Archlinux'
+  tags: prereq
+
+- name: Enable and start prometheus-node-exporter service
+  ansible.builtin.systemd:
+    name: prometheus-node-exporter
+    enabled: yes
+    state: started

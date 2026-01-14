@@ -1,9 +1,7 @@
 ---
-- include_tasks: prereq-arch.yml
-  when: ansible_os_family == 'Archlinux'
-
-- include_tasks: prereq-debian.yml
-  when: ansible_os_family == 'Debian'
+- name: Include o11y-prereq role for node_exporter
+  ansible.builtin.include_role:
+    name: o11y-prereq
 
 - name: Create user for observability
   ansible.builtin.user:

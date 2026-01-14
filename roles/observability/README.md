@@ -15,8 +15,22 @@ By default, it will:
 
 This role depends on the following roles:
 
+- [o11y-prereq](../o11y-prereq/README.md) - Installs prometheus-node-exporter as a systemd service
 - [boilerplate](../boilerplate/README.md)
 - [compose](../compose/README.md)
+
+### Installing Node Exporter Standalone
+
+If you only need to install `prometheus-node-exporter` without the full observability stack (Prometheus, Grafana, etc.), you can use the `o11y-prereq` role directly:
+
+```yaml
+- hosts: all
+  become: true
+  roles:
+    - role: o11y-prereq
+```
+
+This will install and enable the `prometheus-node-exporter` systemd service, which listens on port `9100` by default.
 
 ## HDD Monitoring
 
