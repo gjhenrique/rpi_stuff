@@ -16,10 +16,10 @@ deploy-homelab-zfs:
 deploy-homelab-komodo:
 	ansible-playbook homelab-setup.yml --become-password-file ~/.pwd-file -vv --tags komodo
 
-run: deploy sync-rules
+run: deploy sync-prom
 
 ssh:
-	ssh pedro@mediasrv
+	ssh root@homelab
 
 decrypt:
 	ansible-vault decrypt secrets.yml
@@ -30,14 +30,21 @@ encrypt:
 validate:
 	# TODO: fix linting issues for ansible
 	#ansible-lint site.yml
+	promtool check config prometheus.yml
 	promtool check rules prom_rules/files/*.rules.yml
 
-## Avoid running the whole playbook, just sync the rules
-sync-rules:
-	rsync -avpz --delete prom_rules/files/*.rules.yml root@mediasrv:/home/observability/prometheus/config/rules/
-	# send a reload signal to the prometheus server
-	curl -X POST http://mediasrv:9090/-/reload
+## Sync Prometheus configuration and rules without running full playbook
+sync-prom:
+	# Sync main Prometheus config
+	rsync -avpz prometheus.yml root@homelab:/mnt/tank/prometheus/config/
+	# Sync alerting/recording rules
+	rsync -avpz --delete prom_rules/files/*.rules.yml root@homelab:/mnt/tank/prometheus/rules/
+	# Send reload signal to Prometheus server
+	curl -X POST http://homelab:9090/-/reload
+
+# Legacy target name for backward compatibility
+sync-rules: sync-prom
 
 
 
-.PHONY: decrypt encrypt run validate sync-rules deploy deploy-homelab deploy-homelab-boilerplate deploy-homelab-zfs deploy-homelab-komodo ssh setup
+.PHONY: decrypt encrypt run validate sync-prom sync-rules deploy deploy-homelab deploy-homelab-boilerplate deploy-homelab-zfs deploy-homelab-komodo ssh setup

@@ -1,0 +1,130 @@
+#==============================================================================
+# GLOBAL CONFIGURATION
+#==============================================================================
+# Default settings applied to all scrape jobs unless overridden
+
+global:
+  scrape_interval: 30s      # How often to scrape targets by default
+  scrape_timeout: 20s        # How long until a scrape request times out
+  evaluation_interval: 2m    # How often to evaluate alerting rules
+
+#==============================================================================
+# ALERTING CONFIGURATION
+#==============================================================================
+# Configure how Prometheus sends alerts to Alertmanager
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    timeout: 10s
+    api_version: v2
+    static_configs:
+    - targets:
+      - localhost:9093  # Alertmanager instance
+
+#==============================================================================
+# RULE FILES
+#==============================================================================
+# Load all alerting and recording rules from this directory
+
+rule_files:
+- /etc/prometheus/rules/*.rules.yml
+
+#==============================================================================
+# SCRAPE CONFIGURATIONS
+#==============================================================================
+# Each job defines a set of targets and parameters for scraping metrics
+#
+# Job categories:
+# - Core Monitoring: prometheus, alertmanager
+# - Infrastructure: node-exporter, docker-containers, docker-daemon
+# - Applications: (custom applications and services)
+# - Environmental: (IoT sensors and weather data)
+#==============================================================================
+
+scrape_configs:
+
+#------------------------------------------------------------------------------
+# CORE MONITORING - Prometheus & Alertmanager
+#------------------------------------------------------------------------------
+
+- job_name: prometheus
+  # Scrapes Prometheus's own metrics
+  static_configs:
+  - targets:
+    - localhost:9090
+
+- job_name: alertmanager
+  # Scrapes Alertmanager metrics
+  static_configs:
+  - targets:
+    - localhost:9093
+
+#------------------------------------------------------------------------------
+# INFRASTRUCTURE MONITORING - Docker & System Metrics
+#------------------------------------------------------------------------------
+
+- job_name: docker-containers
+  # Auto-discovers Docker containers with prometheus.io labels
+  # Containers must have: prometheus.io/scrape=true
+  # Optional labels: prometheus.io/port, prometheus.io/path
+  relabel_configs:
+  - source_labels: [__meta_docker_container_label_prometheus_io_scrape]
+    regex: "true"
+    action: keep  # Only scrape containers with scrape=true label
+
+  - source_labels: [__meta_docker_container_label_prometheus_io_port]
+    regex: (.+)
+    target_label: __address__
+    replacement: localhost:${1}
+    action: replace  # Use custom port if specified
+
+  - source_labels: [__address__, __meta_docker_port_private]
+    regex: ;(.+)
+    target_label: __address__
+    replacement: localhost:${1}
+    action: replace  # Fallback to container's exposed port
+
+  - source_labels: [__meta_docker_container_label_prometheus_io_path]
+    regex: (.+)
+    target_label: __metrics_path__
+    replacement: ${1}
+    action: replace  # Use custom metrics path if specified
+
+  - source_labels: [__meta_docker_container_name]
+    regex: /(.+)
+    target_label: instance
+    replacement: ${1}
+    action: replace  # Clean up container name
+
+  - source_labels: [__meta_docker_container_label_com_docker_compose_service]
+    target_label: service
+    replacement: $1
+    action: replace  # Add compose service name label
+
+  - source_labels: [__meta_docker_container_label_com_docker_compose_project]
+    target_label: project
+    replacement: $1
+    action: replace  # Add compose project name label
+
+  docker_sd_configs:
+  - host: unix:///var/run/docker.sock
+    port: 80
+    host_networking_host: localhost
+    refresh_interval: 30s
+    match_first_network: true
+
+- job_name: node-exporter
+  # System metrics: CPU, memory, disk, network from the host machine
+  honor_labels: true
+  static_configs:
+  - targets:
+    - 172.17.0.1:9100  # Docker bridge IP to reach host
+
+- job_name: docker-daemon
+  # Docker daemon internal metrics (experimental metrics feature)
+  # Enable with: dockerd --experimental --metrics-addr=0.0.0.0:9323
+  scrape_interval: 1m
+  static_configs:
+  - targets:
+    - 172.17.0.1:9323
