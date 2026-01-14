@@ -15,10 +15,10 @@ services:
       - PROMETHEUS_CONFIG_FILE=${PROMETHEUS_CONFIG_FILE:-prometheus.yml.default}
       - PROMETHEUS_RETENTION=${PROMETHEUS_RETENTION:-30d}
     command:
-      - --config.file=/etc/prometheus/$${PROMETHEUS_CONFIG_FILE}
+      - --config.file=/etc/prometheus/${PROMETHEUS_CONFIG_FILE}
       - --storage.tsdb.path=/prometheus
       - --web.enable-lifecycle
-      - --storage.tsdb.retention.time=$${PROMETHEUS_RETENTION}
+      - --storage.tsdb.retention.time=${PROMETHEUS_RETENTION}
       - --enable-feature=memory-snapshot-on-shutdown
       - --enable-feature=auto-gomaxprocs
       - --enable-feature=native-histograms
@@ -41,7 +41,7 @@ services:
     environment:
       - ALERTMANAGER_CONFIG_FILE=${ALERTMANAGER_CONFIG_FILE:-alertmanager.yml.default}
     command:
-      - --config.file=/etc/alertmanager/$${ALERTMANAGER_CONFIG_FILE}
+      - --config.file=/etc/alertmanager/${ALERTMANAGER_CONFIG_FILE}
       - --storage.path=/alertmanager
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:9093/-/healthy"]
