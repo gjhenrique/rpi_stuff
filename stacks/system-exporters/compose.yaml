@@ -15,7 +15,7 @@ services:
       - "prometheus.io/path=/"
 
   smartctl_exporter:
-    image: prometheuscommunity/smartctl-exporter:0.14.0
+    image: prometheuscommunity/smartctl-exporter:v0.14.0
     container_name: smartctl_exporter
     privileged: true
     user: root
