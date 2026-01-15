@@ -28,3 +28,40 @@
     name: prometheus-node-exporter
     enabled: yes
     state: started
+
+- name: Create /etc/docker directory if it does not exist
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    mode: '0755'
+
+- name: Check current metrics-addr setting
+  ansible.builtin.shell: |
+    if [ -f /etc/docker/daemon.json ]; then
+      jq -r '.["metrics-addr"] // "not-set"' /etc/docker/daemon.json
+    else
+      echo "not-set"
+    fi
+  register: current_metrics_addr
+  changed_when: false
+  failed_when: false
+
+- name: Merge metrics-addr into daemon.json using jq
+  ansible.builtin.shell: |
+    if [ -f /etc/docker/daemon.json ]; then
+      jq '. + {"metrics-addr": "0.0.0.0:9323"}' /etc/docker/daemon.json > /etc/docker/daemon.json.tmp
+    else
+      echo '{"metrics-addr": "0.0.0.0:9323"}' > /etc/docker/daemon.json.tmp
+    fi
+    mv /etc/docker/daemon.json.tmp /etc/docker/daemon.json
+    chmod 0644 /etc/docker/daemon.json
+  register: daemon_json_result
+  when: current_metrics_addr.stdout != "0.0.0.0:9323"
+  changed_when: true
+
+- name: Restart docker service
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+    enabled: true
+  when: daemon_json_result.changed | default(false)
