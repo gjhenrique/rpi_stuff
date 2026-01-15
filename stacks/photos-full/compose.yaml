@@ -19,6 +19,12 @@ services:
       REDIS_HOSTNAME: redis
       DB_HOSTNAME: database
       IMMICH_MACHINE_LEARNING_URL: http://machine-learning:3003
+      IMMICH_METRICS: "true"
+      IMMICH_TELEMETRY_INCLUDE: "all"
+    labels:
+      - "prometheus.io/scrape=true"
+      - "prometheus.io/port=2283"
+      - "prometheus.io/path=/metrics"
     depends_on:
       - redis
       - database

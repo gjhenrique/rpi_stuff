@@ -401,16 +401,3 @@ PROMETHEUS_RETENTION: 750d
 PROMETHEUS_CONFIG_FILE: custom/prometheus.yml
 ALERTMANAGER_CONFIG_FILE: custom/alertmanager.yml
 """
-
-[[stack]]
-name = "lovelace-system-exporters"
-tags = ["lovelace"]
-[stack.config]
-server = "lovelace"
-repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks"
-branch = "master"
-file_paths = ["system-exporters/compose.yaml"]
-environment = """
-EXT_PATH: /mnt/tank
-"""
