@@ -2,7 +2,6 @@
 services:
   docker_stats_exporter:
     image: wywywywy/docker_stats_exporter:latest
-    container_name: docker_stats_exporter
     restart: unless-stopped
     ports:
       - "9487:9487"
@@ -16,7 +15,6 @@ services:
 
   smartctl_exporter:
     image: prometheuscommunity/smartctl-exporter:v0.14.0
-    container_name: smartctl_exporter
     privileged: true
     user: root
     restart: unless-stopped
