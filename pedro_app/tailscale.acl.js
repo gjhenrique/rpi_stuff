@@ -54,6 +54,7 @@
 				"192.168.1.219/32:80",
 				"192.168.1.219/32:443",
 				"192.168.1.219/32:47654",
+				"192.168.1.219/32:8096",
 			],
 		},
 
@@ -167,9 +168,7 @@
 			"target": ["100.74.216.15"],
 			"attr":   ["mullvad"],
 		},
-
-		// Allow tanaka-torrent tag to use Mullvad exit nodes
-		{"target": ["tag:tanaka-torrent"], "attr": ["mullvad"]},
+		{"target": ["100.122.103.3"], "attr": ["mullvad"]},
 	],
 
 	"autoApprovers": {
