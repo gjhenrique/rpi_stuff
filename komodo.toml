@@ -401,3 +401,20 @@ PROMETHEUS_RETENTION: 750d
 PROMETHEUS_CONFIG_FILE: custom/prometheus.yml
 ALERTMANAGER_CONFIG_FILE: custom/alertmanager.yml
 """
+
+[[stack]]
+name = "lovelace-perses"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/perses"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+PERSES_DB_USERNAME: "[[PERSES_DB_USERNAME]]"
+PERSES_DB_PASSWORD: "[[PERSES_DB_PASSWORD]]"
+PERSES_DB_NAME: perses
+TZ: Europe/Berlin
+"""

@@ -1,0 +1,16 @@
+---
+# Perses Configuration
+# This file configures Perses to automatically provision dashboards and datasources
+# from the specified folders. Perses will check these folders periodically (default: 1 hour)
+# and inject any changes into the database.
+
+provisioning:
+  # Interval for checking provisioning folders for changes
+  # Default is 1 hour if not specified
+  interval: "30m"
+  
+  # Folders to watch for dashboard and datasource definitions
+  # Perses will recursively scan these directories for YAML/JSON files
+  folders:
+    - /var/lib/perses/dashboards
+    - /var/lib/perses/datasources

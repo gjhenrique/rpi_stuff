@@ -37,6 +37,7 @@
 				ui link "DNS" https://dns.{$DOMAIN}/ icon "las la-network-wired"
 				ui link "Backup" https://backup.{$DOMAIN}/ icon "las la-hdd"
 				ui link "Emby" https://emby.{$DOMAIN}/ icon "las la-video"
+				ui link "Dashboards" https://dashboards.{$DOMAIN}/ icon "las la-chart-line"
 			}
 		}
 
@@ -184,4 +185,12 @@ prowlarr.{$DOMAIN} {
 
 	authorize with mypolicy
 	reverse_proxy 127.0.0.1:9696
+}
+
+# perses dashboards
+dashboards.{$DOMAIN} {
+	import cloudflare_tls
+
+	authorize with mypolicy
+	reverse_proxy 127.0.0.1:8080
 }
