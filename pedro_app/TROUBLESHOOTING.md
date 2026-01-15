@@ -300,6 +300,14 @@ The system crashed twice today with drastically different uptimes (22h → 1h), 
 
 **DO NOT attempt normal operation until hardware is tested/replaced.**
 
+### 🆘 If System Cannot Stay On: Boot to Safe/Recovery Mode
+
+**If the system crashes constantly and you can't access it**, see **[SAFE_MODE_BOOT.md](./SAFE_MODE_BOOT.md)** for instructions on:
+- Booting to Ubuntu Recovery Mode
+- Single-user/emergency mode
+- Minimal boot configuration
+- Disabling services to reduce load
+
 ### Priority Actions (In Order):
 
 1. **BOOT TO MEMTEST86+ IMMEDIATELY** - **🚨 EMERGENCY PRIORITY**
