@@ -73,17 +73,26 @@ scrape_configs:
     regex: "true"
     action: keep  # Only scrape containers with scrape=true label
 
-  - source_labels: [__meta_docker_container_label_prometheus_io_port]
+  # Set address: use prometheus.io/address label if present (highest priority)
+  - source_labels: [__meta_docker_container_label_prometheus_io_address]
+    action: replace
+    target_label: __address__
     regex: (.+)
-    target_label: __address__
-    replacement: localhost:${1}
-    action: replace  # Use custom port if specified
+    replacement: ${1}
 
-  - source_labels: [__address__, __meta_docker_port_private]
-    regex: ;(.+)
+  # Otherwise use prometheus.io/port label if present
+  - source_labels: [__address__, __meta_docker_container_label_prometheus_io_port]
+    action: replace
     target_label: __address__
+    regex: ;(.+)
     replacement: localhost:${1}
-    action: replace  # Fallback to container's exposed port
+
+  # Fallback to container's first exposed port if no labels
+  - source_labels: [__address__, __meta_docker_port_private]
+    action: replace
+    target_label: __address__
+    regex: ;(.+)
+    replacement: localhost:${1}
 
   - source_labels: [__meta_docker_container_label_prometheus_io_path]
     regex: (.+)
