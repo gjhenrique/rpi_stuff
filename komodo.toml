@@ -370,6 +370,22 @@ EXT_PATH: /mnt/tank
 PAPERLESS_URL: "[[PAPERLESS_URL]]"
 """
 
+# Exporters stacks
+[[stack]]
+name = "lovelace-system-exporters"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/system-exporters"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+ADGUARD_USERNAME: "[[ADGUARD_USERNAME]]"
+ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
+"""
+
 [[stack]]
 name = "lovelace-prometheus"
 tags = ["lovelace"]
@@ -385,9 +401,6 @@ EXT_PATH: /mnt/tank
 PROMETHEUS_RETENTION: 750d
 PROMETHEUS_CONFIG_FILE: custom/prometheus.yml
 ALERTMANAGER_CONFIG_FILE: custom/alertmanager.yml
-
-ADGUARD_USERNAME: "[[ADGUARD_USERNAME]]"
-ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
 """
 
 [[stack]]
@@ -404,6 +417,6 @@ EXT_PATH: /mnt/tank
 PERSES_DB_USERNAME: "[[PERSES_DB_USERNAME]]"
 PERSES_DB_PASSWORD: "[[PERSES_DB_PASSWORD]]"
 PERSES_DB_NAME: perses
-PERSES_CONFIG_FILE: /etc/perses/perses-config.yml
+
 TZ: Europe/Berlin
 """
