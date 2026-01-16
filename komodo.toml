@@ -271,18 +271,6 @@ EMBY_UDP_PORT_2: 1900
 """
 
 [[stack]]
-name = "lovelace-adguard"
-tags = ["lovelace"]
-[stack.config]
-server = "lovelace"
-repo = "gjhenrique/rpi_stuff"
-run_directory = "stacks/adguard"
-branch = "master"
-environment = """
-EXT_PATH: /mnt/tank
-"""
-
-[[stack]]
 name = "lovelace-subnet-router"
 tags = ["lovelace"]
 [stack.config]
