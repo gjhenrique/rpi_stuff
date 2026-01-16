@@ -24,13 +24,14 @@ services:
     container_name: perses
     network_mode: host
     restart: unless-stopped
+    command: ["--config=${PERSES_CONFIG_FILE:-/var/lib/perses/perses-config.yml}", "--log.level=info"]
     volumes:
-      - ${EXT_PATH}/perses/config:/etc/perses:ro
-      - ./perses-config.yml:/etc/perses/perses-config.yml.default:ro
-      - ${EXT_PATH}/perses/dashboards:/var/lib/perses/dashboards:ro
-      - ${EXT_PATH}/perses/datasources:/var/lib/perses/datasources:ro
+      - ${EXT_PATH}/perses/config:/etc/perses
+      - ${EXT_PATH}/perses/dashboards:/var/lib/perses/dashboards
+      - ${EXT_PATH}/perses/datasources:/var/lib/perses/datasources
+      - ./perses-config.yml:/var/lib/perses/perses-config.yml
     environment:
-      - PERSES_CONFIG_FILE=${PERSES_CONFIG_FILE:-/etc/perses/perses-config.yml.default}
+      - PERSES_CONFIG_FILE=${PERSES_CONFIG_FILE:-/etc/perses/perses-config.yml}
       - PERSES_DATABASE_POSTGRESQL_HOST=localhost
       - PERSES_DATABASE_POSTGRESQL_PORT=5432
       - PERSES_DATABASE_POSTGRESQL_USER=${PERSES_DB_USERNAME:-perses}

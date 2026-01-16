@@ -416,5 +416,6 @@ EXT_PATH: /mnt/tank
 PERSES_DB_USERNAME: "[[PERSES_DB_USERNAME]]"
 PERSES_DB_PASSWORD: "[[PERSES_DB_PASSWORD]]"
 PERSES_DB_NAME: perses
+PERSES_CONFIG_FILE: /etc/perses/perses-config.yml
 TZ: Europe/Berlin
 """
