@@ -30,3 +30,19 @@ services:
       - "prometheus.io/port=9633"
       - "prometheus.io/address=172.17.0.1:9633"
       - "prometheus.io/path=/metrics"
+
+  adguard-exporter:
+    image: ghcr.io/henrywhitaker3/adguard-exporter:latest
+    restart: unless-stopped
+    ports:
+      - "9618:9618"
+    environment:
+      - ADGUARD_SERVERS=http://127.0.0.1:8090
+      - ADGUARD_USERNAMES=${ADGUARD_USERNAME:-}
+      - ADGUARD_PASSWORDS=${ADGUARD_PASSWORD:-}
+      - PORT=9618
+    labels:
+      - "prometheus.io/scrape=true"
+      - "prometheus.io/port=9618"
+      - "prometheus.io/path=/metrics"
+      - "prometheus.io/address=172.17.0.1:9618"

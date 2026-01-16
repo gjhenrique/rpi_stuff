@@ -280,9 +280,6 @@ run_directory = "stacks/adguard"
 branch = "master"
 environment = """
 EXT_PATH: /mnt/tank
-
-ADGUARD_USERNAME: "[[ADGUARD_USERNAME]]"
-ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
 """
 
 [[stack]]
@@ -400,6 +397,9 @@ EXT_PATH: /mnt/tank
 PROMETHEUS_RETENTION: 750d
 PROMETHEUS_CONFIG_FILE: custom/prometheus.yml
 ALERTMANAGER_CONFIG_FILE: custom/alertmanager.yml
+
+ADGUARD_USERNAME: "[[ADGUARD_USERNAME]]"
+ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
 """
 
 [[stack]]
