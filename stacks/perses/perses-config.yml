@@ -8,9 +8,12 @@ provisioning:
   # Interval for checking provisioning folders for changes
   # Default is 1 hour if not specified
   interval: "30m"
-  
+
   # Folders to watch for dashboard and datasource definitions
   # Perses will recursively scan these directories for YAML/JSON files
   folders:
     - /var/lib/perses/dashboards
     - /var/lib/perses/datasources
+
+plugin:
+  archive_path: /var/lib/perses/plugins-archive
