@@ -17,3 +17,5 @@ provisioning:
 
 plugin:
   archive_path: /var/lib/perses/plugins-archive
+  path: /etc/perses/plugins
+  enable_dev: false
