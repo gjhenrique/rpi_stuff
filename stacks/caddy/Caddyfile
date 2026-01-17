@@ -187,10 +187,10 @@ prowlarr.{$DOMAIN} {
 	reverse_proxy 127.0.0.1:9696
 }
 
-# perses dashboards
+# grafana dashboards
 dashboards.{$DOMAIN} {
 	import cloudflare_tls
 
 	authorize with mypolicy
-	reverse_proxy 127.0.0.1:8080
+	reverse_proxy 127.0.0.1:3000
 }
