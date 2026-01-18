@@ -61,3 +61,8 @@ services:
       - /dev/dri:/dev/dri
     environment:
       TZ: Europe/Berlin
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 8g
