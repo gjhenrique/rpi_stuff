@@ -37,7 +37,7 @@ services:
     ports:
       - "9618:9618"
     environment:
-      - ADGUARD_SERVERS=http://127.0.0.1:8090
+      - ADGUARD_SERVERS=http://172.17.0.1:8080
       - ADGUARD_USERNAMES=${ADGUARD_USERNAME:-}
       - ADGUARD_PASSWORDS=${ADGUARD_PASSWORD:-}
       - PORT=9618

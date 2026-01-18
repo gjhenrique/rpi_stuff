@@ -387,6 +387,19 @@ ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
 """
 
 [[stack]]
+name = "lovelace-backup"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["backup/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/tank
+"""
+
+[[stack]]
 name = "lovelace-prometheus"
 tags = ["lovelace"]
 [stack.config]
