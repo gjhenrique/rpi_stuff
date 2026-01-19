@@ -12,6 +12,30 @@ tags = ["lovelace"]
 enabled = true
 address = "https://periphery:8120"
 
+[[procedure]]
+name = "Deploy stacks"
+
+[[procedure.config.stage]]
+name = "Sync github repo"
+enabled = true
+executions = [
+  { execution.type = "RunSync", execution.params.sync = "github-lovelace", enabled = true }
+]
+
+[[procedure.config.stage]]
+name = "Pull stacks"
+enabled = true
+executions = [
+  { execution.type = "BatchPullStack", execution.params.pattern = "*", enabled = true }
+]
+
+[[procedure.config.stage]]
+name = "Deploy stacks"
+enabled = true
+executions = [
+  { execution.type = "BatchDeployStackIfChanged", execution.params.pattern = "*", enabled = true }
+]
+
 [[stack]]
 name = "lovelace-syncthing"
 tags = ["lovelace"]
