@@ -12,7 +12,7 @@ name = "Deploy stacks"
 name = "Sync github repo"
 enabled = true
 executions = [
-  { execution.type = "RunSync", execution.params.sync = "*", enabled = true }
+  { execution.type = "RunSync", execution.params.sync = "github", enabled = true }
 ]
 
 [[procedure.config.stage]]
