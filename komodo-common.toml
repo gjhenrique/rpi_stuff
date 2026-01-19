@@ -1,0 +1,30 @@
+[[resource_sync]]
+name = "github"
+[resource_sync.config]
+repo = "gjhenrique/rpi_stuff"
+branch = "master"
+resource_path = ["komodo-common.toml"]
+
+[[procedure]]
+name = "Deploy stacks"
+
+[[procedure.config.stage]]
+name = "Sync github repo"
+enabled = true
+executions = [
+  { execution.type = "RunSync", execution.params.sync = "github", enabled = true }
+]
+
+[[procedure.config.stage]]
+name = "Pull stacks"
+enabled = true
+executions = [
+  { execution.type = "BatchPullStack", execution.params.pattern = "*", enabled = true }
+]
+
+[[procedure.config.stage]]
+name = "Deploy stacks"
+enabled = true
+executions = [
+  { execution.type = "BatchDeployStackIfChanged", execution.params.pattern = "*", enabled = true }
+]

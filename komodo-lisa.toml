@@ -1,0 +1,208 @@
+[[resource_sync]]
+name = "github-lisa"
+[resource_sync.config]
+repo = "gjhenrique/rpi_stuff"
+branch = "master"
+resource_path = ["komodo-lisa.toml"]
+
+[[server]]
+name = "lisa"
+[server.config]
+enabled = true
+address = "https://periphery:8120"
+
+[[stack]]
+name = "syncthing"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["syncthing/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "photos"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["photos/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+DB_PASSWORD: "[[IMMICH_DATABASE_PASSWORD]]"
+"""
+
+[[stack]]
+name = "torrent"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["torrent/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+TS_EXIT_NODE_IP: 100.100.45.90 # fra-0003
+TS_HOSTNAME: "[[TORRENT_TS_HOSTNAME]]"
+TS_TAG: "[[TORRENT_TS_TAG]]"
+TS_OAUTH_SECRET: "[[TORRENT_TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "actual"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/actual"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "emby"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/emby"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "netdata"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/netdata"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "paperless"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/paperless"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+
+PAPERLESS_URL="[[PAPERLESS_URL]]"
+"""
+
+[[stack]]
+name = "jellyfin"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/jellyfin"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "samba"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/samba"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+
+PHOTOS_PASSWORD: "[[SAMBA_PHOTOS_PASSWORD]]"
+TORRENT_PASSWORD: "[[SAMBA_TORRENT_PASSWORD]]"
+PAPERLESS_PASSWORD: "[[SAMBA_PAPERLESS_PASSWORD]]"
+TV_PASSWORD: "[[SAMBA_TV_PASSWORD]]"
+"""
+
+[[stack]]
+name = "backup"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["backup/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "arm"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/arm"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "home-assistant"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/home-assistant"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "adguard"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/adguard"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+"""
+
+[[stack]]
+name = "caddy"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["caddy/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/external
+
+GOOGLE_CLIENT_ID: "[[CADDY_GOOGLE_CLIENT_ID]]"
+GOOGLE_CLIENT_SECRET: "[[CADDY_GOOGLE_CLIENT_SECRET]]"
+JWT_SHARED_KEY: "[[CADDY_JWT_SHARED_KEY]]"
+DOMAIN: "[[CADDY_DOMAIN]]"
+ALLOWED_EMAILS: "[[CADDY_ALLOWED_EMAILS]]"
+CLOUDFLARE_API_TOKEN: "[[CADDY_CLOUDFLARE_API_TOKEN]]"
+"""
+
+[[stack]]
+name = "subnet-router"
+[stack.config]
+server = "lisa"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/subnet-router"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/external
+
+TS_OAUTH_SECRET: "[[SUBNET_ROUTER_TS_OAUTH_SECRET]]"
+TS_TAG: "[[SUBNET_ROUTER_TS_TAG]]"
+TS_HOSTNAME: "[[SUBNET_ROUTER_TS_HOSTNAME]]"
+TS_ROUTES: "[[SUBNET_ROUTER_TS_ROUTES]]"
+"""

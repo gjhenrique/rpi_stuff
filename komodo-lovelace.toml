@@ -1,0 +1,217 @@
+[[resource_sync]]
+name = "github-lovelace"
+[resource_sync.config]
+repo = "gjhenrique/rpi_stuff"
+branch = "master"
+resource_path = ["komodo-lovelace.toml"]
+
+[[server]]
+name = "lovelace"
+tags = ["lovelace"]
+[server.config]
+enabled = true
+address = "https://periphery:8120"
+
+[[stack]]
+name = "lovelace-syncthing"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/syncthing"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+"""
+
+[[stack]]
+name = "lovelace-emby"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/emby"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+EMBY_HTTP_PORT: 8096
+EMBY_HTTPS_PORT: 8097
+EMBY_UDP_PORT_1: 7359
+EMBY_UDP_PORT_2: 1900
+"""
+
+[[stack]]
+name = "lovelace-kavita"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/kavita"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+KAVITA_HTTP_PORT: 5000
+"""
+
+[[stack]]
+name = "lovelace-subnet-router"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/subnet-router"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+TS_OAUTH_SECRET: "[[SUBNET_ROUTER_TS_OAUTH_SECRET]]"
+TS_TAG: "[[SUBNET_ROUTER_TS_TAG]]"
+TS_HOSTNAME: "[[SUBNET_ROUTER_TS_HOSTNAME]]"
+TS_ROUTES: "[[SUBNET_ROUTER_TS_ROUTES]]"
+"""
+
+[[stack]]
+name = "lovelace-caddy"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["caddy/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/tank
+
+GOOGLE_CLIENT_ID: "[[CADDY_GOOGLE_CLIENT_ID]]"
+GOOGLE_CLIENT_SECRET: "[[CADDY_GOOGLE_CLIENT_SECRET]]"
+JWT_SHARED_KEY: "[[CADDY_JWT_SHARED_KEY]]"
+DOMAIN: "[[CADDY_DOMAIN]]"
+ALLOWED_EMAILS: "[[CADDY_ALLOWED_EMAILS]]"
+CLOUDFLARE_API_TOKEN: "[[CADDY_CLOUDFLARE_API_TOKEN]]"
+"""
+
+[[stack]]
+name = "lovelace-samba"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/samba"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+PHOTOS_PASSWORD: "[[SAMBA_PHOTOS_PASSWORD]]"
+TORRENT_PASSWORD: "[[SAMBA_TORRENT_PASSWORD]]"
+PAPERLESS_PASSWORD: "[[SAMBA_PAPERLESS_PASSWORD]]"
+TV_PASSWORD: "[[SAMBA_TV_PASSWORD]]"
+"""
+
+[[stack]]
+name = "lovelace-photos"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["photos-full/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/tank
+
+DB_PASSWORD: "[[IMMICH_DATABASE_PASSWORD]]"
+"""
+
+[[stack]]
+name = "lovelace-torrent"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/torrent"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+TS_EXIT_NODE_IP: "[[TORRENT_EXIT_NODE_IP]]"
+TS_HOSTNAME: "[[TORRENT_TS_HOSTNAME]]"
+TS_TAG: "[[TORRENT_TS_TAG]]"
+TS_OAUTH_SECRET: "[[TORRENT_TS_OAUTH_SECRET]]"
+"""
+
+[[stack]]
+name = "lovelace-paperless"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/paperless"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+PAPERLESS_URL: "[[PAPERLESS_URL]]"
+"""
+
+[[stack]]
+name = "lovelace-system-exporters"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/system-exporters"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+ADGUARD_USERNAME: "[[ADGUARD_USERNAME]]"
+ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
+"""
+
+[[stack]]
+name = "lovelace-backup"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["backup/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/tank
+"""
+
+[[stack]]
+name = "lovelace-prometheus"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks"
+branch = "master"
+file_paths = ["prometheus/compose.yaml"]
+environment = """
+EXT_PATH: /mnt/tank
+
+PROMETHEUS_RETENTION: 750d
+PROMETHEUS_CONFIG_FILE: custom/prometheus.yml
+ALERTMANAGER_CONFIG_FILE: custom/alertmanager.yml
+"""
+
+[[stack]]
+name = "lovelace-grafana"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/grafana"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+GRAFANA_ADMIN_PASSWORD: "[[GRAFANA_ADMIN_PASSWORD]]"
+
+TZ: Europe/Berlin
+"""
