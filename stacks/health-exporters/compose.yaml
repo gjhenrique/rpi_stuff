@@ -1,13 +1,12 @@
 ---
 services:
   qingping_exporter:
-    image: ghcr.io/pedro-stanaka/qingping_exporter/exporter:v0.3.1
-    container_name: qingping_exporter
+    image: ghcr.io/pedro-stanaka/qingping_exporter/exporter:v0.3.2
     restart: unless-stopped
     ports:
       - "10803:10803"
     command:
-      - --use-fixed-timestamps=true
+      - --use-fixed-timestamps
       - --buffer-window=60m
     environment:
       - QINGPING_APP_KEY=${QINGPING_APP_KEY:-}
@@ -25,7 +24,6 @@ services:
 
   weather_exporter:
     image: billykwooten/openweather-exporter:latest
-    container_name: weather_exporter
     restart: unless-stopped
     ports:
       - "9091:9091"
