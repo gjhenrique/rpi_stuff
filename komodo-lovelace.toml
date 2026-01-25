@@ -195,6 +195,23 @@ ADGUARD_PASSWORD: "[[ADGUARD_PASSWORD]]"
 """
 
 [[stack]]
+name = "lovelace-health-exporters"
+tags = ["lovelace"]
+[stack.config]
+server = "lovelace"
+repo = "gjhenrique/rpi_stuff"
+run_directory = "stacks/health-exporters"
+branch = "master"
+environment = """
+EXT_PATH: /mnt/tank
+
+QINGPING_APP_KEY: "[[QINGPING_APP_KEY]]"
+QINGPING_APP_SECRET: "[[QINGPING_APP_SECRET]]"
+OW_CITY: "[[OW_CITY]]"
+OW_APIKEY: "[[OW_APIKEY]]"
+"""
+
+[[stack]]
 name = "lovelace-backup"
 tags = ["lovelace"]
 [stack.config]
