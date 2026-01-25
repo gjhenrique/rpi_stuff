@@ -6,6 +6,7 @@ services:
     ports:
       - "10803:10803"
     command:
+      - run
       - --use-fixed-timestamps
       - --buffer-window=60m
     environment:
