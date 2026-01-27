@@ -24,7 +24,7 @@ services:
       - "prometheus.io/path=/metrics"
 
   weather_exporter:
-    image: billykwooten/openweather-exporter:latest
+    image: billykwooten/openweather-exporter:v0.0.14
     restart: unless-stopped
     ports:
       - "9091:9091"
