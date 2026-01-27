@@ -28,8 +28,6 @@ services:
     restart: unless-stopped
     ports:
       - "9091:9091"
-    dns:
-      - 127.0.0.11
     environment:
       - OW_CITY=${OW_CITY:-}
       - OW_APIKEY=${OW_APIKEY:-}
