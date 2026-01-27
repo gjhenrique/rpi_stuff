@@ -26,8 +26,7 @@ services:
   weather_exporter:
     image: billykwooten/openweather-exporter:v0.0.14
     restart: unless-stopped
-    ports:
-      - "9091:9091"
+    network_mode: host  # use host DNS/routing so nominatim.openstreetmap.org resolves (bridge had 8.8.8.8 unreachable)
     environment:
       - OW_CITY=${OW_CITY:-}
       - OW_APIKEY=${OW_APIKEY:-}
@@ -36,5 +35,5 @@ services:
     labels:
       - "prometheus.io/scrape=true"
       - "prometheus.io/port=9091"
-      - "prometheus.io/address=172.17.0.1:9091"
+      - "prometheus.io/address=172.17.0.1:9091"  # host network: app listens on host's 9091
       - "prometheus.io/path=/metrics"
