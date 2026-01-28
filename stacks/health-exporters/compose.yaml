@@ -28,12 +28,13 @@ services:
     restart: unless-stopped
     network_mode: host  # use host DNS/routing so nominatim.openstreetmap.org resolves (bridge had 8.8.8.8 unreachable)
     environment:
+      - OW_LISTEN_ADDRESS=:9092   # 9091 is used by lovelace-torrent-tailscale
       - OW_CITY=${OW_CITY:-}
       - OW_APIKEY=${OW_APIKEY:-}
       - OW_ENABLE_POL=true
       - OW_DEGREES_UNIT=C
     labels:
       - "prometheus.io/scrape=true"
-      - "prometheus.io/port=9091"
-      - "prometheus.io/address=172.17.0.1:9091"  # host network: app listens on host's 9091
+      - "prometheus.io/port=9092"
+      - "prometheus.io/address=172.17.0.1:9092"
       - "prometheus.io/path=/metrics"
