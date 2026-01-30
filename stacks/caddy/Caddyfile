@@ -102,9 +102,16 @@ docs.{$DOMAIN} {
 	import cloudflare_tls
 
 	authorize with paperless_policy
-	reverse_proxy 127.0.0.1:8000 {
-		# Map Caddy's injected email header to Paperless expected header (web UI only; /api/ uses Paperless auth)
-		header_up X-Token-User-Email {http.request.header.X-User-Email}
+	# Only send X-Token-User-Email when Caddy JWT is present; otherwise Paperless sees
+	# empty remote-user header and rejects API token login (e.g. app POST to /api/token/).
+	@with_jwt header X-User-Email *
+	handle @with_jwt {
+		reverse_proxy 127.0.0.1:8000 {
+			header_up X-Token-User-Email {http.request.header.X-User-Email}
+		}
+	}
+	handle {
+		reverse_proxy 127.0.0.1:8000
 	}
 }
 

@@ -26,6 +26,8 @@ services:
       PAPERLESS_ENABLE_HTTP_REMOTE_USER_API: true
       PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_TOKEN_USER_EMAIL
       PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: true
+      # Trust proxy so X-Forwarded-For is used; required when behind Caddy so API token login works
+      PAPERLESS_TRUSTED_PROXIES: "127.0.0.1 172.17.0.0/16 172.18.0.0/16"
 
   # paperless takes some minutes to index the scanned file
   # but sometimes I just want a document right away
