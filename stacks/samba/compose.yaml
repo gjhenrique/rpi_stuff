@@ -24,4 +24,4 @@ services:
     volumes:
       - ${EXT_PATH}/photos:/shares/photos
       - ${EXT_PATH}/media:/shares/media
-      - ${EXT_PATH}/paperless/consume:/shares/documents
+      - ${EXT_PATH}/documents/consume:/shares/documents
