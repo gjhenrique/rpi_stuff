@@ -48,6 +48,16 @@
 			validate bearer header
 			inject headers with claims
 		}
+
+		# Paperless: allow username/password login (web + API). No Caddy JWT required.
+		authorization policy paperless_policy {
+			bypass uri prefix /
+			set auth url https://auth.{$DOMAIN}/oauth2/google
+			crypto key verify {$JWT_SHARED_KEY}
+			allow roles authp/admin authp/user
+			validate bearer header
+			inject headers with claims
+		}
 	}
 }
 
@@ -91,10 +101,9 @@ emby.{$DOMAIN} {
 docs.{$DOMAIN} {
 	import cloudflare_tls
 
-	authorize with mypolicy
+	authorize with paperless_policy
 	reverse_proxy 127.0.0.1:8000 {
-		# Map Caddy's injected email header to Paperless expected header
-		# caddy-security injects X-User-Email from JWT email claim
+		# Map Caddy's injected email header to Paperless expected header (web UI only; /api/ uses Paperless auth)
 		header_up X-Token-User-Email {http.request.header.X-User-Email}
 	}
 }
